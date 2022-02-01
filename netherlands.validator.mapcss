@@ -1,10 +1,9 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.02.01.2";
+    version: "2022.02.01.3";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
-    baselanguage: "nl";
 }
 
 
@@ -111,22 +110,28 @@ node[phone=~/^(0031|\+31|0)( ?[1-9])( ?[0-9]){9}/][inside("NL")]!.badPhoneNumber
 way[cycleway:surface][surface][highway=cycleway][surface=*"cycleway:surface"],
 way[footway:surface][surface][highway=footway][surface=*"footway:surface"] {
   throwWarning: tr("{0} together with {1} and {2}. Remove {0}.", "{0.key}", "{1.key}", "{2.tag}");
-  group: tr("NL surface tagging");
+  group: tr("NL German style tagging");
   fixRemove: "{0.key}";
 }
 way[cycleway:surface][surface][highway=cycleway][surface!=*"cycleway:surface"],
 way[footway:surface][surface][highway=footway][surface!=*"footway:surface"] {
   throwWarning: tr("{0} and {1} together with {2} and conflicting values", "{0.key}", "{1.key}", "{2.tag}");
-  group: tr("NL surface tagging");
+  group: tr("NL German style tagging");
 }
 way[cycleway:surface][highway=cycleway][!surface],
 way[footway:surface][highway=footway][!surface] {
   throwWarning: tr("{0} together with {1}", "{0.key}", "{1.tag}");
-  group: tr("NL surface tagging");
+  group: tr("NL German style tagging");
   suggestAlternative: "surface=*";
   fixChangeKey: "{0.key}=>surface";
 }
 way[footway:surface][cycleway:surface][segregated=no][highway][footway:surface!=*"cycleway:surface"] {
   throwWarning: tr("{0} and {1} together with {2} and conflicting values", "{0.key}", "{1.key}", "{2.tag}");
-  group: tr("NL surface tagging");
+  group: tr("NL German style tagging");
+}
+way[/^footway(:left|:right|:both)?:/][/^sidewalk:(left|right|both)$/][/^sidewalk:(left|right|both)$/=~/^yes$/],
+way[/^footway(:left|:right|:both)?:/][sidewalk][sidewalk=~/^(left|right|both|yes)$/] {
+	throwWarning: tr("{0} together with {1}", "{0.key}", "{1.key}");
+	group: tr("NL German style tagging");
+    suggestAlternative: "sidewalk:*";
 }

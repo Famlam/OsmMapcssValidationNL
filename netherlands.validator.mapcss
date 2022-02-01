@@ -104,3 +104,29 @@ node[phone=~/^(0031|\+31|0)( ?[1-9])( ?[0-9]){9}/][inside("NL")]!.badPhoneNumber
   assertNoMatch: "node phone=\"+31 6 12345678\"";
   assertNoMatch: "node phone=\"06 12345678\"";
 }
+
+
+/* Unwanted German style cycleway tagging */
+/* https://forum.openstreetmap.org/viewtopic.php?id=65612 */
+way[cycleway:surface][surface][highway=cycleway][surface=*"cycleway:surface"],
+way[footway:surface][surface][highway=footway][surface=*"footway:surface"] {
+  throwWarning: tr("{0} together with {1} and {2}. Remove {0}.", "{0.key}", "{1.key}", "{2.tag}");
+  group: tr("NL surface tagging");
+  fixRemove: "{0.key}";
+}
+way[cycleway:surface][surface][highway=cycleway][surface!=*"cycleway:surface"],
+way[footway:surface][surface][highway=footway][surface!=*"footway:surface"] {
+  throwWarning: tr("{0} and {1} together with {2} and conflicting values", "{0.key}", "{1.key}", "{2.tag}");
+  group: tr("NL surface tagging");
+}
+way[cycleway:surface][highway=cycleway][!surface],
+way[footway:surface][highway=footway][!surface] {
+  throwWarning: tr("{0} together with {1}", "{0.key}", "{1.tag}");
+  group: tr("NL surface tagging");
+  suggestAlternative: "surface=*";
+  fixChangeKey: "{0.key}=>surface";
+}
+way[footway:surface][cycleway:surface][segregated=no][highway][footway:surface!=*"cycleway:surface"] {
+  throwWarning: tr("{0} and {1} together with {2} and conflicting values", "{0.key}", "{1.key}", "{2.tag}");
+  group: tr("NL surface tagging");
+}

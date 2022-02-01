@@ -7,4 +7,72 @@ meta {
     baselanguage: "nl";
 }
 
-To be continued...
+
+/* Traffic signs - moped/mofa access cycleways */
+/* (Permitting yes rather than designated to prevent overflooding with errors) */
+way[highway=cycleway][traffic_sign="NL:G11"][moped][moped=~/^(yes|designated)$/],
+way[highway=cycleway][traffic_sign="NL:G12a"][moped][moped=~/^(no|use_sidepath)$/],
+way[highway=cycleway][traffic_sign="NL:G13"][moped][moped=~/^(yes|designated)$/],
+way[highway=cycleway][traffic_sign="NL:G13"][mofa][mofa=~/^(yes|designated)$/],
+way[highway][traffic_sign="NL:D103"][moped][moped=~/^(no|use_sidepath)$/],
+way[highway][traffic_sign="NL:D104"][moped][moped=~/^(no|use_sidepath)$/] {
+  group: tr("NL traffic signs");
+  throwWarning: tr("{0} together with {1}", "{1.tag}", "{2.tag}");
+}
+
+way[highway][traffic_sign="NL:D103"][!moped],
+way[highway][traffic_sign="NL:D104"][!moped],
+way[highway=cycleway][traffic_sign="NL:G12a"][!moped] {
+  group: tr("NL traffic signs");
+  throwWarning: tr("{0} without {1}", "{1.tag}", "moped=designated");
+}
+
+way[highway=cycleway][traffic_sign="NL:G13"][!mofa][!motor_vehicle][!access] {
+  group: tr("NL traffic signs");
+  throwWarning: tr("{0} without {1}", "{1.tag}", "mofa=no");
+}
+
+
+/* Traffic sign - road types */
+way[highway][traffic_sign="NL:G5"][highway!=living_street][highway!=construction],
+way[highway][traffic_sign="NL:G05"][highway!=living_street][highway!=construction],
+way[highway][traffic_sign="NL:G7"][highway!=footway][highway!=steps][highway!=pedestrian][highway!=construction],
+way[highway][traffic_sign="NL:G07"][highway!=footway][highway!=steps][highway!=pedestrian][highway!=construction],
+way[highway][traffic_sign="NL:G9"][highway!=bridleway][highway!=construction],
+way[highway][traffic_sign="NL:G09"][highway!=bridleway][highway!=construction],
+way[highway][traffic_sign="NL:G11"][highway!=cycleway][highway!=construction],
+way[highway][traffic_sign="NL:G12a"][highway!=cycleway][highway!=construction],
+way[highway][traffic_sign="NL:G13"][highway!=cycleway][highway!=construction] {
+  group: tr("NL traffic signs");
+  throwWarning: tr("{0} together with {1}", "{1.tag}", "{0.tag}");
+}
+
+way[highway][traffic_sign="NL:L51"][!cyclestreet][highway!=construction] {
+  group: tr("NL traffic signs");
+  throwWarning: tr("{0} without {1}", "{1.tag}", "cyclestreet=yes");
+}
+
+
+/* Traffic signs - access prohibited */
+way[highway][traffic_sign="NL:C1"][!vehicle][!access],
+way[highway][traffic_sign="NL:C01"][!vehicle][!access]
+way[highway][traffic_sign="NL:C6"][!motor_vehicle][!vehicle][!access],
+way[highway][traffic_sign="NL:C06"][!motor_vehicle][!vehicle][!access],
+way[highway][traffic_sign="NL:C7"][!hgv],
+way[highway][traffic_sign="NL:C07"][!hgv],
+way[highway][traffic_sign="NL:C9"][!bicycle],
+way[highway][traffic_sign="NL:C9"][!moped],
+way[highway][traffic_sign="NL:C09"][!bicycle],
+way[highway][traffic_sign="NL:C09"][!moped],
+way[highway][traffic_sign="NL:C10"][!trailer],
+way[highway][traffic_sign="NL:C11"][!motorcycle],
+way[highway][traffic_sign="NL:C12"][!motor_vehicle][!vehicle][!access],
+way[highway][traffic_sign="NL:C13"][!moped],
+way[highway][traffic_sign="NL:C14"][!bicycle],
+way[highway][traffic_sign="NL:C15"][!bicycle],
+way[highway][traffic_sign="NL:C15"][!moped],
+way[highway][traffic_sign="NL:C16"][!foot][!access][!vehicle] {
+  group: tr("NL traffic signs");
+  throwWarning: tr("{0} zonder {1}=no (or private or destination or ...)", "{1.tag}", "{2.key}");
+}
+

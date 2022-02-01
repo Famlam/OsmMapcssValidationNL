@@ -1,0 +1,10 @@
+meta {
+    title: "Dutch specific rules";
+    version: "2022.02.01";
+    description: "Rules for The Netherlands only.";
+    author: "Famlam";
+    min-josm-version: "11424"; /* due to territory selectors */
+    baselanguage: "nl";
+}
+
+To be continued...

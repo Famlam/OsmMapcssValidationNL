@@ -1,11 +1,14 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.02.01.3";
+    version: "2022.02.01.4";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
 }
 
+/* --------------------------- */
+/* ------ Traffic signs ------ */
+/* --------------------------- */
 
 /* Traffic signs - moped/mofa access cycleways */
 /* (Permitting yes rather than designated to prevent overflooding with errors) */
@@ -76,6 +79,10 @@ way[highway][traffic_sign="NL:C16"][!foot][!access][!vehicle] {
 }
 
 
+/* ---------------------------- */
+/* -- Addresses and contacts -- */
+/* ---------------------------- */
+
 /* Phone numbers - preceding zeros */
 node[contact:phone=~/^(00|\+)31 ?0/][inside("NL")],
 node[contact:mobile=~/^(00|\+)31 ?0/][inside("NL")],
@@ -104,8 +111,11 @@ node[phone=~/^(0031|\+31|0)( ?[1-9])( ?[0-9]){9}/][inside("NL")]!.badPhoneNumber
   assertNoMatch: "node phone=\"06 12345678\"";
 }
 
+/* --------------------------- */
+/* -- Foreign style tagging -- */
+/* --------------------------- */
 
-/* Unwanted German style cycleway tagging */
+/* Unwanted German style cycleway and footway tagging */
 /* https://forum.openstreetmap.org/viewtopic.php?id=65612 */
 way[cycleway:surface][surface][highway=cycleway][surface=*"cycleway:surface"],
 way[footway:surface][surface][highway=footway][surface=*"footway:surface"] {
@@ -113,11 +123,13 @@ way[footway:surface][surface][highway=footway][surface=*"footway:surface"] {
   group: tr("NL German style tagging");
   fixRemove: "{0.key}";
 }
+
 way[cycleway:surface][surface][highway=cycleway][surface!=*"cycleway:surface"],
 way[footway:surface][surface][highway=footway][surface!=*"footway:surface"] {
   throwWarning: tr("{0} and {1} together with {2} and conflicting values", "{0.key}", "{1.key}", "{2.tag}");
   group: tr("NL German style tagging");
 }
+
 way[cycleway:surface][highway=cycleway][!surface],
 way[footway:surface][highway=footway][!surface] {
   throwWarning: tr("{0} together with {1}", "{0.key}", "{1.tag}");
@@ -125,13 +137,39 @@ way[footway:surface][highway=footway][!surface] {
   suggestAlternative: "surface=*";
   fixChangeKey: "{0.key}=>surface";
 }
+
 way[footway:surface][cycleway:surface][segregated=no][highway][footway:surface!=*"cycleway:surface"] {
   throwWarning: tr("{0} and {1} together with {2} and conflicting values", "{0.key}", "{1.key}", "{2.tag}");
   group: tr("NL German style tagging");
 }
+
 way[/^footway(:left|:right|:both)?:/][/^sidewalk:(left|right|both)$/][/^sidewalk:(left|right|both)$/=~/^yes$/],
 way[/^footway(:left|:right|:both)?:/][sidewalk][sidewalk=~/^(left|right|both|yes)$/] {
 	throwWarning: tr("{0} together with {1}", "{0.key}", "{1.key}");
 	group: tr("NL German style tagging");
     suggestAlternative: "sidewalk:*";
+}
+
+/* -------------------------------- */
+/* -- Tags considered deprecated -- */
+/* -------------------------------- */
+
+/* cycleway=opposite */
+/* https://forum.openstreetmap.org/viewtopic.php?id=65612 */
+way[cycleway=opposite],
+way[cycleway:left=opposite],
+way[cycleway:right=opposite],
+way[cycleway:both=opposite] {
+  throwWarning: tr("{0} is deprecated", "{0.value}");
+  group: tr("NL deprecated features");
+  suggestAlternative: "oneway:bicycle/mofa/moped=no";
+}
+
+way[cycleway][cycleway^=opposite_],
+way[cycleway:left][cycleway:left^=opposite_],
+way[cycleway:right][cycleway:right^=opposite_],
+way[cycleway:both][cycleway:both^=opposite_] {
+  throwWarning: tr("{0} is deprecated", "{0.value}");
+  group: tr("NL deprecated features");
+  suggestAlternative: "oneway:bicycle/mofa/moped=no + {0.key}=*[zonder opposite_]";
 }

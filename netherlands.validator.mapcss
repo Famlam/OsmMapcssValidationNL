@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.02.01.1";
+    version: "2022.02.01.2";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -76,3 +76,31 @@ way[highway][traffic_sign="NL:C16"][!foot][!access][!vehicle] {
   throwWarning: tr("{0} zonder {1}=no (or private or destination or ...)", "{1.tag}", "{2.key}");
 }
 
+
+/* Phone numbers - preceding zeros */
+node[contact:phone=~/^(00|\+)31 ?0/][inside("NL")],
+node[contact:mobile=~/^(00|\+)31 ?0/][inside("NL")],
+node[phone=~/^(00|\+)31 ?0/][inside("NL")] {
+  throwWarning: tr("Invalid {0}: country code should not be followed by a 0", "{0.key}");
+  group: tr("NL addresses and contacts");
+  assertMatch: "node phone=\"+31 06123456789\"";
+  assertMatch: "node phone=\"003106123456789\"";
+  assertNoMatch: "node phone=\"00316123456789\"";
+  assertNoMatch: "node phone=\"+31 6123456789\"";
+  assertNoMatch: "node phone=\"06123456789\"";
+  set .badPhoneNumber;
+}
+
+/* Phone numbers - too many digits */
+node[contact:phone=~/^(0031|\+31|0)( ?[1-9])( ?[0-9]){9}/][inside("NL")]!.badPhoneNumber,
+node[contact:mobile=~/^(0031|\+31|0)( ?[1-9])( ?[0-9]){9}/][inside("NL")]!.badPhoneNumber,
+node[phone=~/^(0031|\+31|0)( ?[1-9])( ?[0-9]){9}/][inside("NL")]!.badPhoneNumber {
+  throwWarning: tr("Invalid {0}: too many digits (or foreign number, if so: ignore)", "{0.key}");
+  group: tr("NL addresses and contacts");
+  assertMatch: "node phone=\"+316123456789\"";
+  assertMatch: "node phone=\"+31 6 123456789\"";
+  assertMatch: "node phone=\"06 123456789\"";
+  assertNoMatch: "node phone=\"0031612345678\"";
+  assertNoMatch: "node phone=\"+31 6 12345678\"";
+  assertNoMatch: "node phone=\"06 12345678\"";
+}

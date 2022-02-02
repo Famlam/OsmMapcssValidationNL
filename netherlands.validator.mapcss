@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.02.02.2";
+    version: "2022.02.02.3";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -336,3 +336,11 @@ way[construction][note=~/(?i)202[0-9]|'2[0-9]|jan|feb|maart|mar|apr|mei|may|jun|
   throwWarning: tr("{0} and {1} without {2}", "{0.tag}", "{1.key}", "{2.key}");
   group: tr("NL overige problemen");
 }
+
+
+/* In practically all cases, oneway:bicycle=no (uitgezonderd fietsers) implies oneway:mofa=no too */
+way[oneway:bicycle?!][!oneway:mofa][oneway?]:modified {
+  throwWarning: tr("{0} without {1}", "{0.tag}", "{1.key}");
+  group: tr("NL overige problemen");
+}
+

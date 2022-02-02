@@ -296,6 +296,27 @@ node[addr:street][addr:street=~/[A-Z][a-z]+\./] {
 }
 
 
+/* ----------------------------- */
+/* ------ Route relations ------ */
+/* ----------------------------- */
+
+/* Public transport routes should be in a route_master relation; busses also in a consession network relation */
+relation[route_master] > relation[route] {
+  set .hasRouteMaster;
+}
+relation[network] > relation[route_master] {
+  set .hasNetworkRelation;
+}
+relation[route][route=~/^((trolley)?bus|light_rail|subway|train|tram)$/]!.hasRouteMaster:new {
+  throwWarning: tr("{0} not in route_master relation", "{0.tag}");
+  group: tr("NL routes");
+}
+relation[route_master][route_master=~/^(trolley)?bus$/]!.hasNetworkRelation:new {
+  throwWarning: tr("{0} not in network relation", "{0.tag}");
+  group: tr("NL routes");
+}
+
+
 /* ---------------------------- */
 /* ---------- Overig ---------- */
 /* ---------------------------- */

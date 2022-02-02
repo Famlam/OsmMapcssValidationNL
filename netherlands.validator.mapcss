@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.02.01.4";
+    version: "2022.02.02.1";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -158,22 +158,42 @@ way[/^footway(:left|:right|:both)?:/][sidewalk][sidewalk=~/^(left|right|both|yes
 
 /* cycleway=opposite */
 /* https://forum.openstreetmap.org/viewtopic.php?id=65612 */
-way[cycleway=opposite],
-way[cycleway:left=opposite],
-way[cycleway:right=opposite],
-way[cycleway:both=opposite] {
+way[cycleway=opposite][inside("NL")],
+way[cycleway:left=opposite][inside("NL")],
+way[cycleway:right=opposite][inside("NL")],
+way[cycleway:both=opposite][inside("NL")] {
   throwWarning: tr("{0} is deprecated", "{0.value}");
   group: tr("NL deprecated features");
   suggestAlternative: "oneway:bicycle/mofa/moped=no";
 }
 
-way[cycleway][cycleway^=opposite_],
-way[cycleway:left][cycleway:left^=opposite_],
-way[cycleway:right][cycleway:right^=opposite_],
-way[cycleway:both][cycleway:both^=opposite_] {
+way[cycleway][cycleway^=opposite_][inside("NL")],
+way[cycleway:left][cycleway:left^=opposite_][inside("NL")],
+way[cycleway:right][cycleway:right^=opposite_][inside("NL")],
+way[cycleway:both][cycleway:both^=opposite_][inside("NL")] {
   throwWarning: tr("{0} is deprecated", "{0.value}");
   group: tr("NL deprecated features");
   suggestAlternative: "oneway:bicycle/mofa/moped=no + {0.key}=*[zonder opposite_]";
+}
+
+
+/* sidewalk=none */
+/* https://forum.openstreetmap.org/viewtopic.php?id=58656 */
+way[sidewalk=none][inside("NL")] {
+  throwWarning: tr("{0} is deprecated", "{0.tag}");
+  group: tr("NL deprecated features");
+  suggestAlternative: "sidewalk=no";
+  fixAdd: "sidewalk=no";
+}
+
+
+/* associatedStreet */
+/* https://forum.openstreetmap.org/viewtopic.php?id=70631 */
+relation[type=associatedStreet][inside("NL")]  {
+  throwWarning: tr("{0} is deprecated", "{0.tag}");
+  group: tr("NL deprecated features");
+  suggestAlternative: "type=street";
+  suggestAlternative: "geen relatie";
 }
 
 
@@ -230,3 +250,14 @@ node[addr:street][addr:street=~/[A-Z][a-z]+\./] {
   fixChangeKey: "{0.key}=>{1.key}";
 }
 
+
+/* ---------------------------- */
+/* ---------- Overig ---------- */
+/* ---------------------------- */
+
+/* Finishing date without opening_date; adding it allows it to be spotted when completed */
+way[highway=construction][note=~/(?i)202[0-9]|'2[0-9]|jan|feb|maart|mar|apr|mei|may|jun|jul|aug|sep|okt|oct|nov|dec/][!opening_date],
+way[construction][note=~/(?i)202[0-9]|'2[0-9]|jan|feb|maart|mar|apr|mei|may|jun|jul|aug|sep|okt|oct|nov|dec/][!opening_date][highway][highway!=construction] {
+  throwWarning: tr("{0} and {1} without {2}", "{0.tag}", "{1.key}", "{2.key}");
+  group: tr("NL overige problemen");
+}

@@ -97,6 +97,7 @@ node[phone=~/^(00|\+)31 ?0/][inside("NL")] {
   set .badPhoneNumber;
 }
 
+
 /* Phone numbers - too many digits */
 node[contact:phone=~/^(0031|\+31|0)( ?[1-9])( ?[0-9]){9}/][inside("NL")]!.badPhoneNumber,
 node[contact:mobile=~/^(0031|\+31|0)( ?[1-9])( ?[0-9]){9}/][inside("NL")]!.badPhoneNumber,
@@ -109,6 +110,14 @@ node[phone=~/^(0031|\+31|0)( ?[1-9])( ?[0-9]){9}/][inside("NL")]!.badPhoneNumber
   assertNoMatch: "node phone=\"0031612345678\"";
   assertNoMatch: "node phone=\"+31 6 12345678\"";
   assertNoMatch: "node phone=\"06 12345678\"";
+}
+
+
+/* addresss tags on building */
+relation[type=multipolygon][building][/^addr:/][amenity!=place_of_worship][inside("NL")],
+way[building][/^addr:/][amenity!=place_of_worship][inside("NL")]:closed {
+  throwWarning: tr("In Nederland is het gebouw niet gekoppeld aan het adres. Het adres is wel gekoppeld aan het gebruiksdoel.");
+  group: tr("NL addresses and contacts");
 }
 
 

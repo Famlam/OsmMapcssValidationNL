@@ -14,6 +14,7 @@ meta {
 /* (Permitting yes rather than designated to prevent overflooding with errors) */
 way[highway=cycleway][traffic_sign="NL:G11"][moped][moped=~/^(yes|designated)$/],
 way[highway=cycleway][traffic_sign="NL:G12a"][moped][moped=~/^(no|use_sidepath)$/],
+way[highway=cycleway][traffic_sign="NL:G12a"][mofa][mofa=~/^(no|use_sidepath)$/],
 way[highway=cycleway][traffic_sign="NL:G13"][moped][moped=~/^(yes|designated)$/],
 way[highway=cycleway][traffic_sign="NL:G13"][mofa][mofa=~/^(yes|designated)$/],
 way[highway][traffic_sign="NL:D103"][moped][moped=~/^(no|use_sidepath)$/],
@@ -27,6 +28,13 @@ way[highway][traffic_sign="NL:D104"][!moped],
 way[highway=cycleway][traffic_sign="NL:G12a"][!moped] {
   group: tr("NL traffic signs");
   throwWarning: tr("{0} without {1}", "{1.tag}", "moped=designated");
+}
+
+/* note: mind the Amsterdam-case: snorfietsers op de weg */
+way[highway=cycleway][traffic_sign="NL:G11"][!mofa],
+way[highway=cycleway][traffic_sign="NL:G12a"][!mofa] {
+  group: tr("NL traffic signs");
+  throwWarning: tr("{0} without {1}", "{1.tag}", "{2.key}");
 }
 
 way[highway=cycleway][traffic_sign="NL:G13"][!mofa][!motor_vehicle][!access] {
@@ -344,3 +352,10 @@ way[oneway:bicycle?!][!oneway:mofa][oneway?]:modified {
   group: tr("NL overige problemen");
 }
 
+
+/* In practically all cases, something that applies to mopeds and bicycles, also applies to mofa's */
+way[bicycle][moped][bicycle=*moped][!mofa][bicycle!=designated][bicycle!=yes] {
+  throwWarning: tr("{0} and {1} without {2}", "{0.tag}", "{1.tag}", "{3.key}={0.value}");
+  group: tr("NL overige problemen");
+  fixAdd: "{3.key}={0.value}";
+}

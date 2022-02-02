@@ -334,6 +334,23 @@ relation[route_master][route_master=~/^(trolley)?bus$/][inside("NL")]!.hasNetwor
 }
 
 
+/* --------------------------- */
+/* ----- Maximumsnelheid ----- */
+/* --------------------------- */
+
+way[highway=living_street][maxspeed!=15][!/^maxspeed(:forward|:backward|:both_ways)?$/][inside("NL")],
+way[maxspeed:type="NL:zone30"][maxspeed!=30][maxspeed:both_ways!=30][highway],
+way[maxspeed:type="NL:zone60"][maxspeed!=60][maxspeed:both_ways!=60][highway],
+way[maxspeed:type][!maxspeed][maxspeed:type^="NL:zone"][!maxspeed:both_ways][maxspeed:type!~/^NL:zone[36]0$/][highway],
+way[maxspeed:type="NL:urban"][maxspeed!=50][maxspeed:both_ways!=50][highway],
+way[maxspeed:type="NL:rural"][maxspeed!=80][maxspeed:both_ways!=80][highway],
+way[traffic_sign][!maxspeed][traffic_sign^="NL:A1-"][!/^maxspeed(:forward|:backward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign][!maxspeed][traffic_sign^="NL:A01-"][!/^maxspeed(:forward|:backward|:both_ways)?(:conditional)?$/][highway] {
+  throwWarning: tr("{0} without {1}", "{0.tag}", "{1.tag}");
+  group: tr("NL maximumsnelheden");
+}
+
+
 /* ---------------------------- */
 /* ---------- Overig ---------- */
 /* ---------------------------- */
@@ -347,7 +364,7 @@ way[construction][note=~/(?i)202[0-9]|'2[0-9]|jan|feb|maart|mar|apr|mei|may|jun|
 
 
 /* In practically all cases, oneway:bicycle=no (uitgezonderd fietsers) implies oneway:mofa=no too */
-way[oneway:bicycle?!][!oneway:mofa][oneway?]:modified {
+way[oneway:bicycle?!][!oneway:mofa][oneway?] {
   throwWarning: tr("{0} without {1}", "{0.tag}", "{1.key}");
   group: tr("NL overige problemen");
 }

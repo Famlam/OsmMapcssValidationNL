@@ -183,7 +183,7 @@ way[sidewalk=none][inside("NL")] {
   throwWarning: tr("{0} is deprecated", "{0.tag}");
   group: tr("NL deprecated features");
   suggestAlternative: "sidewalk=no";
-  fixAdd: "sidewalk=no";
+  fixAdd: "{0.key}=no";
 }
 
 
@@ -194,6 +194,29 @@ relation[type=associatedStreet][inside("NL")]  {
   group: tr("NL deprecated features");
   suggestAlternative: "type=street";
   suggestAlternative: "geen relatie";
+}
+
+
+/* postal_code */
+/* https://forum.openstreetmap.org/viewtopic.php?id=73675 */
+way[postal_code][inside("NL")] {
+  throwWarning: tr("{0} is deprecated", "{0.tag}");
+  group: tr("NL deprecated features");
+  suggestAlternative: "addr:postcode via BAG imports on addresses";
+}
+
+
+/* is_in */
+/* https://forum.openstreetmap.org/viewtopic.php?id=73675 */
+*[is_in=NL],
+*[is_in:country][inside("NL")],
+*[is_in:city][inside("NL")],
+*[is_in:province][inside("NL")],
+*[is_in:continent][inside("NL")],
+*[is_in:country_code=NL] {
+  throwWarning: tr("{0} is deprecated", "{0.tag}");
+  group: tr("NL deprecated features");
+  fixRemove: "{0.key}";
 }
 
 
@@ -248,6 +271,28 @@ node[addr:street][addr:street=~/[A-Z][a-z]+\./] {
   group: tr("NL naamgeving");
   suggestAlternative: "name";
   fixChangeKey: "{0.key}=>{1.key}";
+}
+
+
+/* --------------------------- */
+/* --------- Erfgoed --------- */
+/* --------------------------- */
+
+*[heritage=1][heritage:operator!=whc],
+*[heritage=2][heritage:operator!=rce][inside("NL")] {
+  throwWarning: tr("{0} without {1}", "{0.tag}", "{1.tag}");
+  group: tr("NL erfgoed");
+  fixAdd: "{1.tag}";
+}
+*[ref:rce][!heritage:operator] {
+  throwWarning: tr("{0} without {1}", "{0.tag}", "{1.key}=*");
+  group: tr("NL erfgoed");
+  fixAdd: "heritage:operator=rce";
+}
+*[heritage:operator=rce][!heritage] {
+  throwWarning: tr("{0} without {1}", "{0.tag}", "{1.key}=*");
+  group: tr("NL erfgoed");
+  fixAdd: "heritage=2";
 }
 
 

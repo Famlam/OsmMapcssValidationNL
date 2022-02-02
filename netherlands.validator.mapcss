@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.02.02.1";
+    version: "2022.02.02.2";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -118,37 +118,37 @@ node[phone=~/^(0031|\+31|0)( ?[1-9])( ?[0-9]){9}/][inside("NL")]!.badPhoneNumber
 
 /* Unwanted German style cycleway and footway tagging */
 /* https://forum.openstreetmap.org/viewtopic.php?id=65612 */
-way[cycleway:surface][surface][highway=cycleway][surface=*"cycleway:surface"],
-way[footway:surface][surface][highway=footway][surface=*"footway:surface"] {
+way[cycleway:surface][surface][highway=cycleway][surface=*"cycleway:surface"][inside("NL")],
+way[footway:surface][surface][highway=footway][surface=*"footway:surface"][inside("NL")] {
   throwWarning: tr("{0} together with {1} and {2}. Remove {0}.", "{0.key}", "{1.key}", "{2.tag}");
   group: tr("NL German style tagging");
   fixRemove: "{0.key}";
 }
 
-way[cycleway:surface][surface][highway=cycleway][surface!=*"cycleway:surface"],
-way[footway:surface][surface][highway=footway][surface!=*"footway:surface"] {
+way[cycleway:surface][surface][highway=cycleway][surface!=*"cycleway:surface"][inside("NL")],
+way[footway:surface][surface][highway=footway][surface!=*"footway:surface"][inside("NL")] {
   throwWarning: tr("{0} and {1} together with {2} and conflicting values", "{0.key}", "{1.key}", "{2.tag}");
   group: tr("NL German style tagging");
 }
 
-way[cycleway:surface][highway=cycleway][!surface],
-way[footway:surface][highway=footway][!surface] {
+way[cycleway:surface][highway=cycleway][!surface][inside("NL")],
+way[footway:surface][highway=footway][!surface][inside("NL")] {
   throwWarning: tr("{0} together with {1}", "{0.key}", "{1.tag}");
   group: tr("NL German style tagging");
   suggestAlternative: "surface=*";
   fixChangeKey: "{0.key}=>surface";
 }
 
-way[footway:surface][cycleway:surface][segregated=no][highway][footway:surface!=*"cycleway:surface"] {
+way[footway:surface][cycleway:surface][segregated=no][highway][footway:surface!=*"cycleway:surface"][inside("NL")] {
   throwWarning: tr("{0} and {1} together with {2} and conflicting values", "{0.key}", "{1.key}", "{2.tag}");
   group: tr("NL German style tagging");
 }
 
-way[/^footway(:left|:right|:both)?:/][/^sidewalk:(left|right|both)$/][/^sidewalk:(left|right|both)$/=~/^yes$/],
-way[/^footway(:left|:right|:both)?:/][sidewalk][sidewalk=~/^(left|right|both|yes)$/] {
-	throwWarning: tr("{0} together with {1}", "{0.key}", "{1.key}");
-	group: tr("NL German style tagging");
-    suggestAlternative: "sidewalk:*";
+way[/^footway(:left|:right|:both)?:/][/^sidewalk:(left|right|both)$/][/^sidewalk:(left|right|both)$/=~/^yes$/][inside("NL")],
+way[/^footway(:left|:right|:both)?:/][sidewalk][sidewalk=~/^(left|right|both|yes)$/][inside("NL")] {
+  throwWarning: tr("{0} together with {1}", "{0.key}", "{1.key}");
+  group: tr("NL German style tagging");
+  suggestAlternative: "sidewalk:*";
 }
 
 
@@ -307,11 +307,11 @@ relation[route_master] > relation[route] {
 relation[network] > relation[route_master] {
   set .hasNetworkRelation;
 }
-relation[route][route=~/^((trolley)?bus|light_rail|subway|train|tram)$/]!.hasRouteMaster:new {
+relation[route][route=~/^((trolley)?bus|light_rail|subway|train|tram)$/][inside("NL")]!.hasRouteMaster:new {
   throwWarning: tr("{0} not in route_master relation", "{0.tag}");
   group: tr("NL routes");
 }
-relation[route_master][route_master=~/^(trolley)?bus$/]!.hasNetworkRelation:new {
+relation[route_master][route_master=~/^(trolley)?bus$/][inside("NL")]!.hasNetworkRelation:new {
   throwWarning: tr("{0} not in network relation", "{0.tag}");
   group: tr("NL routes");
 }

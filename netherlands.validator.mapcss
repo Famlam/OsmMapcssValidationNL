@@ -111,6 +111,7 @@ node[phone=~/^(0031|\+31|0)( ?[1-9])( ?[0-9]){9}/][inside("NL")]!.badPhoneNumber
   assertNoMatch: "node phone=\"06 12345678\"";
 }
 
+
 /* --------------------------- */
 /* -- Foreign style tagging -- */
 /* --------------------------- */
@@ -150,6 +151,7 @@ way[/^footway(:left|:right|:both)?:/][sidewalk][sidewalk=~/^(left|right|both|yes
     suggestAlternative: "sidewalk:*";
 }
 
+
 /* -------------------------------- */
 /* -- Tags considered deprecated -- */
 /* -------------------------------- */
@@ -173,3 +175,58 @@ way[cycleway:both][cycleway:both^=opposite_] {
   group: tr("NL deprecated features");
   suggestAlternative: "oneway:bicycle/mofa/moped=no + {0.key}=*[zonder opposite_]";
 }
+
+
+/* --------------------------- */
+/* ---------- Names ---------- */
+/* --------------------------- */
+
+/* Descriptive (Dutch) names */
+way[name][highway=service][name=~/(?i)(parkeren$|parkeerplaats$|^toegang(sweg)?\s|^richting\s|^naar\s|\svoor\s|drive.thro?u(gh)?)/],
+way[name][highway][name=~/(?i)(^|\sen\s)((on)?verplicht\s)?(\(?brom\)?)?fietspad$/],
+way[name][highway][name=~/(?i)^(ruiterpad|roltrap(pen)?)$/],
+way[name][highway][name=~/(?i)(rolstoel|invaliden)/],
+way[name][highway][name=~/(?i)bus\s?(baan|strook)/][highway!=busway][highway!=service][highway!=construction],
+node[name][highway][name=~/(?i)^(lift)$/],
+node[amenity=drinking_water][name=~/(?i)(drinkwater|\swater|kraan)/],
+*[name][amenity^=parking][name=~/(?i)(parkeren|parkeerplaats|parkeergarage|^garage)$/],
+*[name][name=~/(?i)^gratis\s|gratis\)/],
+*[name][name=~/(?i)klanten|bezoek(ers)?|medewerkers/][!route],
+*[name][leisure=playground][name=~/(?i)^speeltuin$/],
+*[name][leisure=pitch][name=~/(?i)ball?(veld(je)?)?$/][!sport] {
+  throwWarning: tr("descriptive name");
+  group: tr("NL naamgeving");
+}
+
+*[name][name=~/(?i)(voormalige)/][!historic][tourism!=information][!landuse] {
+  throwWarning: tr("Beschrijvende naam");
+  group: tr("NL naamgeving");
+  suggestAlternative: "old_name=*";
+  suggestAlternative: "description=*";
+}
+
+
+/* Street- or railway names with abbreviations */
+way[name][highway][name=~/^(Burg|Dr|Drs|Ds|Ing|Ir|Mr|Prof|St) [A-Za-z]/],
+node[addr:street][addr:street=~/^(Burg|Dr|Drs|Ds|Ing|Ir|Mr|Prof|St) [A-Z]/],
+way[name][highway][name=~/[A-Z][a-z]+\./],
+node[addr:street][addr:street=~/[A-Z][a-z]+\./] {
+  throwWarning: tr("Straatnaam met afkorting");
+  group: tr("NL naamgeving");
+}
+
+*[railway][name][name=~/(?i)(aansl|empl|goed|ind|inhaalsp|opstel|overloopw|racc|rang|terr)(\.| |\)|$)/] {
+  throwWarning: tr("Spoorgebied met afgekorte naam");
+  group: tr("NL naamgeving");
+  suggestAlternative: "aansluiting, emplacement, goederen, industrieterrein, inhaalspoor, opstelterrein, overloopwissel, raccordement of rangeerterrein";	
+}
+
+
+/* Nederlandse naam zonder name */
+*[name:nl][!name][inside("NL")] {
+  throwWarning: tr("{0} without {1}", "{0.tag}", "{1.key}=*");
+  group: tr("NL naamgeving");
+  suggestAlternative: "name";
+  fixChangeKey: "{0.key}=>{1.key}";
+}
+

@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.02.02.4";
+    version: "2022.02.03";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -64,24 +64,24 @@ way[highway][traffic_sign="NL:L51"][!cyclestreet][highway!=construction] {
 
 
 /* Traffic signs - access prohibited */
-way[highway][traffic_sign="NL:C1"][!vehicle][!access],
-way[highway][traffic_sign="NL:C01"][!vehicle][!access]
-way[highway][traffic_sign="NL:C6"][!motor_vehicle][!vehicle][!access],
-way[highway][traffic_sign="NL:C06"][!motor_vehicle][!vehicle][!access],
-way[highway][traffic_sign="NL:C7"][!hgv],
-way[highway][traffic_sign="NL:C07"][!hgv],
-way[highway][traffic_sign="NL:C9"][!bicycle],
-way[highway][traffic_sign="NL:C9"][!moped],
-way[highway][traffic_sign="NL:C09"][!bicycle],
-way[highway][traffic_sign="NL:C09"][!moped],
-way[highway][traffic_sign="NL:C10"][!trailer],
-way[highway][traffic_sign="NL:C11"][!motorcycle],
-way[highway][traffic_sign="NL:C12"][!motor_vehicle][!vehicle][!access],
-way[highway][traffic_sign="NL:C13"][!moped],
-way[highway][traffic_sign="NL:C14"][!bicycle],
-way[highway][traffic_sign="NL:C15"][!bicycle],
-way[highway][traffic_sign="NL:C15"][!moped],
-way[highway][traffic_sign="NL:C16"][!foot][!access][!vehicle] {
+way[highway][traffic_sign="NL:C1"][!vehicle][!vehicle:forward][!vehicle:backward][!vehicle:both_ways][!access][!access:forward][!access:backward][!access:both_ways],
+way[highway][traffic_sign="NL:C01"][!vehicle][!vehicle:forward][!vehicle:backward][!vehicle:both_ways][!access][!access:forward][!access:backward][!access:both_ways],
+way[highway][traffic_sign="NL:C6"][!motor_vehicle][!motor_vehicle:forward][!motor_vehicle:backward][!motor_vehicle:both_ways][!vehicle][!vehicle:forward][!vehicle:backward][!vehicle:both_ways][!access][!access:forward][!access:backward][!access:both_ways],
+way[highway][traffic_sign="NL:C06"][!motor_vehicle][!motor_vehicle:forward][!motor_vehicle:backward][!motor_vehicle:both_ways][!vehicle][!vehicle:forward][!vehicle:backward][!vehicle:both_ways][!access][!access:forward][!access:backward][!access:both_ways],
+way[highway][traffic_sign="NL:C7"][!hgv][!hgv:forward][!hgv:backward][!hgv:both_ways],
+way[highway][traffic_sign="NL:C07"][!hgv][!hgv:forward][!hgv:backward][!hgv:both_ways],
+way[highway][traffic_sign="NL:C9"][!bicycle][!bicycle:forward][!bicycle:backward][!bicycle:both_ways],
+way[highway][traffic_sign="NL:C9"][!moped][!moped:forward][!moped:backward][!moped:both_ways],
+way[highway][traffic_sign="NL:C09"][!bicycle][!bicycle:forward][!bicycle:backward][!bicycle:both_ways],
+way[highway][traffic_sign="NL:C09"][!moped][!moped:forward][!moped:backward][!moped:both_ways],
+way[highway][traffic_sign="NL:C10"][!trailer][!trailer:forward][!trailer:backward][!trailer:both_ways],
+way[highway][traffic_sign="NL:C11"][!motorcycle][!motorcycle:forward][!motorcycle:backward][!motorcycle:both_ways],
+way[highway][traffic_sign="NL:C12"][!motor_vehicle][!motor_vehicle:forward][!motor_vehicle:backward][!motor_vehicle:both_ways][!vehicle][!vehicle:forward][!vehicle:backward][!vehicle:both_ways][!access][!access:forward][!access:backward][!access:both_ways],
+way[highway][traffic_sign="NL:C13"][!moped][!moped:forward][!moped:backward][!moped:both_ways],
+way[highway][traffic_sign="NL:C14"][!bicycle][!bicycle:forward][!bicycle:backward][!bicycle:both_ways],
+way[highway][traffic_sign="NL:C15"][!bicycle][!bicycle:forward][!bicycle:backward][!bicycle:both_ways],
+way[highway][traffic_sign="NL:C15"][!moped][!moped:forward][!moped:backward][!moped:both_ways],
+way[highway][traffic_sign="NL:C16"][!foot][!foot:forward][!foot:backward][!foot:both_ways][!access][!access:forward][!access:backward][!access:both_ways][!vehicle][!vehicle:forward][!vehicle:backward][!vehicle:both_ways] {
   group: tr("NL traffic signs");
   throwWarning: tr("{0} zonder {1}=no (or private or destination or ...)", "{1.tag}", "{2.key}");
 }
@@ -371,6 +371,9 @@ way[oneway:bicycle?!][!oneway:mofa][oneway?] {
 
 
 /* In practically all cases, something that applies to mopeds and bicycles, also applies to mofa's */
+way[bicycle:forward][moped:forward][bicycle:forward=*"moped:forward"][!mofa][!mofa:forward][bicycle:forward!=designated][bicycle:forward!=yes],
+way[bicycle:backward][moped:backward][bicycle:backward=*"moped:backward"][!mofa][!mofa:backward][bicycle:backward!=designated][bicycle:backward!=yes],
+way[bicycle:both_ways][moped:both_ways][bicycle:both_ways=*"moped:both_ways"][!mofa][!mofa:both_ways][bicycle:both_ways!=designated][bicycle:both_ways!=yes],
 way[bicycle][moped][bicycle=*moped][!mofa][bicycle!=designated][bicycle!=yes] {
   throwWarning: tr("{0} and {1} without {2}", "{0.tag}", "{1.tag}", "{3.key}={0.value}");
   group: tr("NL overige problemen");

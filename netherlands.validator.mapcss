@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.02.03";
+    version: "2022.02.04";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -284,7 +284,7 @@ node[addr:street][addr:street=~/[A-Z][a-z]+\./] {
 
 /* Nederlandse naam zonder name */
 *[name:nl][!name][inside("NL")] {
-  throwWarning: tr("{0} without {1}", "{0.tag}", "{1.key}=*");
+  throwWarning: tr("{0} without {1}", "{0.key}", "{1.key}");
   group: tr("NL naamgeving");
   suggestAlternative: "name";
   fixChangeKey: "{0.key}=>{1.key}";

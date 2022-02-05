@@ -17,8 +17,8 @@ way[highway=cycleway][traffic_sign="NL:G12a"][moped][moped=~/^(no|use_sidepath)$
 way[highway=cycleway][traffic_sign="NL:G12a"][mofa][mofa=~/^(no|use_sidepath)$/],
 way[highway=cycleway][traffic_sign="NL:G13"][moped][moped=~/^(yes|designated)$/],
 way[highway=cycleway][traffic_sign="NL:G13"][mofa][mofa=~/^(yes|designated)$/],
-way[highway][traffic_sign="NL:D103"][moped][moped=~/^(no|use_sidepath)$/],
-way[highway][traffic_sign="NL:D104"][moped][moped=~/^(no|use_sidepath)$/] {
+way[highway][traffic_sign="NL:D103"][moped][moped=~/^(no|use_sidepath)$/][highway!=construction],
+way[highway][traffic_sign="NL:D104"][moped][moped=~/^(no|use_sidepath)$/][highway!=construction] {
   group: tr("NL traffic signs");
   throwWarning: tr("{0} together with {1}", "{1.tag}", "{2.tag}");
 }

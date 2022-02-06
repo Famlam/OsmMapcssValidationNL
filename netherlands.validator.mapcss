@@ -4,7 +4,12 @@ meta {
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
+    link: "https://forum.openstreetmap.org/viewtopic.php?id=74817";
 }
+/* 
+github: https://github.com/Famlam/OsmMapcssValidationNL/blob/main/netherlands.validator.mapcss
+*/
+
 
 /* --------------------------- */
 /* ------ Traffic signs ------ */

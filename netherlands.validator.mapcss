@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.02.04";
+    version: "2022.02.12";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -288,7 +288,7 @@ node[addr:street][addr:street=~/[A-Z][a-z]+\./] {
 
 
 /* Nederlandse naam zonder name */
-*[name:nl][!name][inside("NL")] {
+*[name:nl][!name][inside("NL")][type!=route] {
   throwWarning: tr("{0} without {1}", "{0.key}", "{1.key}");
   group: tr("NL naamgeving");
   suggestAlternative: "name";
@@ -343,6 +343,7 @@ relation[route_master][route_master=~/^(trolley)?bus$/][inside("NL")]!.hasNetwor
 /* ----- Maximumsnelheid ----- */
 /* --------------------------- */
 
+/* Maximum speeds per road defaults and signage */
 way[highway=living_street][maxspeed!=15][!/^maxspeed(:forward|:backward|:both_ways)?$/][inside("NL")],
 way[maxspeed:type="NL:zone30"][maxspeed!=30][maxspeed:both_ways!=30][highway],
 way[maxspeed:type="NL:zone60"][maxspeed!=60][maxspeed:both_ways!=60][highway],
@@ -352,6 +353,14 @@ way[maxspeed:type="NL:rural"][maxspeed!=80][maxspeed:both_ways!=80][highway],
 way[traffic_sign][!maxspeed][traffic_sign^="NL:A1-"][!/^maxspeed(:forward|:backward|:both_ways)?(:conditional)?$/][highway],
 way[traffic_sign][!maxspeed][traffic_sign^="NL:A01-"][!/^maxspeed(:forward|:backward|:both_ways)?(:conditional)?$/][highway] {
   throwWarning: tr("{0} without {1}", "{0.tag}", "{1.tag}");
+  group: tr("NL maximumsnelheden");
+}
+
+
+/* The majority voted to use maxspeed=100 as the default, and maxspeed:conditional=* for the night-time speed on autosnelwegen */
+/* https://forum.openstreetmap.org/viewtopic.php?id=68803 */
+way[highway=motorway][maxspeed][maxspeed=~/^1[23]0$/][maxspeed:conditional=~/100.+19:00/][inside("NL")] {
+  throwWarning: tr("Agreed upon was to use 100 as the maximum speed and {0} as the conditional maximum speed", "{1.value}");
   group: tr("NL maximumsnelheden");
 }
 

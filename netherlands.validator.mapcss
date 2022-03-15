@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.03.14";
+    version: "2022.03.15";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -366,7 +366,7 @@ way[highway=motorway][maxspeed][maxspeed=~/^1[23]0$/][maxspeed:conditional=~/100
 
 
 /* Mopeds aren't allowed faster than 40 on cycleways (mofas by definition 25) */ 
-way[highway=cycleway][maxspeed][maxspeed>40][!motor_vehicle][!vehicle][!access] {
+way[highway=cycleway][maxspeed][maxspeed>40][!motor_vehicle][!vehicle][!access][inside("NL")] {
   throwWarning: tr("{0} together with {1}", "{0.tag}", "{1.tag}");
   group: tr("NL maximumsnelheden");
 }

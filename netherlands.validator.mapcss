@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.03.15";
+    version: "2022.04.04";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -48,7 +48,32 @@ way[highway=cycleway][traffic_sign="NL:G13"][!mofa][!motor_vehicle][!access] {
 }
 
 
+/* Traffic signs - bus/hgv access */
+way[highway][traffic_sign="NL:F13"][!bus][!psv][highway!=busway][highway!=bus_guideway],
+way[highway][traffic_sign="NL:F17"][!bus][!psv][highway!=busway][highway!=bus_guideway],
+way[highway][traffic_sign="NL:F19"][!bus][!psv][highway!=busway][highway!=bus_guideway],
+way[highway][traffic_sign="NL:F19"][!hgv],
+way[highway][traffic_sign="NL:F21"][!hgv] {
+  group: tr("NL traffic signs");
+  throwWarning: tr("{0} without {1}", "{1.tag}", "{2.key}=designated");
+  fixAdd: "{2.key}=designated";
+}
+
+way[highway][traffic_sign="NL:F13"][bus=no][highway!=construction],
+way[highway][traffic_sign="NL:F17"][bus=no][highway!=construction],
+way[highway][traffic_sign="NL:F19"][bus=no][highway!=construction],
+way[highway][traffic_sign="NL:F13"][psv=no][!bus][highway!=construction],
+way[highway][traffic_sign="NL:F17"][psv=no][!bus][highway!=construction],
+way[highway][traffic_sign="NL:F19"][psv=no][!bus][highway!=construction],
+way[highway][traffic_sign="NL:F19"][hgv=no][highway!=construction],
+way[highway][traffic_sign="NL:F21"][hgv=no][highway!=construction] {
+  group: tr("NL traffic signs");
+  throwWarning: tr("{0} together with {1}", "{1.tag}", "{2.tag}");
+}
+
+
 /* Traffic sign - road types */
+way[highway][traffic_sign="NL:F13"][highway!=busway][highway!=service][highway!=bus_guideway][highway!=construction],
 way[highway][traffic_sign="NL:G5"][highway!=living_street][highway!=construction],
 way[highway][traffic_sign="NL:G05"][highway!=living_street][highway!=construction],
 way[highway][traffic_sign="NL:G7"][highway!=footway][highway!=steps][highway!=pedestrian][highway!=construction],

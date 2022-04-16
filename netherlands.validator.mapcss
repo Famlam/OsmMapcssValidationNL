@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.04.04";
+    version: "2022.04.16";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -250,6 +250,16 @@ way[postal_code][inside("NL")] {
   throwWarning: tr("{0} is deprecated", "{0.tag}");
   group: tr("NL deprecated features");
   suggestAlternative: "addr:postcode via BAG imports on addresses";
+}
+
+
+/* building=terrace instead of multiple building=house (or leisure=outdoor_seating) */
+/* https://forum.openstreetmap.org/viewtopic.php?id=74992 */
+way[building=terrace][inside("NL")] {
+  throwWarning: tr("Rijtjeshuizen ({0}) worden in Nederland individueel geïmporteerd uit de BAG", "{0.tag}");
+  group: tr("NL deprecated features");
+  suggestAlternative: "building=house via een BAG importverzoek voor huizen";
+  suggestAlternative: "leisure=outdoor_seating voor 'terrasjes'";
 }
 
 

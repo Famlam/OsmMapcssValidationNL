@@ -159,6 +159,13 @@ way[building][/^addr:/][amenity!=place_of_worship][inside("NL")]:closed {
 }
 
 
+/* Postcodes using invalid format */
+node["addr:postcode"]["addr:postcode"!~/[0-9]{4} ?[A-Z]{2}/][inside("NL")] {
+  throwWarning: tr("Invalid {0}: expected 4 digits followed by 2 letters", "{0.tag}");
+  group: tr("NL addresses and contacts");
+}
+
+
 /* --------------------------- */
 /* -- Foreign style tagging -- */
 /* --------------------------- */

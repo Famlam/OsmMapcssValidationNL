@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.05.23";
+    version: "2022.05.26";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -281,6 +281,16 @@ way[building=terrace][inside("NL")] {
   throwWarning: tr("{0} is deprecated", "{0.tag}");
   group: tr("NL deprecated features");
   fixRemove: "{0.key}";
+}
+
+
+/* ov-chipkaart spelling */
+/* https://forum.openstreetmap.org/viewtopic.php?pid=863615 */
+node[/payment:O[vV][-_]?[cC]hipkaart/] {
+  throwWarning: tr("{0} is deprecated", "{0.tag}");
+  group: tr("NL deprecated features");
+  suggestAlternative: "payment:ov-chipkaart";
+  fixChangeKey: "{0.key}=>payment:ov-chipkaart";
 }
 
 

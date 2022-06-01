@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.05.26";
+    version: "2022.06.01";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -152,8 +152,8 @@ node[phone=~/^(0031|\+31|0)( ?[1-9])( ?[0-9]){9}/][inside("NL")]!.badPhoneNumber
 
 
 /* addresss tags on building */
-relation[type=multipolygon][building][/^addr:/][amenity!=place_of_worship][inside("NL")],
-way[building][/^addr:/][amenity!=place_of_worship][inside("NL")]:closed {
+relation[type=multipolygon][building][/^addr:/][amenity!=place_of_worship][building!~/houseboat|static_caravan/][inside("NL")],
+way[building][/^addr:/][amenity!=place_of_worship][building!~/houseboat|static_caravan/][inside("NL")]:closed {
   throwWarning: tr("In Nederland is het gebouw niet gekoppeld aan het adres. Het adres is wel gekoppeld aan het gebruiksdoel.");
   group: tr("NL addresses and contacts");
 }

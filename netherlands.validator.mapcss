@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.06.01";
+    version: "2022.06.11";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -125,7 +125,7 @@ way[highway][traffic_sign="NL:C16"][!foot][!foot:forward][!foot:backward][!foot:
 node[contact:phone=~/^(00|\+)31 ?0/][inside("NL")],
 node[contact:mobile=~/^(00|\+)31 ?0/][inside("NL")],
 node[phone=~/^(00|\+)31 ?0/][inside("NL")] {
-  throwWarning: tr("Invalid {0}: country code should not be followed by a 0", "{0.key}");
+  throwWarning: tr("Invalid tag {0}: country code should not be followed by a 0", "{0.key}");
   group: tr("NL addresses and contacts");
   assertMatch: "node phone=\"+31 06123456789\"";
   assertMatch: "node phone=\"003106123456789\"";
@@ -140,7 +140,7 @@ node[phone=~/^(00|\+)31 ?0/][inside("NL")] {
 node[contact:phone=~/^(0031|\+31|0)( ?[1-9])( ?[0-9]){9}/][inside("NL")]!.badPhoneNumber,
 node[contact:mobile=~/^(0031|\+31|0)( ?[1-9])( ?[0-9]){9}/][inside("NL")]!.badPhoneNumber,
 node[phone=~/^(0031|\+31|0)( ?[1-9])( ?[0-9]){9}/][inside("NL")]!.badPhoneNumber {
-  throwWarning: tr("Invalid {0}: too many digits (or foreign number, if so: ignore)", "{0.key}");
+  throwWarning: tr("Invalid tag {0}: too many digits (or foreign number, if so: ignore)", "{0.key}");
   group: tr("NL addresses and contacts");
   assertMatch: "node phone=\"+316123456789\"";
   assertMatch: "node phone=\"+31 6 123456789\"";
@@ -161,7 +161,7 @@ way[building][/^addr:/][amenity!=place_of_worship][building!~/houseboat|static_c
 
 /* Postcodes using invalid format */
 node["addr:postcode"]["addr:postcode"!~/[0-9]{4} ?[A-Z]{2}/][inside("NL")] {
-  throwWarning: tr("Invalid {0}: expected 4 digits followed by 2 letters", "{0.tag}");
+  throwWarning: tr("Invalid tag {0}: expected 4 digits followed by 2 letters", "{0.tag}");
   group: tr("NL addresses and contacts");
 }
 

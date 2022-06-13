@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.06.11";
+    version: "2022.06.13";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -291,6 +291,16 @@ node[/payment:O[vV][-_]?[cC]hipkaart/] {
   group: tr("NL deprecated features");
   suggestAlternative: "payment:ov-chipkaart";
   fixChangeKey: "{0.key}=>payment:ov-chipkaart";
+}
+
+
+/* Niet los ingetekende sporen */
+/* https://forum.openstreetmap.org/viewtopic.php?id=55768 */
+/* https://wiki.openstreetmap.org/wiki/OpenRailwayMap/Tagging_in_Netherlands */
+way[railway][tracks][tracks!=1] {
+  throwWarning: tr("Railway lines should be drawn as separate ways per track, rather than one way with {0}", "{1.tag}");
+  group: tr("NL deprecated features");
+  suggestAlternative: "passenger_lines=* if the tracks are already drawn separately";
 }
 
 

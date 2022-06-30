@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.06.13";
+    version: "2022.06.30";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -114,6 +114,17 @@ way[highway][traffic_sign="NL:C15"][!moped][!moped:forward][!moped:backward][!mo
 way[highway][traffic_sign="NL:C16"][!foot][!foot:forward][!foot:backward][!foot:both_ways][!access][!access:forward][!access:backward][!access:both_ways][!vehicle][!vehicle:forward][!vehicle:backward][!vehicle:both_ways] {
   group: tr("NL traffic signs");
   throwWarning: tr("{0} zonder {1}=no (or private or destination or ...)", "{1.tag}", "{2.key}");
+}
+
+
+/* Voorrangsborden bij kruising */
+way[highway] > node[traffic_sign="NL:B7"][highway!=stop],
+way[highway] > node[traffic_sign="NL:B07"][highway!=stop],
+way[highway] > node[traffic_sign="NL:B6"][highway!=give_way],
+way[highway] > node[traffic_sign="NL:B06"][highway!=give_way] {
+  group: tr("NL traffic signs");
+  throwWarning: tr("{0} without {1}", "{0.tag}", "{1.tag}");
+  fixAdd: "{1.tag}";
 }
 
 

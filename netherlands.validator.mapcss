@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.08.10";
+    version: "2022.08.11";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -311,7 +311,7 @@ node[/payment:O[vV][-_]?[cC]hipkaart/] {
 /* Niet los ingetekende sporen */
 /* https://forum.openstreetmap.org/viewtopic.php?id=55768 */
 /* https://wiki.openstreetmap.org/wiki/OpenRailwayMap/Tagging_in_Netherlands */
-way[railway][tracks][tracks!=1] {
+way[railway][tracks][tracks!=1][inside("NL")] {
   throwWarning: tr("Railway lines should be drawn as separate ways per track, rather than one way with {0}", "{1.tag}");
   group: tr("NL deprecated features");
   suggestAlternative: "passenger_lines=* if the tracks are already drawn separately";
@@ -339,8 +339,8 @@ node[amenity=drinking_water][name=~/(?i)(drinkwater|\swater|kraan)/],
   group: tr("NL naamgeving");
 }
 
-*[name][name=~/(?i)(voormalige)/][!historic][tourism!=information][!landuse] {
-  throwWarning: tr("Beschrijvende naam");
+*[name][name=~/(?i)(voormalige?)/][!historic][tourism!=information][!landuse] {
+  throwWarning: tr("descriptive name");
   group: tr("NL naamgeving");
   suggestAlternative: "old_name=*";
   suggestAlternative: "description=*";
@@ -348,15 +348,15 @@ node[amenity=drinking_water][name=~/(?i)(drinkwater|\swater|kraan)/],
 
 
 /* Street- or railway names with abbreviations */
-way[name][highway][name=~/^(Burg|Dr|Drs|Ds|Ing|Ir|Mr|Past|Prof|St) [A-Za-z]/],
-node[addr:street][addr:street=~/^(Burg|Dr|Drs|Ds|Ing|Ir|Mr|Past|Prof|St) [A-Z]/],
-way[name][highway][name=~/[A-Z][a-z]+\./],
-node[addr:street][addr:street=~/[A-Z][a-z]+\./] {
+way[name][highway][name=~/^(Burg|Dr|Drs|Ds|Ing|Ir|Mr|Past|Prof|St) [A-Za-z]/][inside("NL")],
+node[addr:street][addr:street=~/^(Burg|Dr|Drs|Ds|Ing|Ir|Mr|Past|Prof|St) [A-Z]/][inside("NL")],
+way[name][highway][name=~/[A-Z][a-z]+\./][inside("NL")],
+node[addr:street][addr:street=~/[A-Z][a-z]+\./][inside("NL")] {
   throwWarning: tr("Straatnaam met afkorting");
   group: tr("NL naamgeving");
 }
 
-*[railway][name][name=~/(?i)(aansl|empl|goed|ind|inhaalsp|opstel|overloopw|racc|rang|terr)(\.| |\)|$)/] {
+*[railway][name][name=~/(?i)(aansl|empl|goed|ind|inhaalsp|opstel|overloopw|racc|rang|terr)(\.| |\)|$)/][inside("NL")] {
   throwWarning: tr("Spoorgebied met afgekorte naam");
   group: tr("NL naamgeving");
   suggestAlternative: "aansluiting, emplacement, goederen, industrieterrein, inhaalspoor, opstelterrein, overloopwissel, raccordement of rangeerterrein";	
@@ -461,17 +461,17 @@ way[construction][note=~/(?i)202[0-9]|'2[0-9]|jan|feb|maart|mar|apr|mei|may|jun|
 
 
 /* In practically all cases, oneway:bicycle=no (uitgezonderd fietsers) implies oneway:mofa=no too */
-way[oneway:bicycle?!][!oneway:mofa][oneway?] {
+way[oneway:bicycle?!][!oneway:mofa][oneway?][inside("NL")] {
   throwWarning: tr("{0} without {1}", "{0.tag}", "{1.key}");
   group: tr("NL overige problemen");
 }
 
 
 /* In practically all cases, something that applies to mopeds and bicycles, also applies to mofa's */
-way[bicycle:forward][moped:forward][bicycle:forward=*"moped:forward"][!mofa][!mofa:forward][bicycle:forward!=designated][bicycle:forward!=yes],
-way[bicycle:backward][moped:backward][bicycle:backward=*"moped:backward"][!mofa][!mofa:backward][bicycle:backward!=designated][bicycle:backward!=yes],
-way[bicycle:both_ways][moped:both_ways][bicycle:both_ways=*"moped:both_ways"][!mofa][!mofa:both_ways][bicycle:both_ways!=designated][bicycle:both_ways!=yes],
-way[bicycle][moped][bicycle=*moped][!mofa][bicycle!=designated][bicycle!=yes] {
+way[bicycle:forward][moped:forward][bicycle:forward=*"moped:forward"][!mofa][!mofa:forward][bicycle:forward!=designated][bicycle:forward!=yes][inside("NL")],
+way[bicycle:backward][moped:backward][bicycle:backward=*"moped:backward"][!mofa][!mofa:backward][bicycle:backward!=designated][bicycle:backward!=yes][inside("NL")],
+way[bicycle:both_ways][moped:both_ways][bicycle:both_ways=*"moped:both_ways"][!mofa][!mofa:both_ways][bicycle:both_ways!=designated][bicycle:both_ways!=yes][inside("NL")],
+way[bicycle][moped][bicycle=*moped][!mofa][bicycle!=designated][bicycle!=yes][inside("NL")] {
   throwWarning: tr("{0} and {1} without {2}", "{0.tag}", "{1.tag}", "{3.key}={0.value}");
   group: tr("NL overige problemen");
   fixAdd: "{3.key}={0.value}";

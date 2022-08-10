@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.06.30";
+    version: "2022.08.10";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -17,111 +17,114 @@ github: https://github.com/Famlam/OsmMapcssValidationNL/blob/main/netherlands.va
 
 /* Traffic signs - moped/mofa access cycleways */
 /* (Permitting yes rather than designated to prevent overflooding with errors) */
-way[highway=cycleway][traffic_sign="NL:G11"][moped][moped=~/^(yes|designated)$/],
-way[highway=cycleway][traffic_sign="NL:G12a"][moped][moped=~/^(no|use_sidepath)$/],
-way[highway=cycleway][traffic_sign="NL:G12a"][mofa][mofa=~/^(no|use_sidepath)$/],
-way[highway=cycleway][traffic_sign="NL:G13"][moped][moped=~/^(yes|designated)$/],
-way[highway=cycleway][traffic_sign="NL:G13"][mofa][mofa=~/^(yes|designated)$/],
-way[highway][traffic_sign="NL:D103"][moped][moped=~/^(no|use_sidepath)$/][highway!=construction],
-way[highway][traffic_sign="NL:D104"][moped][moped=~/^(no|use_sidepath)$/][highway!=construction] {
+way[highway=cycleway][traffic_sign~="NL:G11"][moped][moped=~/^(yes|designated)$/],
+way[highway=cycleway][traffic_sign~="NL:G12a"][moped][moped=~/^(no|use_sidepath)$/],
+way[highway=cycleway][traffic_sign~="NL:G12a"][mofa][mofa=~/^(no|use_sidepath)$/],
+way[highway=cycleway][traffic_sign~="NL:G13"][moped][moped=~/^(yes|designated)$/],
+way[highway=cycleway][traffic_sign~="NL:G13"][mofa][mofa=~/^(yes|designated)$/],
+way[highway][traffic_sign~="NL:D103"][moped][moped=~/^(no|use_sidepath)$/][highway!=construction],
+way[highway][traffic_sign~="NL:D104"][moped][moped=~/^(no|use_sidepath)$/][highway!=construction] {
   group: tr("NL traffic signs");
   throwWarning: tr("{0} together with {1}", "{1.tag}", "{2.tag}");
 }
 
-way[highway][traffic_sign="NL:D103"][!moped],
-way[highway][traffic_sign="NL:D104"][!moped],
-way[highway=cycleway][traffic_sign="NL:G12a"][!moped] {
+way[highway][traffic_sign~="NL:D103"][!moped],
+way[highway][traffic_sign~="NL:D104"][!moped],
+way[highway=cycleway][traffic_sign~="NL:G12a"][!moped] {
   group: tr("NL traffic signs");
   throwWarning: tr("{0} without {1}", "{1.tag}", "moped=designated");
 }
 
 /* note: mind the Amsterdam-case: snorfietsers op de weg */
-way[highway=cycleway][traffic_sign="NL:G11"][!mofa],
-way[highway=cycleway][traffic_sign="NL:G12a"][!mofa] {
+way[highway=cycleway][traffic_sign~="NL:G11"][!mofa],
+way[highway=cycleway][traffic_sign~="NL:G12a"][!mofa] {
   group: tr("NL traffic signs");
   throwWarning: tr("{0} without {1}", "{1.tag}", "{2.key}");
 }
 
-way[highway=cycleway][traffic_sign="NL:G13"][!mofa][!motor_vehicle][!access] {
+way[highway=cycleway][traffic_sign~="NL:G13"][!mofa][!motor_vehicle][!access] {
   group: tr("NL traffic signs");
   throwWarning: tr("{0} without {1}", "{1.tag}", "mofa=no");
 }
 
 
 /* Traffic signs - bus/hgv access */
-way[highway][traffic_sign="NL:F13"][!bus][!psv][highway!=busway][highway!=bus_guideway],
-way[highway][traffic_sign="NL:F17"][!bus][!psv][highway!=busway][highway!=bus_guideway],
-way[highway][traffic_sign="NL:F19"][!bus][!psv][highway!=busway][highway!=bus_guideway],
-way[highway][traffic_sign="NL:F19"][!hgv],
-way[highway][traffic_sign="NL:F21"][!hgv] {
+way[highway][traffic_sign~="NL:F13"][!bus][!psv][highway!=busway][highway!=bus_guideway],
+way[highway][traffic_sign~="NL:F17"][!bus][!psv][highway!=busway][highway!=bus_guideway],
+way[highway][traffic_sign~="NL:F19"][!bus][!psv][highway!=busway][highway!=bus_guideway],
+way[highway][traffic_sign~="NL:F19"][!hgv],
+way[highway][traffic_sign~="NL:F21"][!hgv] {
   group: tr("NL traffic signs");
   throwWarning: tr("{0} without {1}", "{1.tag}", "{2.key}=designated");
   fixAdd: "{2.key}=designated";
 }
 
-way[highway][traffic_sign="NL:F13"][bus=no][highway!=construction],
-way[highway][traffic_sign="NL:F17"][bus=no][highway!=construction],
-way[highway][traffic_sign="NL:F19"][bus=no][highway!=construction],
-way[highway][traffic_sign="NL:F13"][psv=no][!bus][highway!=construction],
-way[highway][traffic_sign="NL:F17"][psv=no][!bus][highway!=construction],
-way[highway][traffic_sign="NL:F19"][psv=no][!bus][highway!=construction],
-way[highway][traffic_sign="NL:F19"][hgv=no][highway!=construction],
-way[highway][traffic_sign="NL:F21"][hgv=no][highway!=construction] {
+way[highway][traffic_sign~="NL:F13"][bus=no][highway!=construction],
+way[highway][traffic_sign~="NL:F17"][bus=no][highway!=construction],
+way[highway][traffic_sign~="NL:F19"][bus=no][highway!=construction],
+way[highway][traffic_sign~="NL:F13"][psv=no][!bus][highway!=construction],
+way[highway][traffic_sign~="NL:F17"][psv=no][!bus][highway!=construction],
+way[highway][traffic_sign~="NL:F19"][psv=no][!bus][highway!=construction],
+way[highway][traffic_sign~="NL:F19"][hgv=no][highway!=construction],
+way[highway][traffic_sign~="NL:F21"][hgv=no][highway!=construction] {
   group: tr("NL traffic signs");
   throwWarning: tr("{0} together with {1}", "{1.tag}", "{2.tag}");
 }
 
 
 /* Traffic sign - road types */
-way[highway][traffic_sign="NL:F13"][highway!=busway][highway!=service][highway!=bus_guideway][highway!=construction],
-way[highway][traffic_sign="NL:G5"][highway!=living_street][highway!=construction],
-way[highway][traffic_sign="NL:G05"][highway!=living_street][highway!=construction],
-way[highway][traffic_sign="NL:G7"][highway!=footway][highway!=steps][highway!=pedestrian][highway!=construction],
-way[highway][traffic_sign="NL:G07"][highway!=footway][highway!=steps][highway!=pedestrian][highway!=construction],
-way[highway][traffic_sign="NL:G9"][highway!=bridleway][highway!=construction],
-way[highway][traffic_sign="NL:G09"][highway!=bridleway][highway!=construction],
-way[highway][traffic_sign="NL:G11"][highway!=cycleway][highway!=construction],
-way[highway][traffic_sign="NL:G12a"][highway!=cycleway][highway!=construction],
-way[highway][traffic_sign="NL:G13"][highway!=cycleway][highway!=construction] {
+way[highway][traffic_sign~="NL:F13"][highway!=busway][highway!=service][highway!=bus_guideway][highway!=construction],
+way[highway][traffic_sign~="NL:G5"][highway!=living_street][highway!=construction],
+way[highway][traffic_sign~="NL:G05"][highway!=living_street][highway!=construction],
+way[highway][traffic_sign~="NL:G7"][highway!=footway][highway!=steps][highway!=pedestrian][highway!=construction],
+way[highway][traffic_sign~="NL:G07"][highway!=footway][highway!=steps][highway!=pedestrian][highway!=construction],
+way[highway][traffic_sign~="NL:G9"][highway!=bridleway][highway!=construction],
+way[highway][traffic_sign~="NL:G09"][highway!=bridleway][highway!=construction],
+way[highway][traffic_sign~="NL:G11"][highway!=cycleway][highway!=construction],
+way[highway][traffic_sign~="NL:G12a"][highway!=cycleway][highway!=construction],
+way[highway][traffic_sign~="NL:G13"][highway!=cycleway][highway!=construction] {
   group: tr("NL traffic signs");
   throwWarning: tr("{0} together with {1}", "{1.tag}", "{0.tag}");
 }
 
-way[highway][traffic_sign="NL:L51"][!cyclestreet][highway!=construction] {
+way[highway][traffic_sign~="NL:L51"][!cyclestreet][highway!=construction] {
   group: tr("NL traffic signs");
   throwWarning: tr("{0} without {1}", "{1.tag}", "cyclestreet=yes");
 }
 
 
 /* Traffic signs - access prohibited */
-way[highway][traffic_sign="NL:C1"][!vehicle][!vehicle:forward][!vehicle:backward][!vehicle:both_ways][!access][!access:forward][!access:backward][!access:both_ways],
-way[highway][traffic_sign="NL:C01"][!vehicle][!vehicle:forward][!vehicle:backward][!vehicle:both_ways][!access][!access:forward][!access:backward][!access:both_ways],
-way[highway][traffic_sign="NL:C6"][!motor_vehicle][!motor_vehicle:forward][!motor_vehicle:backward][!motor_vehicle:both_ways][!vehicle][!vehicle:forward][!vehicle:backward][!vehicle:both_ways][!access][!access:forward][!access:backward][!access:both_ways],
-way[highway][traffic_sign="NL:C06"][!motor_vehicle][!motor_vehicle:forward][!motor_vehicle:backward][!motor_vehicle:both_ways][!vehicle][!vehicle:forward][!vehicle:backward][!vehicle:both_ways][!access][!access:forward][!access:backward][!access:both_ways],
-way[highway][traffic_sign="NL:C7"][!hgv][!hgv:forward][!hgv:backward][!hgv:both_ways],
-way[highway][traffic_sign="NL:C07"][!hgv][!hgv:forward][!hgv:backward][!hgv:both_ways],
-way[highway][traffic_sign="NL:C9"][!bicycle][!bicycle:forward][!bicycle:backward][!bicycle:both_ways],
-way[highway][traffic_sign="NL:C9"][!moped][!moped:forward][!moped:backward][!moped:both_ways],
-way[highway][traffic_sign="NL:C09"][!bicycle][!bicycle:forward][!bicycle:backward][!bicycle:both_ways],
-way[highway][traffic_sign="NL:C09"][!moped][!moped:forward][!moped:backward][!moped:both_ways],
-way[highway][traffic_sign="NL:C10"][!trailer][!trailer:forward][!trailer:backward][!trailer:both_ways],
-way[highway][traffic_sign="NL:C11"][!motorcycle][!motorcycle:forward][!motorcycle:backward][!motorcycle:both_ways],
-way[highway][traffic_sign="NL:C12"][!motor_vehicle][!motor_vehicle:forward][!motor_vehicle:backward][!motor_vehicle:both_ways][!vehicle][!vehicle:forward][!vehicle:backward][!vehicle:both_ways][!access][!access:forward][!access:backward][!access:both_ways],
-way[highway][traffic_sign="NL:C13"][!moped][!moped:forward][!moped:backward][!moped:both_ways],
-way[highway][traffic_sign="NL:C14"][!bicycle][!bicycle:forward][!bicycle:backward][!bicycle:both_ways],
-way[highway][traffic_sign="NL:C15"][!bicycle][!bicycle:forward][!bicycle:backward][!bicycle:both_ways],
-way[highway][traffic_sign="NL:C15"][!moped][!moped:forward][!moped:backward][!moped:both_ways],
-way[highway][traffic_sign="NL:C16"][!foot][!foot:forward][!foot:backward][!foot:both_ways][!access][!access:forward][!access:backward][!access:both_ways][!vehicle][!vehicle:forward][!vehicle:backward][!vehicle:both_ways] {
+way[highway][traffic_sign~="NL:C1"][!vehicle][!vehicle:forward][!vehicle:backward][!vehicle:both_ways][!access][!access:forward][!access:backward][!access:both_ways],
+way[highway][traffic_sign~="NL:C01"][!vehicle][!vehicle:forward][!vehicle:backward][!vehicle:both_ways][!access][!access:forward][!access:backward][!access:both_ways],
+way[highway][traffic_sign~="NL:C6"][!motor_vehicle][!motor_vehicle:forward][!motor_vehicle:backward][!motor_vehicle:both_ways][!vehicle][!vehicle:forward][!vehicle:backward][!vehicle:both_ways][!access][!access:forward][!access:backward][!access:both_ways],
+way[highway][traffic_sign~="NL:C06"][!motor_vehicle][!motor_vehicle:forward][!motor_vehicle:backward][!motor_vehicle:both_ways][!vehicle][!vehicle:forward][!vehicle:backward][!vehicle:both_ways][!access][!access:forward][!access:backward][!access:both_ways],
+way[highway][traffic_sign~="NL:C7"][!hgv][!hgv:forward][!hgv:backward][!hgv:both_ways],
+way[highway][traffic_sign~="NL:C07"][!hgv][!hgv:forward][!hgv:backward][!hgv:both_ways],
+way[highway][traffic_sign~="NL:C9"][!bicycle][!bicycle:forward][!bicycle:backward][!bicycle:both_ways],
+way[highway][traffic_sign~="NL:C9"][!moped][!moped:forward][!moped:backward][!moped:both_ways],
+way[highway][traffic_sign~="NL:C09"][!bicycle][!bicycle:forward][!bicycle:backward][!bicycle:both_ways],
+way[highway][traffic_sign~="NL:C09"][!moped][!moped:forward][!moped:backward][!moped:both_ways],
+way[highway][traffic_sign~="NL:C10"][!trailer][!trailer:forward][!trailer:backward][!trailer:both_ways],
+way[highway][traffic_sign~="NL:C11"][!motorcycle][!motorcycle:forward][!motorcycle:backward][!motorcycle:both_ways],
+way[highway][traffic_sign~="NL:C12"][!motor_vehicle][!motor_vehicle:forward][!motor_vehicle:backward][!motor_vehicle:both_ways][!vehicle][!vehicle:forward][!vehicle:backward][!vehicle:both_ways][!access][!access:forward][!access:backward][!access:both_ways],
+way[highway][traffic_sign~="NL:C13"][!moped][!moped:forward][!moped:backward][!moped:both_ways],
+way[highway][traffic_sign~="NL:C14"][!bicycle][!bicycle:forward][!bicycle:backward][!bicycle:both_ways],
+way[highway][traffic_sign~="NL:C15"][!bicycle][!bicycle:forward][!bicycle:backward][!bicycle:both_ways],
+way[highway][traffic_sign~="NL:C15"][!moped][!moped:forward][!moped:backward][!moped:both_ways],
+way[highway][traffic_sign~="NL:C16"][!foot][!foot:forward][!foot:backward][!foot:both_ways][!access][!access:forward][!access:backward][!access:both_ways][!vehicle][!vehicle:forward][!vehicle:backward][!vehicle:both_ways] {
   group: tr("NL traffic signs");
   throwWarning: tr("{0} zonder {1}=no (or private or destination or ...)", "{1.tag}", "{2.key}");
+  assertMatch: "way highway=service traffic_sign=\"NL:C01\"";
+  assertMatch: "way highway=service traffic_sign=\"NL:C01;NL:OB58\"";
+  assertNoMatch: "way highway=service traffic_sign=\"NL:C01;NL:C16\" access=no";
 }
 
 
 /* Voorrangsborden bij kruising */
-way[highway] > node[traffic_sign="NL:B7"][highway!=stop],
-way[highway] > node[traffic_sign="NL:B07"][highway!=stop],
-way[highway] > node[traffic_sign="NL:B6"][highway!=give_way],
-way[highway] > node[traffic_sign="NL:B06"][highway!=give_way] {
+way[highway] > node[traffic_sign~="NL:B7"][highway!=stop],
+way[highway] > node[traffic_sign~="NL:B07"][highway!=stop],
+way[highway] > node[traffic_sign~="NL:B6"][highway!=give_way],
+way[highway] > node[traffic_sign~="NL:B06"][highway!=give_way] {
   group: tr("NL traffic signs");
   throwWarning: tr("{0} without {1}", "{0.tag}", "{1.tag}");
   fixAdd: "{1.tag}";
@@ -162,7 +165,7 @@ node[phone=~/^(0031|\+31|0)( ?[1-9])( ?[0-9]){9}/][inside("NL")]!.badPhoneNumber
 }
 
 
-/* addresss tags on building */
+/* address tags on building */
 relation[type=multipolygon][building][/^addr:/][amenity!=place_of_worship][building!~/houseboat|static_caravan/][inside("NL")],
 way[building][/^addr:/][amenity!=place_of_worship][building!~/houseboat|static_caravan/][inside("NL")]:closed {
   throwWarning: tr("In Nederland is het gebouw niet gekoppeld aan het adres. Het adres is wel gekoppeld aan het gebruiksdoel.");

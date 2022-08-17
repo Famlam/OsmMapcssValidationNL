@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.08.11";
+    version: "2022.08.17";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -128,6 +128,42 @@ way[highway] > node[traffic_sign~="NL:B06"][highway!=give_way] {
   group: tr("NL traffic signs");
   throwWarning: tr("{0} without {1}", "{0.tag}", "{1.tag}");
   fixAdd: "{1.tag}";
+}
+
+
+/* Stop- of parkeerverboden */
+/* Let op: kan gecombineerd zijn met parkeervakken waarbij in het vak wel geparkeerd mag worden */
+way[parking:condition:both!=no_parking][traffic_sign~="NL:E01"][highway][parking:lane:both=no][parking:condition:right!=no_parking][parking:condition:left!=no_parking],
+way[parking:condition:both!=no_parking][traffic_sign~="NL:E01"][highway][parking:lane:left=no][parking:lane:right=no][parking:condition:right!=no_parking][parking:condition:left!=no_parking],
+way[parking:condition:both!=no_parking][traffic_sign~="NL:E1"][highway][parking:lane:both=no][parking:condition:right!=no_parking][parking:condition:left!=no_parking],
+way[parking:condition:both!=no_parking][traffic_sign~="NL:E1"][highway][parking:lane:left=no][parking:lane:right=no][parking:condition:right!=no_parking][parking:condition:left!=no_parking],
+way[parking:condition:right!=no_parking][traffic_sign:right~="NL:E01"][highway][parking:lane:both=no][parking:condition:both!=no_parking],
+way[parking:condition:right!=no_parking][traffic_sign:right~="NL:E01"][highway][parking:lane:right=no][parking:condition:both!=no_parking],
+way[parking:condition:right!=no_parking][traffic_sign:right~="NL:E1"][highway][parking:lane:both=no][parking:condition:both!=no_parking],
+way[parking:condition:right!=no_parking][traffic_sign:right~="NL:E1"][highway][parking:lane:right=no][parking:condition:both!=no_parking],
+way[parking:condition:left!=no_parking][traffic_sign:left~="NL:E01"][highway][parking:lane:both=no][parking:condition:both!=no_parking],
+way[parking:condition:left!=no_parking][traffic_sign:left~="NL:E01"][highway][parking:lane:left=no][parking:condition:both!=no_parking],
+way[parking:condition:left!=no_parking][traffic_sign:left~="NL:E1"][highway][parking:lane:both=no][parking:condition:both!=no_parking],
+way[parking:condition:left!=no_parking][traffic_sign:left~="NL:E1"][highway][parking:lane:left=no][parking:condition:both!=no_parking],
+way[parking:condition:both!=no_stopping][traffic_sign~="NL:E02"][highway][parking:lane:both=no][parking:condition:right!=no_stopping][parking:condition:left!=no_stopping],
+way[parking:condition:both!=no_stopping][traffic_sign~="NL:E02"][highway][parking:lane:left=no][parking:lane:right=no][parking:condition:right!=no_stopping][parking:condition:left!=no_stopping],
+way[parking:condition:both!=no_stopping][traffic_sign~="NL:E2"][highway][parking:lane:both=no][parking:condition:right!=no_stopping][parking:condition:left!=no_stopping],
+way[parking:condition:both!=no_stopping][traffic_sign~="NL:E2"][highway][parking:lane:left=no][parking:lane:right=no][parking:condition:right!=no_stopping][parking:condition:left!=no_stopping],
+way[parking:condition:right!=no_stopping][traffic_sign:right~="NL:E02"][highway][parking:lane:both=no][parking:condition:both!=no_stopping],
+way[parking:condition:right!=no_stopping][traffic_sign:right~="NL:E02"][highway][parking:lane:right=no][parking:condition:both!=no_stopping],
+way[parking:condition:right!=no_stopping][traffic_sign:right~="NL:E2"][highway][parking:lane:both=no][parking:condition:both!=no_stopping],
+way[parking:condition:right!=no_stopping][traffic_sign:right~="NL:E2"][highway][parking:lane:right=no][parking:condition:both!=no_stopping],
+way[parking:condition:left!=no_stopping][traffic_sign:left~="NL:E02"][highway][parking:lane:both=no][parking:condition:both!=no_stopping],
+way[parking:condition:left!=no_stopping][traffic_sign:left~="NL:E02"][highway][parking:lane:left=no][parking:condition:both!=no_stopping],
+way[parking:condition:left!=no_stopping][traffic_sign:left~="NL:E2"][highway][parking:lane:both=no][parking:condition:both!=no_stopping],
+way[parking:condition:left!=no_stopping][traffic_sign:left~="NL:E2"][highway][parking:lane:left=no][parking:condition:both!=no_stopping] {
+  group: tr("NL traffic signs");
+  throwWarning: tr("{0} without {1}", "{1.tag}", "{0.tag}");
+  fixAdd: "{0.tag}";
+  assertMatch: "way highway=residential traffic_sign:left=NL:E02 parking:lane:left=no";
+  assertMatch: "way highway=residential traffic_sign:left=NL:E02 parking:lane:both=no";
+  assertNoMatch: "way highway=residential traffic_sign:left=NL:E02 parking:lane:left=parallel";
+  assertNoMatch: "way highway=residential traffic_sign:left=NL:E02 traffic_sign:right=NL:E02 parking:lane:both=no parking:condition:both=no_stopping";
 }
 
 

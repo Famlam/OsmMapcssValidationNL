@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.08.17";
+    version: "2022.08.27";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -351,6 +351,16 @@ way[railway][tracks][tracks!=1][inside("NL")] {
   throwWarning: tr("Railway lines should be drawn as separate ways per track, rather than one way with {0}", "{1.tag}");
   group: tr("NL deprecated features");
   suggestAlternative: "passenger_lines=* if the tracks are already drawn separately";
+}
+
+
+/* Gebouwnaam op los ingetekende gebouwen (of building:part) is gewoon de naam */
+/* https://forum.openstreetmap.org/viewtopic.php?id=71738 */
+way[addr:housename][/^building/][inside("NL")],
+way[building:name][/^building/][inside("NL")] {
+  throwWarning: tr("{0} is deprecated", "{0.key}");
+  group: tr("NL deprecated features");
+  suggestAlternative: "name=*";
 }
 
 

@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.08.27";
+    version: "2022.09.16";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -497,13 +497,6 @@ way[highway=cycleway][maxspeed][maxspeed>40][!motor_vehicle][!vehicle][!access][
 /* ---------------------------- */
 /* ---------- Overig ---------- */
 /* ---------------------------- */
-
-/* Finishing date without opening_date; adding it allows it to be spotted when completed */
-way[highway=construction][note=~/(?i)202[0-9]|'2[0-9]|jan|feb|maart|mar|apr|mei|may|jun|jul|aug|sep|okt|oct|nov|dec/][!opening_date],
-way[construction][note=~/(?i)202[0-9]|'2[0-9]|jan|feb|maart|mar|apr|mei|may|jun|jul|aug|sep|okt|oct|nov|dec/][!opening_date][highway][highway!=construction] {
-  throwWarning: tr("{0} and {1} without {2}", "{0.tag}", "{1.key}", "{2.key}");
-  group: tr("NL overige problemen");
-}
 
 
 /* In practically all cases, oneway:bicycle=no (uitgezonderd fietsers) implies oneway:mofa=no too */

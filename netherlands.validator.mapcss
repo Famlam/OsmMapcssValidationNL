@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.09.18";
+    version: "2022.09.18.1";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -379,6 +379,19 @@ way[building:name][/^building/][inside("NL")] {
   throwWarning: tr("{0} is deprecated", "{0.key}");
   group: tr("NL deprecated features");
   suggestAlternative: "name=*";
+}
+
+
+/* landuse=education op het grondgebruik rondom scholen e.d. */
+/* Voorbereiding voor deprecated amenity=* verwijderen */
+/* https://forum.openstreetmap.org/viewtopic.php?id=72837 */
+way[amenity=college][landuse!=education][!building]:closed,
+way[amenity=university][landuse!=education][!building]:closed,
+way[amenity=kindergarten][landuse!=education][!building]:closed,
+way[amenity=school][landuse!=education][!building]:closed {
+  throwWarning: tr("{0} without {1}", "{0.tag}", "{1.tag}");
+  group: tr("NL deprecated features");
+  fixAdd: "landuse=education";
 }
 
 

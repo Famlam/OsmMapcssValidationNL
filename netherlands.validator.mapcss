@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.09.16";
+    version: "2022.09.18";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -182,6 +182,24 @@ node[phone=~/^(00|\+)31 ?0/][inside("NL")] {
   assertNoMatch: "node phone=\"00316123456789\"";
   assertNoMatch: "node phone=\"+31 6123456789\"";
   assertNoMatch: "node phone=\"06123456789\"";
+  set .badPhoneNumber;
+}
+
+
+/* Phone numbers - internationalized national/local numbers */
+node[contact:phone=~/^(\+|00)31 ?0?[0-9]{3,7}$/][inside("NL")]!.badPhoneNumber,
+node[contact:mobile=~/^(\+|00)31 ?0?[0-9]{3,7}$/][inside("NL")]!.badPhoneNumber,
+node[phone=~/^(\+|00)31 ?0?[0-9]{3,7}$/][inside("NL")]!.badPhoneNumber {
+  throwWarning: tr("Invalid tag {0}: short phone numbers cannot be used with international prefix (or: wrong phone number length)", "{0.key}");
+  group: tr("NL addresses and contacts");
+  assertMatch: "node phone=\"+31 08008844\"";
+  assertMatch: "node phone=\"+3114024\"";
+  assertMatch: "node phone=\"00318008844\"";
+  assertNoMatch: "node phone=\"00316123456789\"";
+  assertNoMatch: "node phone=\"+31 6123456789\"";
+  assertNoMatch: "node phone=\"06123456789\"";
+  assertNoMatch: "node phone=\"08008844\"";
+  assertNoMatch: "node phone=\"14024\"";
   set .badPhoneNumber;
 }
 

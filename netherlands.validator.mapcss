@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.09.18.1";
+    version: "2022.10.01";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -424,11 +424,9 @@ node[amenity=drinking_water][name=~/(?i)(drinkwater|\swater|kraan)/],
 }
 
 
-/* Street- or railway names with abbreviations */
-way[name][highway][name=~/^(Burg|Dr|Drs|Ds|Ing|Ir|Mr|Past|Prof|St) [A-Za-z]/][inside("NL")],
-node[addr:street][addr:street=~/^(Burg|Dr|Drs|Ds|Ing|Ir|Mr|Past|Prof|St) [A-Z]/][inside("NL")],
-way[name][highway][name=~/[A-Z][a-z]+\./][inside("NL")],
-node[addr:street][addr:street=~/[A-Z][a-z]+\./][inside("NL")] {
+/* Street-, area or railway names with abbreviations */
+*[name][highway][name=~/^(Burg|Dr|Drs|Ds|Ing|Ir|Mr|Past|Prof|St) [A-Za-z]/][inside("NL")],
+*[addr:street][addr:street=~/[A-Z][a-z]+\./][inside("NL")] {
   throwWarning: tr("Straatnaam met afkorting");
   group: tr("NL naamgeving");
 }
@@ -437,6 +435,12 @@ node[addr:street][addr:street=~/[A-Z][a-z]+\./][inside("NL")] {
   throwWarning: tr("Spoorgebied met afgekorte naam");
   group: tr("NL naamgeving");
   suggestAlternative: "aansluiting, emplacement, goederen, industrieterrein, inhaalspoor, opstelterrein, overloopwissel, raccordement of rangeerterrein";	
+}
+
+*[name][place][name=~/^(Burg|Dr|Drs|Ds|Ing|Ir|Mr|Past|Prof|St) [A-Z]/][inside("NL")],
+*[name][place][name=~/[A-Z][a-z]+\./][inside("NL")] {
+  throwWarning: tr("Gebiedsnaam met afkorting");
+  group: tr("NL naamgeving");
 }
 
 

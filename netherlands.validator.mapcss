@@ -117,6 +117,7 @@ way[highway][traffic_sign~="NL:C16"][!foot][!foot:forward][!foot:backward][!foot
   assertMatch: "way highway=service traffic_sign=\"NL:C01\"";
   assertMatch: "way highway=service traffic_sign=\"NL:C01;NL:OB58\"";
   assertNoMatch: "way highway=service traffic_sign=\"NL:C01;NL:C16\" access=no";
+  assertNoMatch: "way highway=track traffic_sign=\"NL:C12\" motor_vehicle=no";
 }
 
 

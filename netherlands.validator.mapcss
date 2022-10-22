@@ -413,12 +413,12 @@ node[amenity=drinking_water][name=~/(?i)(drinkwater|\swater|kraan)/],
 *[name][leisure=playground][name=~/(?i)^speeltuin$/],
 *[name][leisure=pitch][name=~/(?i)ball?(veld(je)?)?$/][!sport] {
   throwWarning: tr("descriptive name");
-  group: tr("NL naamgeving");
+  group: tr("NL nomenclature");
 }
 
 *[name][name=~/(?i)(voormalige?)/][!historic][tourism!=information][!landuse] {
   throwWarning: tr("descriptive name");
-  group: tr("NL naamgeving");
+  group: tr("NL nomenclature");
   suggestAlternative: "old_name=*";
   suggestAlternative: "description=*";
 }
@@ -428,26 +428,26 @@ node[amenity=drinking_water][name=~/(?i)(drinkwater|\swater|kraan)/],
 *[name][highway][name=~/^(Burg|Dr|Drs|Ds|Ing|Ir|Mr|Past|Prof|St) [A-Za-z]/][inside("NL")],
 *[addr:street][addr:street=~/[A-Z][a-z]+\./][inside("NL")] {
   throwWarning: tr("Straatnaam met afkorting");
-  group: tr("NL naamgeving");
+  group: tr("NL nomenclature");
 }
 
 *[railway][name][name=~/(?i)(aansl|empl|goed|ind|inhaalsp|opstel|overloopw|racc|rang|terr)(\.| |\)|$)/][inside("NL")] {
   throwWarning: tr("Spoorgebied met afgekorte naam");
-  group: tr("NL naamgeving");
+  group: tr("NL nomenclature");
   suggestAlternative: "aansluiting, emplacement, goederen, industrieterrein, inhaalspoor, opstelterrein, overloopwissel, raccordement of rangeerterrein";	
 }
 
 *[name][place][name=~/^(Burg|Dr|Drs|Ds|Ing|Ir|Mr|Past|Prof|St) [A-Z]/][inside("NL")],
 *[name][place][name=~/[A-Z][a-z]+\./][inside("NL")] {
   throwWarning: tr("Gebiedsnaam met afkorting");
-  group: tr("NL naamgeving");
+  group: tr("NL nomenclature");
 }
 
 
 /* Nederlandse naam zonder name */
 *[name:nl][!name][inside("NL")][type!=route] {
   throwWarning: tr("{0} without {1}", "{0.key}", "{1.key}");
-  group: tr("NL naamgeving");
+  group: tr("NL nomenclature");
   suggestAlternative: "name";
   fixChangeKey: "{0.key}=>{1.key}";
 }
@@ -460,17 +460,17 @@ node[amenity=drinking_water][name=~/(?i)(drinkwater|\swater|kraan)/],
 *[heritage=1][heritage:operator!=whc],
 *[heritage=2][heritage:operator!=rce][inside("NL")] {
   throwWarning: tr("{0} without {1}", "{0.tag}", "{1.tag}");
-  group: tr("NL erfgoed");
+  group: tr("NL heritage");
   fixAdd: "{1.tag}";
 }
 *[ref:rce][!heritage:operator] {
   throwWarning: tr("{0} without {1}", "{0.tag}", "{1.key}=*");
-  group: tr("NL erfgoed");
+  group: tr("NL heritage");
   fixAdd: "heritage:operator=rce";
 }
 *[heritage:operator=rce][!heritage] {
   throwWarning: tr("{0} without {1}", "{0.tag}", "{1.key}=*");
-  group: tr("NL erfgoed");
+  group: tr("NL heritage");
   fixAdd: "heritage=2";
 }
 
@@ -510,7 +510,7 @@ way[maxspeed:type="NL:rural"][maxspeed!=80][maxspeed:both_ways!=80][highway],
 way[traffic_sign][!maxspeed][traffic_sign^="NL:A1-"][!/^maxspeed(:forward|:backward|:both_ways)?(:conditional)?$/][highway],
 way[traffic_sign][!maxspeed][traffic_sign^="NL:A01-"][!/^maxspeed(:forward|:backward|:both_ways)?(:conditional)?$/][highway] {
   throwWarning: tr("{0} without {1}", "{0.tag}", "{1.tag}");
-  group: tr("NL maximumsnelheden");
+  group: tr("NL speed limits");
 }
 
 
@@ -518,14 +518,14 @@ way[traffic_sign][!maxspeed][traffic_sign^="NL:A01-"][!/^maxspeed(:forward|:back
 /* https://forum.openstreetmap.org/viewtopic.php?id=68803 */
 way[highway=motorway][maxspeed][maxspeed=~/^1[23]0$/][maxspeed:conditional=~/100.+19:00/][inside("NL")] {
   throwWarning: tr("Agreed upon was to use 100 as the maximum speed and {0} as the conditional maximum speed", "{1.value}");
-  group: tr("NL maximumsnelheden");
+  group: tr("NL speed limits");
 }
 
 
 /* Mopeds aren't allowed faster than 40 on cycleways (mofas by definition 25) */ 
 way[highway=cycleway][maxspeed][maxspeed>40][!motor_vehicle][!vehicle][!access][inside("NL")] {
   throwWarning: tr("{0} together with {1}", "{0.tag}", "{1.tag}");
-  group: tr("NL maximumsnelheden");
+  group: tr("NL speed limits");
 }
 
 
@@ -537,7 +537,7 @@ way[highway=cycleway][maxspeed][maxspeed>40][!motor_vehicle][!vehicle][!access][
 /* In practically all cases, oneway:bicycle=no (uitgezonderd fietsers) implies oneway:mofa=no too */
 way[oneway:bicycle?!][!oneway:mofa][oneway?][inside("NL")] {
   throwWarning: tr("{0} without {1}", "{0.tag}", "{1.key}");
-  group: tr("NL overige problemen");
+  group: tr("NL other");
 }
 
 
@@ -547,6 +547,6 @@ way[bicycle:backward][moped:backward][bicycle:backward=*"moped:backward"][!mofa]
 way[bicycle:both_ways][moped:both_ways][bicycle:both_ways=*"moped:both_ways"][!mofa][!mofa:both_ways][bicycle:both_ways!=designated][bicycle:both_ways!=yes][inside("NL")],
 way[bicycle][moped][bicycle=*moped][!mofa][bicycle!=designated][bicycle!=yes][inside("NL")] {
   throwWarning: tr("{0} and {1} without {2}", "{0.tag}", "{1.tag}", "{3.key}={0.value}");
-  group: tr("NL overige problemen");
+  group: tr("NL other");
   fixAdd: "{3.key}={0.value}";
 }

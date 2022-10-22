@@ -113,7 +113,7 @@ way[highway][traffic_sign~="NL:C15"][!bicycle][!bicycle:forward][!bicycle:backwa
 way[highway][traffic_sign~="NL:C15"][!moped][!moped:forward][!moped:backward][!moped:both_ways],
 way[highway][traffic_sign~="NL:C16"][!foot][!foot:forward][!foot:backward][!foot:both_ways][!access][!access:forward][!access:backward][!access:both_ways][!vehicle][!vehicle:forward][!vehicle:backward][!vehicle:both_ways] {
   group: tr("NL traffic signs");
-  throwWarning: tr("{0} zonder {1}=no (or private or destination or ...)", "{1.tag}", "{2.key}");
+  throwWarning: tr("{0} without {1}", "{1.tag}", "{2.key}=no/private/destination/...");
   assertMatch: "way highway=service traffic_sign=\"NL:C01\"";
   assertMatch: "way highway=service traffic_sign=\"NL:C01;NL:OB58\"";
   assertNoMatch: "way highway=service traffic_sign=\"NL:C01;NL:C16\" access=no";

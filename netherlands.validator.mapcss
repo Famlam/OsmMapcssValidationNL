@@ -372,8 +372,8 @@ way[railway][tracks][tracks!=1][inside("NL")] {
 
 /* Gebouwnaam op los ingetekende gebouwen (of building:part) is gewoon de naam */
 /* https://forum.openstreetmap.org/viewtopic.php?id=71738 */
-way[addr:housename][/^building/][inside("NL")],
-way[building:name][/^building/][inside("NL")] {
+way[addr:housename][/^building(:part)?$/][inside("NL")],
+way[building:name][/^building(:part)?$/][inside("NL")] {
   throwWarning: tr("{0} is deprecated", "{0.key}");
   group: tr("NL deprecated features");
   suggestAlternative: "name=*";

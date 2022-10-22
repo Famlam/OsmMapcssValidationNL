@@ -173,9 +173,9 @@ way[parking:condition:left!=no_stopping][traffic_sign:left~="NL:E2"][highway][pa
 /* ---------------------------- */
 
 /* Phone numbers - preceding zeros */
-node[contact:phone=~/^(00|\+)31 ?0/][inside("NL")],
-node[contact:mobile=~/^(00|\+)31 ?0/][inside("NL")],
-node[phone=~/^(00|\+)31 ?0/][inside("NL")] {
+node[contact:phone=~/^(00|\+)31 ?0/],
+node[contact:mobile=~/^(00|\+)31 ?0/],
+node[phone=~/^(00|\+)31 ?0/] {
   throwWarning: tr("Invalid tag {0}: country code should not be followed by a 0", "{0.key}");
   group: tr("NL addresses and contacts");
   assertMatch: "node phone=\"+31 06123456789\"";
@@ -188,9 +188,9 @@ node[phone=~/^(00|\+)31 ?0/][inside("NL")] {
 
 
 /* Phone numbers - internationalized national/local numbers */
-node[contact:phone=~/^(\+|00)31 ?0?[0-9]{3,7}$/][inside("NL")]!.badPhoneNumber,
-node[contact:mobile=~/^(\+|00)31 ?0?[0-9]{3,7}$/][inside("NL")]!.badPhoneNumber,
-node[phone=~/^(\+|00)31 ?0?[0-9]{3,7}$/][inside("NL")]!.badPhoneNumber {
+node[contact:phone=~/^(\+|00)31 ?0?[0-9]{3,7}$/]!.badPhoneNumber,
+node[contact:mobile=~/^(\+|00)31 ?0?[0-9]{3,7}$/]!.badPhoneNumber,
+node[phone=~/^(\+|00)31 ?0?[0-9]{3,7}$/]!.badPhoneNumber {
   throwWarning: tr("Invalid tag {0}: short phone numbers cannot be used with international prefix (or: wrong phone number length)", "{0.key}");
   group: tr("NL addresses and contacts");
   assertMatch: "node phone=\"+31 08008844\"";

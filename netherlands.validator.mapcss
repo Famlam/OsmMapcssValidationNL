@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.10.22";
+    version: "2022.10.22.1";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -432,10 +432,12 @@ node[amenity=drinking_water][name=~/(?i)(drinkwater|\swater|kraan)/],
   group: tr("NL nomenclature");
 }
 
-*[railway][name][name=~/(?i)(aansl|empl|goed|ind|inhaalsp|opstel|overloopw|racc|rang|terr)(\.| |\)|$)/][inside("NL")] {
+*[railway][name][name=~/(?i)(aansl|empl|goed|ind|inhaalsp|opstel|overloopw|racc|rang|terr)\./][inside("NL")],
+*[railway][name][name=~/(?i)\b(aansl|empl|goed|ind|inhaalsp|opstel|overloopw|racc|rang|terr)\b/][inside("NL")] {
   throwWarning: tr("Spoorgebied met afgekorte naam");
   group: tr("NL nomenclature");
-  suggestAlternative: "aansluiting, emplacement, goederen, industrieterrein, inhaalspoor, opstelterrein, overloopwissel, raccordement of rangeerterrein";	
+  suggestAlternative: "aansluiting, emplacement, goederen, industrieterrein, inhaalspoor, opstelterrein, overloopwissel, raccordement of rangeerterrein";
+  assertNoMatch: "node railway=tram_stop name=Landgoed";
 }
 
 *[name][place][name=~/^(Burg|Dr|Drs|Ds|Ing|Ir|Mr|Past|Prof|St) [A-Z]/][inside("NL")],

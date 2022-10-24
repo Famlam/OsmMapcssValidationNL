@@ -208,14 +208,16 @@ node[phone=~/^(\+|00)31 ?0?[0-9]{3,7}$/] {
 
 
 /* Phone numbers - too many digits */
-node[contact:phone=~/^(0031|\+31|0) ?[1-9]( ?[0-9]){9}/][inside("NL")]!.badPhoneNumber,
-node[contact:mobile=~/^(0031|\+31|0) ?[1-9]( ?[0-9]){9}/][inside("NL")]!.badPhoneNumber,
-node[phone=~/^(0031|\+31|0) ?[1-9]( ?[0-9]){9}/][inside("NL")]!.badPhoneNumber {
+node[contact:phone=~/^(0031|\+31|0) ?[1-9]( ?[0-9]){10}/][inside("NL")]!.badPhoneNumber,
+node[contact:mobile=~/^(0031|\+31|0) ?[1-9]( ?[0-9]){10}/][inside("NL")]!.badPhoneNumber,
+node[phone=~/^(0031|\+31|0) ?[1-9]( ?[0-9]){10}/][inside("NL")]!.badPhoneNumber {
   throwWarning: tr("Invalid tag {0}: too many digits (or foreign number, if so: ignore)", "{0.key}");
   group: tr("NL addresses and contacts");
   assertNoMatch: "node phone=\"0031612345678\"";
   assertNoMatch: "node phone=\"+31 6 12345678\"";
   assertNoMatch: "node phone=\"06 12345678\"";
+  assertNoMatch: "node phone=\"08001234\""; /* Kort infonr, 8 */
+  assertNoMatch: "node phone=\"0800 1234567\""; /* Lang infonr, 11 */
 }
 
 

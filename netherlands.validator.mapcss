@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.10.22.1";
+    version: "2022.10.24";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -447,11 +447,14 @@ node[amenity=drinking_water][name=~/(?i)(drinkwater|\swater|kraan)/],
 
 
 /* Nederlandse naam zonder name */
-*[name:nl][!name][inside("NL")][type!=route] {
+*[name:nl][!name][inside("NL")][type!=route][name:fy]["name:fy"=*"name:nl"],
+*[name:nl][!name][inside("NL")][type!=route][!name:fy] {
   throwWarning: tr("{0} without {1}", "{0.key}", "{1.key}");
   group: tr("NL nomenclature");
   suggestAlternative: "name";
   fixChangeKey: "{0.key}=>{1.key}";
+  assertNoMatch: "node name=x name:nl=x name:en=y";
+  assertNoMatch: "node name:nl=x name:fy=y";
 }
 
 

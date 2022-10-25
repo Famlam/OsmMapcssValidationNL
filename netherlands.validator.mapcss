@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.10.24";
+    version: "2022.10.25";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -418,7 +418,7 @@ node[amenity=drinking_water][name=~/(?i)(drinkwater|\swater|kraan)/],
   group: tr("NL nomenclature");
 }
 
-*[name][name=~/(?i)(voormalige?)/][!historic][tourism!=information][!landuse] {
+*[name][name=~/(?i)(voormalige?)/][!historic][tourism!=information][!landuse][!highway] {
   throwWarning: tr("descriptive name");
   group: tr("NL nomenclature");
   suggestAlternative: "old_name=*";

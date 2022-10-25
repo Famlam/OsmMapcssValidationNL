@@ -411,7 +411,7 @@ node[name][highway][name=~/(?i)^(lift)$/],
 node[amenity=drinking_water][name=~/(?i)(drinkwater|\swater|kraan)/],
 *[name][amenity^=parking][name=~/(?i)(parkeren|parkeerplaats|parkeergarage|^garage)$/],
 *[name][name=~/(?i)^gratis\s|gratis\)/],
-*[name][name=~/(?i)klanten|bezoek(ers)?|medewerkers/][!route],
+*[name][name=~/(?i)(klanten|bezoek(ers)?|medewerkers)\b/][!route],
 *[name][leisure=playground][name=~/(?i)^speeltuin$/],
 *[name][leisure=pitch][name=~/(?i)ball?(veld(je)?)?$/][!sport] {
   throwWarning: tr("descriptive name");

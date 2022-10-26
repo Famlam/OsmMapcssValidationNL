@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.10.25";
+    version: "2022.10.26";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -74,8 +74,8 @@ way[highway][traffic_sign~="NL:F21"][hgv=no][highway!=construction] {
 
 /* Traffic sign - road types */
 way[highway][traffic_sign~="NL:F13"][highway!=busway][highway!=service][highway!=bus_guideway][highway!=construction],
-way[highway][traffic_sign~="NL:G5"][highway!=living_street][highway!=construction],
-way[highway][traffic_sign~="NL:G05"][highway!=living_street][highway!=construction],
+way[highway][traffic_sign~="NL:G5"][highway!=living_street][highway!=construction][highway!=path][highway!=cycleway][highway!=pedestrian],
+way[highway][traffic_sign~="NL:G05"][highway!=living_street][highway!=construction][highway!=path][highway!=cycleway][highway!=pedestrian],
 way[highway][traffic_sign~="NL:G7"][highway!=footway][highway!=steps][highway!=pedestrian][highway!=construction],
 way[highway][traffic_sign~="NL:G07"][highway!=footway][highway!=steps][highway!=pedestrian][highway!=construction],
 way[highway][traffic_sign~="NL:G9"][highway!=bridleway][highway!=construction],

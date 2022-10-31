@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.10.27";
+    version: "2022.10.31";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -467,6 +467,18 @@ node[addr:street][addr:street=~/^[A-Z][a-z]{1,4}\. /][inside("NL")]!.abbrname {
   fixChangeKey: "{0.key}=>{1.key}";
   assertNoMatch: "node name=x name:nl=x name:en=y";
   assertNoMatch: "node name:nl=x name:fy=y";
+}
+
+
+/* Regelmatig foutgespelde namen met minimaal 2500 objecten verspreid over heel NL */
+node[operator][operator!=PostNL][operator=~/(?i)post\W?nl$/][amenity=post_box] {
+  throwWarning: tr("Suspected typo in {0}", "{0.tag}");
+  group: tr("NL nomenclature");
+  assertNoMatch: "node amenity=post_box operator=PostNL";
+  assertMatch: "node amenity=post_box operator=postnl";
+  assertMatch: "node amenity=post_box operator=\"post nl\"";
+  suggestAlternative: "operator=PostNL";
+  fixAdd: "operator=PostNL";
 }
 
 

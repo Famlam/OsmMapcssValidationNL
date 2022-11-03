@@ -397,6 +397,8 @@ way[amenity=school][landuse!=education][!building][inside("NL")]:closed {
 
 
 /* Currently no active covid restrictions */
+*[delivery:covid19][inside("NL")],
+*[takeaway:covid19][inside("NL")],
 *[opening_hours:covid19][inside("NL")] {
   throwWarning: tr("There are no active covid-19 restrictions at the moment. Remove {0}.", "{0.key}");
   group: tr("NL deprecated features");

@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.10.31";
+    version: "2022.11.03";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -393,6 +393,14 @@ way[amenity=school][landuse!=education][!building][inside("NL")]:closed {
   throwOther: tr("{0} without {1}", "{0.tag}", "{1.tag}");
   group: tr("NL deprecated features");
   fixAdd: "landuse=education";
+}
+
+
+/* Currently no active covid restrictions */
+*[opening_hours:covid19][inside("NL")] {
+  throwWarning: tr("There are no active covid-19 restrictions at the moment. Remove {0}.", "{0.key}");
+  group: tr("NL deprecated features");
+  fixRemove: "{0.key}";
 }
 
 

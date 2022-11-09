@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.11.03";
+    version: "2022.11.09";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -118,6 +118,44 @@ way[highway][traffic_sign~="NL:C16"][!foot][!foot:forward][!foot:backward][!foot
   assertMatch: "way highway=service traffic_sign=\"NL:C01;NL:OB58\"";
   assertNoMatch: "way highway=service traffic_sign=\"NL:C01;NL:C16\" access=no";
   assertNoMatch: "way highway=track traffic_sign=\"NL:C12\" motor_vehicle=no";
+}
+
+
+/* Eenrichtingsverkeer */
+way[highway][traffic_sign~="NL:C2"][oneway!=yes][/^oneway:/!~/^(yes|-?1)$/][oneway!=-1][highway!=construction],
+way[highway][traffic_sign~="NL:C02"][oneway!=yes][/^oneway:/!~/^(yes|-?1)$/][oneway!=-1][highway!=construction],
+way[highway][traffic_sign~="NL:C3"][oneway!=yes][/^oneway:/!~/^(yes|-?1)$/][oneway!=-1][highway!=construction],
+way[highway][traffic_sign~="NL:C03"][oneway!=yes][/^oneway:/!~/^(yes|-?1)$/][oneway!=-1][highway!=construction],
+way[highway][traffic_sign:forward~="NL:C3"][oneway!=yes][/^oneway:/!~/^(yes|1)$/][highway!=construction][traffic_sign:backward!~/\bNL:C0?2\b/],
+way[highway][traffic_sign:forward~="NL:C03"][oneway!=yes][/^oneway:/!~/^(yes|1)$/][highway!=construction][traffic_sign:backward!~/\bNL:C0?2\b/],
+way[highway][traffic_sign:backward~="NL:C2"][oneway!=yes][/^oneway:/!~/^(yes|1)$/][highway!=construction],
+way[highway][traffic_sign:backward~="NL:C02"][oneway!=yes][/^oneway:/!~/^(yes|1)$/][highway!=construction] {
+  group: tr("NL traffic signs");
+  throwWarning: tr("{0} without {1}", "{1.tag}", "{2.tag}");
+  assertMatch: "way highway=residential traffic_sign=\"NL:C02\"";
+  assertMatch: "way highway=residential traffic_sign:forward=\"NL:C3\"";
+  assertMatch: "way highway=residential traffic_sign:forward=\"NL:C3\" oneway=-1";
+  assertMatch: "way highway=residential traffic_sign=\"NL:C3;NL:OB58\"";
+  assertMatch: "way highway=residential traffic_sign:backward=\"NL:C02;NL:OB58\"";
+  assertNoMatch: "way highway=residential traffic_sign=\"NL:C02;NL:OB58\" oneway=yes";
+  assertNoMatch: "way highway=residential traffic_sign=\"NL:C02;NL:OB58\" oneway=-1";
+  assertNoMatch: "way highway=residential traffic_sign=\"NL:C3\" oneway:motor_vehicle=yes";
+  assertNoMatch: "way highway=residential traffic_sign:forward=\"NL:C3\" oneway:motor_vehicle=yes";
+  assertNoMatch: "way highway=residential traffic_sign:forward=\"NL:C3\" oneway=yes";
+  assertNoMatch: "way highway=residential traffic_sign=\"NL:C3\" oneway:motor_vehicle=-1";
+  assertNoMatch: "way highway=residential traffic_sign:backward=\"NL:C2\" oneway=yes oneway:bicycle=no";
+  assertNoMatch: "way highway=residential traffic_sign:backward=\"NL:C2\" oneway:motor_vehicle=yes";
+  assertNoMatch: "way highway=residential traffic_sign=\"NL:C3\" oneway:agricultural=no oneway:motor_vehicle=yes oneway:motorcycle=no oneway=no";
+}
+
+way[highway][traffic_sign~="NL:C5"][oneway?][highway!=construction],
+way[highway][traffic_sign~="NL:C05"][oneway?][highway!=construction] {
+  group: tr("NL traffic signs");
+  throwWarning: tr("{0} together with {1}", "{1.tag}", "{2.tag}");
+  suggestAlternative: "oneway=no";
+  assertMatch: "way highway=residential traffic_sign=\"NL:C05\" oneway=yes";
+  assertNoMatch: "way highway=residential traffic_sign=\"NL:C5;NL:OB58\" oneway=no";
+  assertNoMatch: "way highway=residential traffic_sign=\"NL:C05\"";
 }
 
 

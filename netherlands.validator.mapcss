@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.11.09";
+    version: "2022.11.10";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -156,6 +156,27 @@ way[highway][traffic_sign~="NL:C05"][oneway?][highway!=construction] {
   assertMatch: "way highway=residential traffic_sign=\"NL:C05\" oneway=yes";
   assertNoMatch: "way highway=residential traffic_sign=\"NL:C5;NL:OB58\" oneway=no";
   assertNoMatch: "way highway=residential traffic_sign=\"NL:C05\"";
+}
+
+
+/* Rotondes en verkeerspleinen met verplichte rijrichting */
+way[highway][traffic_sign~="NL:D1"][junction!=roundabout][junction!=circular],
+way[highway][traffic_sign~="NL:D01"][junction!=roundabout][junction!=circular] {
+  group: tr("NL traffic signs");
+  throwWarning: tr("{0} without {1} or {2}", "{1.tag}", "{2.tag}", "{3.tag}");
+  assertMatch: "way highway=residential traffic_sign=NL:D1 oneway=yes";
+  assertNoMatch: "way highway=residential traffic_sign=NL:D1 junction=circular";
+  assertNoMatch: "way highway=residential traffic_sign=NL:D1 junction=roundabout";
+}
+
+way[highway][traffic_sign~="NL:D1"][junction=circular][oneway!~/^(yes|-?1)$/],
+way[highway][traffic_sign~="NL:D01"][junction=circular][oneway!~/^(yes|-?1)$/] {
+  group: tr("NL traffic signs");
+  throwWarning: tr("{0} together with {1} but without {2}", "{2.tag}", "{1.tag}", "oneway=yes");
+  assertMatch: "way highway=residential traffic_sign=NL:D1 oneway=no junction=circular";
+  assertMatch: "way highway=residential traffic_sign=NL:D1 junction=circular";
+  assertNoMatch: "way highway=residential traffic_sign=NL:D1 junction=circular oneway=yes";
+  assertNoMatch: "way highway=residential traffic_sign=NL:D1 junction=circular oneway=-1";
 }
 
 

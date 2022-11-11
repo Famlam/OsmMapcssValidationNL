@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.11.10";
+    version: "2022.11.11";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -605,10 +605,24 @@ way[maxspeed:type="NL:zone60"][maxspeed!=60][maxspeed:both_ways!=60][highway],
 way[maxspeed:type][!maxspeed][maxspeed:type^="NL:zone"][!maxspeed:both_ways][maxspeed:type!~/^NL:zone[36]0$/][highway],
 way[maxspeed:type="NL:urban"][maxspeed!=50][maxspeed:both_ways!=50][highway],
 way[maxspeed:type="NL:rural"][maxspeed!=80][maxspeed:both_ways!=80][highway],
-way[traffic_sign][!maxspeed][traffic_sign^="NL:A1-"][!/^maxspeed(:forward|:backward|:both_ways)?(:conditional)?$/][highway],
-way[traffic_sign][!maxspeed][traffic_sign^="NL:A01-"][!/^maxspeed(:forward|:backward|:both_ways)?(:conditional)?$/][highway] {
+way[traffic_sign][!maxspeed][traffic_sign=~/(^|;)NL:A0?1-/][!/^maxspeed(:forward|:backward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign:forward][!maxspeed:forward][traffic_sign:forward=~/(^|;)NL:A0?1-/][!/^maxspeed(:forward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign:backward][!maxspeed:backward][traffic_sign:backward=~/(^|;)NL:A0?1-/][!/^maxspeed(:backward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign:both_ways][!maxspeed][traffic_sign:both_ways=~/(^|;)NL:A0?1-/][!/^maxspeed(:forward|:backward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign][!maxspeed:advisory][traffic_sign=~/(^|;)NL:A0?4\b/][!/^maxspeed:advisory(:forward|:backward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign:forward][!maxspeed:advisory:forward][traffic_sign:forward=~/(^|;)NL:A0?4\b/][!/^maxspeed:advisory(:forward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign:backward][!maxspeed:advisory:backward][traffic_sign:backward=~/(^|;)NL:A0?4\b/][!/^maxspeed:advisory(:backward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign:both_ways][!maxspeed:advisory][traffic_sign:both_ways=~/(^|;)NL:A0?4\b/][!/^maxspeed:advisory(:forward|:backward|:both_ways)?(:conditional)?$/][highway] {
   throwWarning: tr("{0} without {1}", "{0.tag}", "{1.tag}");
   group: tr("NL speed limits");
+  assertMatch: "way highway=residential traffic_sign=NL:A01-30";
+  assertMatch: "way highway=residential traffic_sign:forward=NL:A1-30";
+  assertMatch: "way highway=residential traffic_sign=NL:A04-30";
+  assertMatch: "way highway=residential traffic_sign=NL:A4";
+  assertMatch: "way highway=residential traffic_sign=NL:A4[60]";
+  assertNoMatch: "way highway=residential traffic_sign:forward=NL:A1-30 maxspeed:forward=30";
+  assertNoMatch: "way highway=residential traffic_sign=NL:A01-30 maxspeed=30";
+  assertNoMatch: "way highway=residential traffic_sign=NL:A4[50] maxspeed:advisory:both_ways=50";
 }
 
 

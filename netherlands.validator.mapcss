@@ -161,23 +161,23 @@ way[highway][traffic_sign:backward~="NL:C16"][!foot:backward][!/^foot(:backward|
 
 
 /* Voertuiglimieten */
-way[traffic_sign=~/(^|;)NL:C17\b/][!maxlength][!/^maxlength(:forward|:backward|:both_ways)?(:conditional)?/][highway],
-way[traffic_sign:forward=~/(^|;)NL:C17\b/][!maxlength:forward][!/^maxlength(:forward|:both_ways)?(:conditional)?/][highway],
-way[traffic_sign:backward=~/(^|;)NL:C17\b/][!maxlength:backward][!/^maxlength(:backward|:both_ways)?(:conditional)?/][highway],
-way[traffic_sign=~/(^|;)NL:C18\b/][!maxwidth][!/^maxwidth(:forward|:backward|:both_ways)?(:conditional)?/][highway],
-way[traffic_sign:forward=~/(^|;)NL:C18\b/][!maxwidth:forward][!/^maxwidth(:forward|:both_ways)?(:conditional)?/][highway],
-way[traffic_sign:backward=~/(^|;)NL:C18\b/][!maxwidth:backward][!/^maxwidth(:backward|:both_ways)?(:conditional)?/][highway],
-way[traffic_sign=~/(^|;)NL:C19\b/][!maxheight][!/^maxheight(:forward|:backward|:both_ways)?(:conditional)?/][highway],
-way[traffic_sign:forward=~/(^|;)NL:C19\b/][!maxheight:forward][!/^maxheight(:forward|:both_ways)?(:conditional)?/][highway],
-way[traffic_sign:backward=~/(^|;)NL:C19\b/][!maxheight:backward][!/^maxheight(:backward|:both_ways)?(:conditional)?/][highway],
-way[traffic_sign=~/(^|;)NL:C20\b/][!maxaxleload][!/^maxaxleload(:forward|:backward|:both_ways)?(:conditional)?/][highway],
-way[traffic_sign:forward=~/(^|;)NL:C20\b/][!maxaxleload:forward][!/^maxaxleload(:forward|:both_ways)?(:conditional)?/][highway],
-way[traffic_sign:backward=~/(^|;)NL:C20\b/][!maxaxleload:backward][!/^maxaxleload(:backward|:both_ways)?(:conditional)?/][highway],
-way[traffic_sign=~/(^|;)NL:C21\b/][!maxweight][!/^maxweight(:forward|:backward|:both_ways)?(:conditional)?/][highway],
-way[traffic_sign:forward=~/(^|;)NL:C21\b/][!maxweight:forward][!/^maxweight(:forward|:both_ways)?(:conditional)?/][highway],
-way[traffic_sign:backward=~/(^|;)NL:C21\b/][!maxweight:backward][!/^maxweight(:backward|:both_ways)?(:conditional)?/][highway] {
+way[traffic_sign][traffic_sign=~/(^|;)NL:C17\b/][!maxlength][!/^maxlength(:forward|:backward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign:forward][traffic_sign:forward=~/(^|;)NL:C17\b/][!maxlength:forward][!/^maxlength(:forward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign:backward][traffic_sign:backward=~/(^|;)NL:C17\b/][!maxlength:backward][!/^maxlength(:backward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign][traffic_sign=~/(^|;)NL:C18\b/][!maxwidth][!/^maxwidth(:forward|:backward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign:forward][traffic_sign:forward=~/(^|;)NL:C18\b/][!maxwidth:forward][!/^maxwidth(:forward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign:backward][traffic_sign:backward=~/(^|;)NL:C18\b/][!maxwidth:backward][!/^maxwidth(:backward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign][traffic_sign=~/(^|;)NL:C19\b/][!maxheight][!/^maxheight(:forward|:backward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign:forward][traffic_sign:forward=~/(^|;)NL:C19\b/][!maxheight:forward][!/^maxheight(:forward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign:backward][traffic_sign:backward=~/(^|;)NL:C19\b/][!maxheight:backward][!/^maxheight(:backward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign][traffic_sign=~/(^|;)NL:C20\b/][!maxaxleload][!/^maxaxleload(:forward|:backward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign:forward][traffic_sign:forward=~/(^|;)NL:C20\b/][!maxaxleload:forward][!/^maxaxleload(:forward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign:backward][traffic_sign:backward=~/(^|;)NL:C20\b/][!maxaxleload:backward][!/^maxaxleload(:backward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign][traffic_sign=~/(^|;)NL:C21\b/][!maxweight][!/^maxweight(:forward|:backward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign:forward][traffic_sign:forward=~/(^|;)NL:C21\b/][!maxweight:forward][!/^maxweight(:forward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign:backward][traffic_sign:backward=~/(^|;)NL:C21\b/][!maxweight:backward][!/^maxweight(:backward|:both_ways)?(:conditional)?$/][highway] {
   group: tr("NL traffic signs");
-  throwWarning: tr("{0} without {1}", "{1.tag}", "{2.key}");
+  throwWarning: tr("{0} without {1}", "{0.tag}", "{2.key}");
   assertMatch: "way highway=residential traffic_sign=NL:C21[2.1]";
   assertMatch: "way highway=residential traffic_sign:forward=NL:C21[2.1]";
   assertNoMatch: "way highway=residential traffic_sign=NL:C21[2.1] maxweight=2.1";
@@ -263,7 +263,7 @@ way[traffic_sign:forward="NL:B01"][!priority_road][!priority_road:forward][!prio
 way[traffic_sign:backward="NL:B1"][!priority_road][!priority_road:backward][!priority_road:both_ways][highway],
 way[traffic_sign:backward="NL:B01"][!priority_road][!priority_road:backward][!priority_road:both_ways][highway] {
   group: tr("NL traffic signs");
-  throwWarning: tr("{0} without {1}", "{1.tag}", "{2.key}");
+  throwWarning: tr("{0} without {1}", "{0.tag}", "{1.key}");
   suggestAlternative: "{0.key}=designated";
 }
 

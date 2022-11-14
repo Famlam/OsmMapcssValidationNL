@@ -1,13 +1,14 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.11.12";
+    version: "2022.11.14";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
-    link: "https://forum.openstreetmap.org/viewtopic.php?id=74817";
+    link: "https://github.com/Famlam/OsmMapcssValidationNL";
 }
 /* 
-github: https://github.com/Famlam/OsmMapcssValidationNL/blob/main/netherlands.validator.mapcss
+github: https://github.com/Famlam/OsmMapcssValidationNL
+forum: https://forum.openstreetmap.org/viewtopic.php?id=74817
 */
 
 
@@ -554,6 +555,7 @@ way[name][highway][name=~/(?i)(rolstoel|invaliden)/],
 way[name][highway][name=~/(?i)bus\s?(baan|strook)/][highway!=busway][highway!=service][highway!=construction],
 node[name][highway][name=~/(?i)^(lift)$/],
 node[amenity=drinking_water][name=~/(?i)(drinkwater|\swater|kraan)/],
+node[amenity=charging_station][name=~/(?i)oplaad/],
 *[name][amenity^=parking][name=~/(?i)(parkeren|parkeerplaats|parkeergarage|^garage)$/],
 *[name][name=~/(?i)^gratis\s|gratis\)/],
 *[name][name=~/(?i)(klanten|bezoek(ers)?|medewerkers)\b/][!route],
@@ -721,14 +723,14 @@ way[highway=cycleway][maxspeed][maxspeed>40][!motor_vehicle][!vehicle][!access][
 
 
 /* ---------------------------- */
-/* ---------- Overig ---------- */
+/* ------- Snorfietsers ------- */
 /* ---------------------------- */
 
 
 /* In practically all cases, oneway:bicycle=no (uitgezonderd fietsers) implies oneway:mofa=no too */
 way[oneway:bicycle?!][!oneway:mofa][oneway?][inside("NL")] {
   throwWarning: tr("{0} without {1}", "{0.tag}", "{1.key}");
-  group: tr("NL other");
+  group: tr("NL mofa tagging");
 }
 
 
@@ -738,6 +740,6 @@ way[bicycle:backward][moped:backward][bicycle:backward=*"moped:backward"][!mofa]
 way[bicycle:both_ways][moped:both_ways][bicycle:both_ways=*"moped:both_ways"][!mofa][!mofa:both_ways][bicycle:both_ways!=designated][bicycle:both_ways!=yes][inside("NL")],
 way[bicycle][moped][bicycle=*moped][!mofa][bicycle!=designated][bicycle!=yes][inside("NL")] {
   throwWarning: tr("{0} and {1} without {2}", "{0.tag}", "{1.tag}", "{3.key}={0.value}");
-  group: tr("NL other");
+  group: tr("NL mofa tagging");
   fixAdd: "{3.key}={0.value}";
 }

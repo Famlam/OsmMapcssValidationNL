@@ -574,8 +574,8 @@ node[amenity=charging_station][name=~/(?i)oplaad/],
 
 
 /* Street-, area or railway names with abbreviations */
-way[name][highway][name=~/\b(Adm|Burg|Dr|Drs|Ds|Gen|Ing|Ir|Mr|Past|Prof|St)\.? [A-Za-z]/][inside("NL")]!.abbrname,
-node[addr:street][addr:street=~/\b(Adm|Burg|Dr|Drs|Ds|Gen|Ing|Ir|Mr|Past|Prof|St)\.? [A-Za-z]/][inside("NL")]!.abbrname,
+way[name][highway][name=~/\b(Adm|Burg|Dr|Drs|Ds|Gen|Ing|Ir|Mr|Past|Prof|St|Weth)\.? [A-Za-z]/][inside("NL")]!.abbrname,
+node[addr:street][addr:street=~/\b(Adm|Burg|Dr|Drs|Ds|Gen|Ing|Ir|Mr|Past|Prof|St|Weth)\.? [A-Za-z]/][inside("NL")]!.abbrname,
 way[name][highway][name=~/^[A-Z][a-z]{1,4}\. /][inside("NL")]!.abbrname,
 node[addr:street][addr:street=~/^[A-Z][a-z]{1,4}\. /][inside("NL")]!.abbrname {
   throwWarning: tr("Straatnaam met afkorting");
@@ -589,7 +589,7 @@ node[addr:street][addr:street=~/^[A-Z][a-z]{1,4}\. /][inside("NL")]!.abbrname {
   set .abbrname;
 }
 
-*[name][place][name=~/\b(Adm|Burg|Dr|Drs|Ds|Gen|Ing|Ir|Mr|Past|Prof|St)\.? [A-Za-z]/][inside("NL")]!.abbrname,
+*[name][place][name=~/\b(Adm|Burg|Dr|Drs|Ds|Gen|Ing|Ir|Mr|Past|Prof|St|Weth)\.? [A-Za-z]/][inside("NL")]!.abbrname,
 *[name][place][name=~/^[A-Z][a-z]{1,4}\. /][inside("NL")]!.abbrname {
   throwWarning: tr("Gebiedsnaam met afkorting");
   group: tr("NL nomenclature");

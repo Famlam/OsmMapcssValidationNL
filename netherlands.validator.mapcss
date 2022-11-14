@@ -552,14 +552,16 @@ way[name][highway=service][name=~/(?i)(parkeren$|parkeerplaats$|^toegang(sweg)?\
 way[name][highway][name=~/(?i)(^|\sen\s)((on)?verplicht\s)?(\(?brom\)?)?fietspad$/],
 way[name][highway][name=~/(?i)^roltrap(pen)?$/],
 way[name][highway][name=~/(?i)(rolstoel|invaliden)/],
+way[name][highway][name=~/(?i)(uit?laa[dt]|honden.*wandel|los.?loop)/],
 way[name][highway][name=~/(?i)bus\s?(baan|strook)/][highway!=busway][highway!=service][highway!=construction],
 node[name][highway][name=~/(?i)^(lift)$/],
-node[amenity=drinking_water][name=~/(?i)(drinkwater|\swater|kraan)/],
-node[amenity=charging_station][name=~/(?i)oplaad/],
+node[name][amenity=drinking_water][name=~/(?i)(drinkwater|\swater|kraan)/],
+node[name][amenity=charging_station][name=~/(?i)(oplaad|laadpunt|laadpaal)/],
 *[name][amenity^=parking][name=~/(?i)(parkeren|parkeerplaats|parkeergarage|^garage)$/],
 *[name][name=~/(?i)^gratis\s|gratis\)/],
 *[name][name=~/(?i)(klanten|bezoek(ers)?|medewerkers)\b/][!route],
 *[name][leisure=playground][name=~/(?i)^speeltuin$/],
+*[name][leisure^=dog][name=~/(?i)^(honden\s?)?(toilet|uitlaa[dt]|los.?loop)/],
 *[name][leisure=pitch][name=~/(?i)ball?(veld(je)?)?$/][!sport] {
   throwWarning: tr("descriptive name");
   group: tr("NL nomenclature");

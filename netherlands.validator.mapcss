@@ -548,7 +548,7 @@ way[amenity=school][landuse!=education][!building][inside("NL")]:closed {
 /* --------------------------- */
 
 /* Descriptive (Dutch) names */
-way[name][highway=service][name=~/(?i)(parkeren$|parkeerplaats$|^toegang(sweg)?\s|^richting\s|^naar\s|\svoor\s|drive.thro?u(gh)?)/],
+way[name][highway=service][name=~/(?i)(parkeren$|parkeerplaats$|^toegang(sweg)?\s|^richting\s|drive.thro?u(gh)?)/],
 way[name][highway][name=~/(?i)(^|\sen\s)((on)?verplicht\s)?(\(?brom\)?)?fietspad$/],
 way[name][highway][name=~/(?i)^roltrap(pen)?$/],
 way[name][highway][name=~/(?i)(rolstoel|invaliden)/],

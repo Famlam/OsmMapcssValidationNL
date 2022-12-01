@@ -567,11 +567,12 @@ node[name][amenity=charging_station][name=~/(?i)(oplaad|laadpunt|laadpaal)/],
   group: tr("NL nomenclature");
 }
 
-*[name][name=~/(?i)(voormalige?)/][!historic][tourism!=information][!landuse][!highway] {
+*[name][name=~/(?i)(voormalige?)/][!historic][tourism!=information][!landuse][!highway][!boundary][!waterway] {
   throwWarning: tr("descriptive name");
   group: tr("NL nomenclature");
   suggestAlternative: "old_name=*";
   suggestAlternative: "description=*";
+  suggestAlternative: "disused=yes";
 }
 
 

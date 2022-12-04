@@ -95,12 +95,12 @@ way[highway][traffic_sign~="NL:L51"][!cyclestreet][highway!=construction] {
 
 
 /* Traffic signs - access prohibited */
-way[highway][traffic_sign~="NL:C1"][!vehicle][!/^vehicle(:forward|:backward|:both_ways)?(:conditional)?$/][!/^access(:forward|:backward|:both_ways)?(:conditional)?$/][highway!=construction],
-way[highway][traffic_sign:forward~="NL:C1"][!vehicle:forward][!/^vehicle(:forward|:both_ways)?(:conditional)?$/][!/^access(:forward|:both_ways)?(:conditional)?$/][highway!=construction],
-way[highway][traffic_sign:backward~="NL:C1"][!vehicle:backward][!/^vehicle(:backward|:both_ways)?(:conditional)?$/][!/^access(:backward|:both_ways)?(:conditional)?$/][highway!=construction][oneway!=yes],
-way[highway][traffic_sign~="NL:C01"][!vehicle][!/^vehicle(:forward|:backward|:both_ways)?(:conditional)?$/][!/^access(:forward|:backward|:both_ways)?(:conditional)?$/][highway!=construction],
-way[highway][traffic_sign:forward~="NL:C01"][!vehicle:forward][!/^vehicle(:forward|:both_ways)?(:conditional)?$/][!/^access(:forward|:both_ways)?(:conditional)?$/][highway!=construction],
-way[highway][traffic_sign:backward~="NL:C01"][!vehicle:backward][!/^vehicle(:backward|:both_ways)?(:conditional)?$/][!/^access(:backward|:both_ways)?(:conditional)?$/][highway!=construction][oneway!=yes],
+way[highway][traffic_sign~="NL:C1"][!vehicle][!/^(motor_)?vehicle(:forward|:backward|:both_ways)?(:conditional)?$/][!/^access(:forward|:backward|:both_ways)?(:conditional)?$/][highway!=construction],
+way[highway][traffic_sign:forward~="NL:C1"][!vehicle:forward][!/^(motor_)?vehicle(:forward|:both_ways)?(:conditional)?$/][!/^access(:forward|:both_ways)?(:conditional)?$/][highway!=construction],
+way[highway][traffic_sign:backward~="NL:C1"][!vehicle:backward][!/^(motor_)?vehicle(:backward|:both_ways)?(:conditional)?$/][!/^access(:backward|:both_ways)?(:conditional)?$/][highway!=construction][oneway!=yes],
+way[highway][traffic_sign~="NL:C01"][!vehicle][!/^(motor_)?vehicle(:forward|:backward|:both_ways)?(:conditional)?$/][!/^access(:forward|:backward|:both_ways)?(:conditional)?$/][highway!=construction],
+way[highway][traffic_sign:forward~="NL:C01"][!vehicle:forward][!/^(motor_)?vehicle(:forward|:both_ways)?(:conditional)?$/][!/^access(:forward|:both_ways)?(:conditional)?$/][highway!=construction],
+way[highway][traffic_sign:backward~="NL:C01"][!vehicle:backward][!/^(motor_)?vehicle(:backward|:both_ways)?(:conditional)?$/][!/^access(:backward|:both_ways)?(:conditional)?$/][highway!=construction][oneway!=yes],
 way[highway][traffic_sign~="NL:C6"][!motor_vehicle][!/^(motor_)?vehicle(:forward|:backward|:both_ways)?(:conditional)?$/][!/^access(:forward|:backward|:both_ways)?(:conditional)?$/][highway!=construction],
 way[highway][traffic_sign:forward~="NL:C6"][!motor_vehicle:forward][!/^(motor_)?vehicle(:forward|:both_ways)?(:conditional)?$/][!/^access(:forward|:both_ways)?(:conditional)?$/][highway!=construction],
 way[highway][traffic_sign:backward~="NL:C6"][!motor_vehicle:backward][!/^(motor_)?vehicle(:backward|:both_ways)?(:conditional)?$/][!/^access(:backward|:both_ways)?(:conditional)?$/][highway!=construction][oneway!=yes][oneway:motor_vehicle!=yes],
@@ -155,6 +155,7 @@ way[highway][traffic_sign:backward~="NL:C16"][!foot:backward][!/^foot(:backward|
   assertMatch: "way highway=service traffic_sign:forward=\"NL:C9;NL:OB58\"";
   assertMatch: "way highway=service traffic_sign:forward=\"NL:C9;NL:OB58\" traffic_sign:backward=\"NL:C1\" access:backward=no";
   assertNoMatch: "way highway=service traffic_sign=\"NL:C01;NL:C16\" access=no";
+  assertNoMatch: "way highway=service traffic_sign=\"NL:C01;NL:OB51;NL:OB54\" motor_vehicle=no";
   assertNoMatch: "way highway=service traffic_sign:backward=\"NL:C07;NL:C16\" hgv=no foot=no";
   assertNoMatch: "way highway=service traffic_sign:backward=\"NL:C07;NL:C16\" hgv:backward=no foot=no";
   assertNoMatch: "way highway=track traffic_sign=\"NL:C12\" motor_vehicle=no";

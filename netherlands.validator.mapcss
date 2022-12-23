@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.12.04";
+    version: "2022.12.23";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -573,6 +573,16 @@ way[amenity=school][landuse!=education][!building][inside("NL")]:closed {
   throwWarning: tr("There are no active covid-19 restrictions at the moment. Remove {0}.", "{0.key}");
   group: tr("NL deprecated features");
   fixRemove: "{0.key}";
+}
+
+
+/* bicycle_road doesn't exist in NL */
+way[bicycle_road?][inside("NL")] {
+  throwWarning: tr("Het concept {0} bestaat niet in Nederland", "{0.key}");
+  group: tr("NL deprecated features");
+  suggestAlternative: "highway=* + cyclestreet=yes (fietsstraat)";
+  suggestAlternative: "highway=cycleway (fietspad)";
+  suggestAlternative: "highway=* + cycleway=* (fietsstrook)";
 }
 
 

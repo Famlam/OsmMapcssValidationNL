@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.12.23";
+    version: "2022.12.24";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -509,6 +509,14 @@ way[building=terrace][inside("NL")] {
 }
 
 
+/* addr:interpolation instead of multiple separate addresses */
+*[addr:interpolation][inside("NL")] {
+  throwWarning: tr("Adressen ({0}) worden in Nederland individueel geïmporteerd uit de BAG", "{0.key}");
+  group: tr("NL deprecated features");
+  suggestAlternative: "meerdere addr:housenumber via een BAG importverzoek";
+}
+
+
 /* is_in */
 /* https://forum.openstreetmap.org/viewtopic.php?id=73675 */
 *[is_in=NL],
@@ -620,7 +628,7 @@ node[name][amenity=charging_station][name=~/(?i)(oplaad|laadpunt|laadpaal)/],
 
 
 /* Street-, area or railway names with abbreviations */
-way[name][highway][name=~/\b(Adm|Burg|Dr|Drs|Ds|Gen|Ing|Ir|Mr|Past|Prof|St|Weth)\.? [A-Za-z]/][inside("NL")]!.abbrname,
+way[name][highway][name=~/\b(Adm|Burg|Dr|Drs|Ds|Gen|Ing|Ir|Mgr|Mr|Past|Prof|St|Weth)\.? [A-Za-z]/][inside("NL")]!.abbrname,
 way[name][highway][name=~/^[A-Z][a-z]{1,4}\. /][inside("NL")]!.abbrname {
   throwWarning: tr("Straatnaam met afkorting");
   group: tr("NL nomenclature");
@@ -630,7 +638,7 @@ way[name][highway][name=~/^[A-Z][a-z]{1,4}\. /][inside("NL")]!.abbrname {
   set .abbrname;
 }
 /*
-node[addr:street][addr:street=~/\b(Adm|Burg|Dr|Drs|Ds|Gen|Ing|Ir|Mr|Past|Prof|St|Weth)\.? [A-Za-z]/][inside("NL")]!.abbrname,
+node[addr:street][addr:street=~/\b(Adm|Burg|Dr|Drs|Ds|Gen|Ing|Ir|Mgr|Mr|Past|Prof|St|Weth)\.? [A-Za-z]/][inside("NL")]!.abbrname,
 node[addr:street][addr:street=~/^[A-Z][a-z]{1,4}\. /][inside("NL")]!.abbrname {
   throwWarning: tr("Straatnaam met afkorting");
   group: tr("NL nomenclature");
@@ -642,7 +650,7 @@ node[addr:street][addr:street=~/^[A-Z][a-z]{1,4}\. /][inside("NL")]!.abbrname {
 */
 
 
-*[name][place][name=~/\b(Adm|Burg|Dr|Drs|Ds|Gen|Ing|Ir|Mr|Past|Prof|St|Weth)\.? [A-Za-z]/][inside("NL")]!.abbrname,
+*[name][place][name=~/\b(Adm|Burg|Dr|Drs|Ds|Gen|Ing|Ir|Mgr|Mr|Past|Prof|St|Weth)\.? [A-Za-z]/][inside("NL")]!.abbrname,
 *[name][place][name=~/^[A-Z][a-z]{1,4}\. /][inside("NL")]!.abbrname {
   throwWarning: tr("Gebiedsnaam met afkorting");
   group: tr("NL nomenclature");

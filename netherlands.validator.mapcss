@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.12.24";
+    version: "2022.12.30";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -335,6 +335,20 @@ way[parking:left:restriction!=no_stopping][traffic_sign:left~="NL:E2"][highway][
   assertNoMatch: "way highway=residential traffic_sign:left=NL:E02 parking:left=parallel";
   assertNoMatch: "way highway=residential traffic_sign:left=NL:E02 traffic_sign:right=NL:E02 parking:both=no parking:both:restriction=no_stopping";
   assertNoMatch: "way highway=residential traffic_sign=NL:E01 parking:both=no parking:left:restriction=no_parking parking:right:restriction=no_parking";
+}
+
+
+/* Traffic signs not following the default syntax with uppercase NL and first letters of sign */
+*[traffic_sign][traffic_sign=~/(?i)\bNL:\w+\d+/][traffic_sign!~/\bNL:[A-Z]+\d+/],
+*[traffic_sign:forward][traffic_sign:forward=~/(?i)\bNL:\w+\d+/][traffic_sign:forward!~/\bNL:[A-Z]+\d+/],
+*[traffic_sign:backward][traffic_sign:backward=~/(?i)\bNL:\w+\d+/][traffic_sign:backward!~/\bNL:[A-Z]+\d+/] {
+  throwOther: tr("{0} zonder hoofdletters waar gangbaar", "{0.tag}");
+  group: tr("NL traffic signs");
+  assertMatch: "way traffic_sign=\"nl:C1\"";
+  assertMatch: "way traffic_sign=\"NL:g12a\"";
+  assertNoMatch: "way traffic_sign=\"NL:C1\"";
+  assertNoMatch: "way traffic_sign=\"NL:G12a\"";
+  assertNoMatch: "way traffic_sign=city_limit";
 }
 
 

@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2022.12.30";
+    version: "2023.01.08";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -790,10 +790,34 @@ way[highway=motorway][maxspeed][maxspeed=~/^1[23]0$/][maxspeed:conditional=~/100
 }
 
 
-/* Mopeds aren't allowed faster than 40 on cycleways (mofas by definition 25) */ 
+/* Speed restrictions imposed by RVV art. 21 */
+way[highway=motorway][maxspeed][maxspeed>130][inside("NL")],
+way[highway=motorway_link][maxspeed][maxspeed>130][inside("NL")],
+way[highway=trunk][maxspeed][maxspeed>100][inside("NL")],
+way[highway=trunk_link][maxspeed][maxspeed>100][inside("NL")],
+way[motorroad?][maxspeed][maxspeed>100][inside("NL")][highway!~/^(motorway(_link)?|construction|proposed)$/],
+way[highway][maxspeed][maxspeed>80][highway!~/^(motorway(_link)?|trunk(_link)?|cycleway|service|busway|construction|proposed|raceway)$/][motorroad!=yes][inside("NL")],
 way[highway=cycleway][maxspeed][maxspeed>40][!motor_vehicle][!vehicle][!access][inside("NL")] {
   throwWarning: tr("{0} together with {1}", "{0.tag}", "{1.tag}");
   group: tr("NL speed limits");
+  assertNoMatch: "way highway=motorway maxspeed=120";
+  assertNoMatch: "way highway=motorway_link motorroad=yes maxspeed=130";
+  assertNoMatch: "way highway=trunk_link maxspeed=100";
+  assertNoMatch: "way highway=tertiary motorroad=yes maxspeed=100";
+  assertNoMatch: "way highway=trunk maxspeed=90";
+  assertNoMatch: "way highway=unclassified maxspeed=80";
+}
+
+
+/* Speed restrictions imposed by RVV art. 22 */
+way[maxspeed:mofa][maxspeed:mofa>25][inside("NL")],
+way[maxspeed:moped][maxspeed:moped>45][inside("NL")],
+way[maxspeed:bus][maxspeed:bus>100][inside("NL")],
+way[maxspeed:trailer][maxspeed:trailer>90][inside("NL")],
+way[maxspeed:hgv][maxspeed:hgv>80][inside("NL")] {
+  throwWarning: tr("{0} overschrijdt de maximumsnelheid van RVV art. 22", "{0.tag}");
+  group: tr("NL speed limits");
+  assertNoMatch: "way highway=unclassified maxspeed:moped=45";
 }
 
 

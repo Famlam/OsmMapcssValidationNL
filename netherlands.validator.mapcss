@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2023.01.08";
+    version: "2023.01.09";
     description: "Rules for The Netherlands only.";
     author: "Famlam";
     min-josm-version: "11424"; /* due to territory selectors */
@@ -795,7 +795,7 @@ way[highway=motorway][maxspeed][maxspeed>130][inside("NL")],
 way[highway=motorway_link][maxspeed][maxspeed>130][inside("NL")],
 way[highway=trunk][maxspeed][maxspeed>100][inside("NL")],
 way[highway=trunk_link][maxspeed][maxspeed>100][inside("NL")],
-way[motorroad?][maxspeed][maxspeed>100][inside("NL")][highway!~/^(motorway(_link)?|construction|proposed)$/],
+way[motorroad=yes][maxspeed][maxspeed>100][inside("NL")][highway!~/^(motorway(_link)?|construction|proposed)$/],
 way[highway][maxspeed][maxspeed>80][highway!~/^(motorway(_link)?|trunk(_link)?|cycleway|service|busway|construction|proposed|raceway)$/][motorroad!=yes][inside("NL")],
 way[highway=cycleway][maxspeed][maxspeed>40][!motor_vehicle][!vehicle][!access][inside("NL")] {
   throwWarning: tr("{0} together with {1}", "{0.tag}", "{1.tag}");

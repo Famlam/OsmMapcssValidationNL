@@ -1,9 +1,9 @@
 meta {
     title: "Dutch specific rules";
-    version: "2023.01.09";
+    version: "2023.01.16";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
-    min-josm-version: "11424"; /* due to territory selectors */
+    min-josm-version: "15317"; /* due to tag_regex() usage */
     link: "https://github.com/Famlam/OsmMapcssValidationNL";
 }
 /* 

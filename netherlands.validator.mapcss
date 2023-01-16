@@ -189,14 +189,14 @@ way[traffic_sign:backward][traffic_sign:backward=~/(^|;)NL:C21\b/][!maxweight:ba
 
 
 /* Eenrichtingsverkeer */
-way[highway][traffic_sign~="NL:C2"][oneway!=yes][regexp_test("^(no)*$", join_list("", tag_regex("^oneway:")))][oneway!=-1][highway!=construction],
-way[highway][traffic_sign~="NL:C02"][oneway!=yes][regexp_test("^(no)*$", join_list("", tag_regex("^oneway:")))][oneway!=-1][highway!=construction],
-way[highway][traffic_sign~="NL:C3"][oneway!=yes][regexp_test("^(no)*$", join_list("", tag_regex("^oneway:")))][oneway!=-1][highway!=construction],
-way[highway][traffic_sign~="NL:C03"][oneway!=yes][regexp_test("^(no)*$", join_list("", tag_regex("^oneway:")))][oneway!=-1][highway!=construction],
-way[highway][traffic_sign:forward~="NL:C3"][oneway!=yes][regexp_test("^(no)*$", join_list("", tag_regex("^oneway:")))][highway!=construction][traffic_sign:backward!~/\bNL:C0?2\b/],
-way[highway][traffic_sign:forward~="NL:C03"][oneway!=yes][regexp_test("^(no)*$", join_list("", tag_regex("^oneway:")))][highway!=construction][traffic_sign:backward!~/\bNL:C0?2\b/],
-way[highway][traffic_sign:backward~="NL:C2"][oneway!=yes][regexp_test("^(no)*$", join_list("", tag_regex("^oneway:")))][highway!=construction],
-way[highway][traffic_sign:backward~="NL:C02"][oneway!=yes][regexp_test("^(no)*$", join_list("", tag_regex("^oneway:")))][highway!=construction] {
+way[highway][traffic_sign~="NL:C2"][oneway!=yes][regexp_test("^(no|0)*$", join_list("", tag_regex("^oneway:")))][oneway!=-1][highway!=construction],
+way[highway][traffic_sign~="NL:C02"][oneway!=yes][regexp_test("^(no|0)*$", join_list("", tag_regex("^oneway:")))][oneway!=-1][highway!=construction],
+way[highway][traffic_sign~="NL:C3"][oneway!=yes][regexp_test("^(no|0)*$", join_list("", tag_regex("^oneway:")))][oneway!=-1][highway!=construction],
+way[highway][traffic_sign~="NL:C03"][oneway!=yes][regexp_test("^(no|0)*$", join_list("", tag_regex("^oneway:")))][oneway!=-1][highway!=construction],
+way[highway][traffic_sign:forward~="NL:C3"][oneway!=yes][regexp_test("^(no|-1|0)*$", join_list("", tag_regex("^oneway:")))][highway!=construction][traffic_sign:backward!~/\bNL:C0?2\b/],
+way[highway][traffic_sign:forward~="NL:C03"][oneway!=yes][regexp_test("^(no|-1|0)*$", join_list("", tag_regex("^oneway:")))][highway!=construction][traffic_sign:backward!~/\bNL:C0?2\b/],
+way[highway][traffic_sign:backward~="NL:C2"][oneway!=yes][regexp_test("^(no|-1|0)*$", join_list("", tag_regex("^oneway:")))][highway!=construction],
+way[highway][traffic_sign:backward~="NL:C02"][oneway!=yes][regexp_test("^(no|-1|0)*$", join_list("", tag_regex("^oneway:")))][highway!=construction] {
   group: tr("NL traffic signs");
   throwWarning: tr("{0} without {1}", "{1.tag}", "{2.tag}");
   assertMatch: "way highway=residential traffic_sign=\"NL:C02\"";
@@ -205,6 +205,7 @@ way[highway][traffic_sign:backward~="NL:C02"][oneway!=yes][regexp_test("^(no)*$"
   assertMatch: "way highway=residential traffic_sign:forward=\"NL:C3\" oneway=-1";
   assertMatch: "way highway=residential traffic_sign=\"NL:C3;NL:OB58\"";
   assertMatch: "way highway=residential traffic_sign:backward=\"NL:C02;NL:OB58\"";
+  assertMatch: "way highway=residential traffic_sign:forward=\"NL:C3\" oneway:motor_vehicle=-1";
   assertNoMatch: "way highway=residential traffic_sign=\"NL:C02;NL:OB58\" oneway=yes";
   assertNoMatch: "way highway=residential traffic_sign=\"NL:C02;NL:OB58\" oneway=-1";
   assertNoMatch: "way highway=residential traffic_sign=\"NL:C3\" oneway:motor_vehicle=yes";

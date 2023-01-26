@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2023.01.16";
+    version: "2023.01.26";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -621,6 +621,7 @@ way[name][highway][name=~/(?i)^roltrap(pen)?$/],
 way[name][highway][name=~/(?i)(rolstoel|invaliden)/],
 way[name][highway][name=~/(?i)(uit?laa[dt]|honden.*wandel|los.?loop)/],
 way[name][highway][name=~/(?i)bus\s?(baan|strook)/][highway!=busway][highway!=service][highway!=construction],
+way[name][highway][name=~/\bbouwweg/],
 node[name][highway][name=~/(?i)^(lift)$/],
 node[name][amenity=drinking_water][name=~/(?i)(drinkwater|\swater|kraan)/],
 node[name][amenity=charging_station][name=~/(?i)(oplaad|laadpunt|laadpaal)/],
@@ -632,6 +633,7 @@ node[name][amenity=charging_station][name=~/(?i)(oplaad|laadpunt|laadpaal)/],
 *[name][leisure=pitch][name=~/(?i)ball?(veld(je)?)?$/][!sport] {
   throwWarning: tr("descriptive name");
   group: tr("NL nomenclature");
+  assertNoMatch: "way highway=unclassified name=Landbouwweg";
 }
 
 *[name][name=~/(?i)(voormalige?)/][!historic][tourism!=information][!landuse][!highway][!boundary][!waterway] {

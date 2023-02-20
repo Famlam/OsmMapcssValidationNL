@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2023.01.26";
+    version: "2023.02.20";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -530,6 +530,17 @@ way[building=terrace][inside("NL")] {
   throwWarning: tr("Adressen ({0}) worden in Nederland individueel geïmporteerd uit de BAG", "{0.key}");
   group: tr("NL deprecated features");
   suggestAlternative: "meerdere addr:housenumber via een BAG importverzoek";
+}
+
+
+/* almost all building geometries in NL can be imported from BAG, so no need for 'node-buildings' */
+area[building][building!=no] ⊇ node[building] {
+  set buildingNodeInBuilding; /* JOSM already warns for this */
+}
+node[building][building!~/^(bridge|bunker|carport|construction|entrance|grandstand|houseboat|hut|no|proposed|roof|ruins|shed|shelter|shrine|static_caravan|storage_tank|tent|wayside_shrine)$/][!seasonal][!ruins][amenity!=shelter][inside("NL")]:unconnected!.buildingNodeInBuilding {
+  throwWarning: tr("{0} on a node", "{0.tag}");
+  group: tr("NL deprecated features");
+  suggestAlternative: "een BAG importverzoek om de geometrie te verkrijgen";
 }
 
 

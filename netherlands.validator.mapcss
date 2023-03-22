@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2023.03.22";
+    version: "2023.03.22.4";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -192,9 +192,9 @@ way[traffic_sign:backward][traffic_sign:backward=~/(^|;)NL:C17\b/][!maxlength:ba
 way[traffic_sign][traffic_sign=~/(^|;)NL:C18\b/][!maxwidth][!/^maxwidth(:forward|:backward|:both_ways)?(:conditional)?$/][highway],
 way[traffic_sign:forward][traffic_sign:forward=~/(^|;)NL:C18\b/][!maxwidth:forward][!/^maxwidth(:forward|:both_ways)?(:conditional)?$/][highway],
 way[traffic_sign:backward][traffic_sign:backward=~/(^|;)NL:C18\b/][!maxwidth:backward][!/^maxwidth(:backward|:both_ways)?(:conditional)?$/][highway],
-way[traffic_sign][traffic_sign=~/(^|;)NL:C19\b/][!maxheight][!/^maxheight(:forward|:backward|:both_ways)?(:conditional)?$/][highway],
-way[traffic_sign:forward][traffic_sign:forward=~/(^|;)NL:C19\b/][!maxheight:forward][!/^maxheight(:forward|:both_ways)?(:conditional)?$/][highway],
-way[traffic_sign:backward][traffic_sign:backward=~/(^|;)NL:C19\b/][!maxheight:backward][!/^maxheight(:backward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign][traffic_sign=~/(^|;)NL:(C19|L0?1)\b/][!maxheight][!/^maxheight(:forward|:backward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign:forward][traffic_sign:forward=~/(^|;)NL:(C19|L0?1)\b/][!maxheight:forward][!/^maxheight(:forward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign:backward][traffic_sign:backward=~/(^|;)NL:(C19|L0?1)\b/][!maxheight:backward][!/^maxheight(:backward|:both_ways)?(:conditional)?$/][highway],
 way[traffic_sign][traffic_sign=~/(^|;)NL:C20\b/][!maxaxleload][!/^maxaxleload(:forward|:backward|:both_ways)?(:conditional)?$/][highway],
 way[traffic_sign:forward][traffic_sign:forward=~/(^|;)NL:C20\b/][!maxaxleload:forward][!/^maxaxleload(:forward|:both_ways)?(:conditional)?$/][highway],
 way[traffic_sign:backward][traffic_sign:backward=~/(^|;)NL:C20\b/][!maxaxleload:backward][!/^maxaxleload(:backward|:both_ways)?(:conditional)?$/][highway],
@@ -203,9 +203,12 @@ way[traffic_sign:forward][traffic_sign:forward=~/(^|;)NL:C21\b/][!maxweight:forw
 way[traffic_sign:backward][traffic_sign:backward=~/(^|;)NL:C21\b/][!maxweight:backward][!/^maxweight(:backward|:both_ways)?(:conditional)?$/][highway] {
   group: tr("NL traffic signs");
   throwWarning: tr("{0} without {1}", "{0.tag}", "{2.key}");
+  assertMatch: "way highway=residential traffic_sign:forward=NL:C19[2.1]";
+  assertMatch: "way highway=residential traffic_sign:forward=NL:J19;NL:L01[4.1];NL:OB108";
   assertMatch: "way highway=residential traffic_sign=NL:C21[2.1]";
   assertMatch: "way highway=residential traffic_sign:forward=NL:C21[2.1]";
-  assertNoMatch: "way highway=residential traffic_sign=NL:C21[2.1] maxweight=2.1";
+  assertNoMatch: "way highway=residential traffic_sign=NL:J19;NL:C21[2.1];NL:OB108 maxweight:conditional=xxx";
+  assertNoMatch: "way highway=residential traffic_sign=NL:C19[2.1] maxheight=2.1";
   assertNoMatch: "way highway=residential traffic_sign:backward=NL:C21[2.1] maxweight:backward=2.1";
 }
 

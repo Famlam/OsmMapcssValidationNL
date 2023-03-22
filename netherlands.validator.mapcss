@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2023.03.22.4";
+    version: "2023.03.22.5";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -176,12 +176,32 @@ way[highway][traffic_sign:backward~="NL:C16"][!foot:backward][!/^foot(:backward|
   assertMatch: "way highway=service traffic_sign=\"NL:C01\"";
   assertMatch: "way highway=service traffic_sign:forward=\"NL:C9;NL:OB58\"";
   assertMatch: "way highway=service traffic_sign:forward=\"NL:C9;NL:OB58\" traffic_sign:backward=\"NL:C1\" access:backward=no";
+  assertMatch: "way highway=service traffic_sign:backward=\"NL:C14\" oneway=yes oneway:bicycle=no";
+  assertNoMatch: "way highway=service traffic_sign:backward=\"NL:C14\" oneway=yes oneway:bicycle=no bicycle:backward=destination";
+  assertNoMatch: "way highway=service traffic_sign:backward=\"NL:C14\" oneway:bicycle=yes";
   assertNoMatch: "way highway=service traffic_sign=\"NL:C01;NL:C16\" access=no";
   assertNoMatch: "way highway=service traffic_sign=\"NL:C01;NL:OB51;NL:OB54\" motor_vehicle=no";
   assertNoMatch: "way highway=service traffic_sign:backward=\"NL:C07;NL:C16\" hgv=no foot=no";
   assertNoMatch: "way highway=service traffic_sign:backward=\"NL:C07;NL:C16\" hgv:backward=no foot=no";
   assertNoMatch: "way highway=track traffic_sign=\"NL:C12\" motor_vehicle=no";
   assertNoMatch: "way highway=track traffic_sign:backward=\"NL:C12\" oneway=yes oneway:bicycle=no";
+}
+
+
+way[traffic_sign][traffic_sign=~/(^|;)NL:C22(\[[A-E]\])?(;|$)/][!/^hazmat(:[A-E])?(:forward|:backward|:both_ways)?(:conditional)?$/][!/^(motor_)?vehicle(:forward|:backward|:both_ways)?(:conditional)?$/][!/^access(:forward|:backward|:both_ways)?(:conditional)?$/][highway!=construction][highway],
+way[traffic_sign:forward][traffic_sign:forward=~/(^|;)NL:C22(\[[A-E]\])?(;|$)/][!/^hazmat(:[A-E])?(:forward|:both_ways)?(:conditional)?$/][!/^(motor_)?vehicle(:forward|:both_ways)?(:conditional)?$/][!/^access(:forward|:both_ways)?(:conditional)?$/][highway!=construction][highway],
+way[traffic_sign:backward][traffic_sign:backward=~/(^|;)NL:C22(\[[A-E]\])?(;|$)/][!/^hazmat(:[A-E])?(:backward|:both_ways)?(:conditional)?$/][!/^(motor_)?vehicle(:backward|:both_ways)?(:conditional)?$/][!/^access(:backward|:both_ways)?(:conditional)?$/][highway!=construction][highway][/^oneway:hazmat/!~/^yes$/] {
+  group: tr("NL traffic signs");
+  throwWarning: tr("{0} without {1} or {2}", "{0.tag}", "hazmat=no/private/destination/...", "hazmat:A-E=no/private/destination/...");
+  assertMatch: "way highway=service traffic_sign=\"NL:C22\"";
+  assertMatch: "way highway=service traffic_sign:forward=\"NL:C22[A];NL:OB58\"";
+  assertMatch: "way highway=service traffic_sign:backward=\"NL:C22[A]\" oneway=yes oneway:hazmat=no";
+  assertNoMatch: "way highway=service traffic_sign=\"NL:C22\" access=no";
+  assertNoMatch: "way highway=service traffic_sign=\"NL:C22a\"";
+  assertNoMatch: "way highway=service traffic_sign=\"NL:C22\" hazmat=no";
+  assertNoMatch: "way highway=service traffic_sign:backward=\"NL:C22[A]\" hazmat:A:backward=no";
+  assertNoMatch: "way highway=service traffic_sign:backward=\"NL:C22[A]\" oneway:hazmat=yes";
+  assertNoMatch: "way highway=service traffic_sign:backward=\"NL:C22[C]\" oneway:hazmat:C=yes";
 }
 
 

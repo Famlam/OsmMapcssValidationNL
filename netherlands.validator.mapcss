@@ -8,7 +8,7 @@ meta {
 }
 /* 
 github: https://github.com/Famlam/OsmMapcssValidationNL
-forum: https://forum.openstreetmap.org/viewtopic.php?id=74817
+forum: https://community.openstreetmap.org/t/mapcss-regels-voor-nederland-josm-validator/95079
 */
 
 
@@ -448,7 +448,7 @@ node["addr:postcode"]["addr:postcode"!~/[0-9]{4} ?[A-Z]{2}/][inside("NL")] {
 /* --------------------------- */
 
 /* Unwanted German style cycleway and footway tagging */
-/* https://forum.openstreetmap.org/viewtopic.php?id=65612 */
+/* https://community.openstreetmap.org/t/duitse-stijl-surface-tagging-op-fietspaden-door-streetcomplete/92572 */
 way[cycleway:surface][surface][highway=cycleway][surface=*"cycleway:surface"][inside("NL")],
 way[footway:surface][surface][highway=footway][surface=*"footway:surface"][inside("NL")] {
   throwWarning: tr("{0} together with {1} and {2}. Remove {0}.", "{0.key}", "{1.key}", "{2.tag}");
@@ -488,7 +488,7 @@ way[/^footway(:left|:right|:both)?:/][sidewalk][sidewalk=~/^(left|right|both|yes
 /* -------------------------------- */
 
 /* cycleway=opposite */
-/* https://forum.openstreetmap.org/viewtopic.php?id=65612 */
+/* https://community.openstreetmap.org/t/cycleway-opposite/86309 */
 way[cycleway=opposite][inside("NL")],
 way[cycleway:left=opposite][inside("NL")],
 way[cycleway:right=opposite][inside("NL")],
@@ -509,7 +509,7 @@ way[cycleway:both][cycleway:both^=opposite_][inside("NL")] {
 
 
 /* sidewalk=none */
-/* https://forum.openstreetmap.org/viewtopic.php?id=58656 */
+/* https://community.openstreetmap.org/t/overbodig-foot-yes-en-sidewalk-none-door-potlatch/79696 */
 way[sidewalk=none][inside("NL")] {
   throwWarning: tr("{0} is deprecated", "{0.tag}");
   group: tr("NL deprecated features");
@@ -519,7 +519,7 @@ way[sidewalk=none][inside("NL")] {
 
 
 /* associatedStreet */
-/* https://forum.openstreetmap.org/viewtopic.php?id=70631 */
+/* https://community.openstreetmap.org/t/problemen-met-associatedstreet-in-josm/91103 */
 relation[type=associatedStreet][inside("NL")]  {
   throwWarning: tr("{0} is deprecated", "{0.tag}");
   group: tr("NL deprecated features");
@@ -529,7 +529,7 @@ relation[type=associatedStreet][inside("NL")]  {
 
 
 /* postal_code */
-/* https://forum.openstreetmap.org/viewtopic.php?id=73675 */
+/* https://community.openstreetmap.org/t/alle-is-in-en-postal-code-tags-verwijderen/93998 */
 way[postal_code][inside("NL")] {
   throwWarning: tr("{0} is deprecated", "{0.tag}");
   group: tr("NL deprecated features");
@@ -538,7 +538,7 @@ way[postal_code][inside("NL")] {
 
 
 /* building=terrace instead of multiple building=house (or leisure=outdoor_seating) */
-/* https://forum.openstreetmap.org/viewtopic.php?id=74992 */
+/* https://community.openstreetmap.org/t/streetcomplete-en-building-terrace/95242 */
 way[building=terrace][inside("NL")] {
   throwWarning: tr("Rijtjeshuizen ({0}) worden in Nederland individueel geïmporteerd uit de BAG", "{0.tag}");
   group: tr("NL deprecated features");
@@ -567,7 +567,7 @@ node[building][building!~/^(bridge|bunker|carport|construction|entrance|grandsta
 
 
 /* is_in */
-/* https://forum.openstreetmap.org/viewtopic.php?id=73675 */
+/* https://community.openstreetmap.org/t/alle-is-in-en-postal-code-tags-verwijderen/93998 */
 *[is_in=NL],
 *[is_in:country][inside("NL")],
 *[is_in:city][inside("NL")],
@@ -581,7 +581,7 @@ node[building][building!~/^(bridge|bunker|carport|construction|entrance|grandsta
 
 
 /* ov-chipkaart spelling */
-/* https://forum.openstreetmap.org/viewtopic.php?pid=863615 */
+/* https://community.openstreetmap.org/t/tolpoortjes-ns-hoe-te-taggen/71223 */
 node[/payment:O[vV][-_]?[cC]hipkaart/] {
   throwWarning: tr("{0} is deprecated", "{0.tag}");
   group: tr("NL deprecated features");
@@ -591,7 +591,7 @@ node[/payment:O[vV][-_]?[cC]hipkaart/] {
 
 
 /* Niet los ingetekende sporen */
-/* https://forum.openstreetmap.org/viewtopic.php?id=55768 */
+/* https://community.openstreetmap.org/t/aantal-tracks-passenger-lines-op-een-railway/76910 */
 /* https://wiki.openstreetmap.org/wiki/OpenRailwayMap/Tagging_in_Netherlands */
 way[railway][tracks][tracks!=1][inside("NL")] {
   throwWarning: tr("Railway lines should be drawn as separate ways per track, rather than one way with {0}", "{1.tag}");
@@ -601,7 +601,7 @@ way[railway][tracks][tracks!=1][inside("NL")] {
 
 
 /* Gebouwnaam op los ingetekende gebouwen (of building:part) is gewoon de naam */
-/* https://forum.openstreetmap.org/viewtopic.php?id=71738 */
+/* https://community.openstreetmap.org/t/huizen-met-een-naam-wat-moeten-we-ermee/92162 */
 way[addr:housename][/^building(:part)?$/][inside("NL")],
 way[building:name][/^building(:part)?$/][inside("NL")] {
   throwWarning: tr("{0} is deprecated", "{0.key}");
@@ -612,7 +612,7 @@ way[building:name][/^building(:part)?$/][inside("NL")] {
 
 /* landuse=education op het grondgebruik rondom scholen e.d. */
 /* Voorbereiding voor deprecated amenity=* verwijderen */
-/* https://forum.openstreetmap.org/viewtopic.php?id=72837 */
+/* https://community.openstreetmap.org/t/taggen-van-scholen-in-nl-naar-aanleiding-van-nieuwe-tag/93211 */
 way[amenity=college][landuse!=education][!building][inside("NL")]:closed,
 way[amenity=university][landuse!=education][!building][inside("NL")]:closed,
 way[amenity=kindergarten][landuse!=education][!building][inside("NL")]:closed,
@@ -808,7 +808,7 @@ way[traffic_sign:backward][!maxspeed:advisory:backward][traffic_sign:backward=~/
 
 
 /* The majority voted to use maxspeed=100 as the default, and maxspeed:conditional=* for the night-time speed on autosnelwegen */
-/* https://forum.openstreetmap.org/viewtopic.php?id=68803 */
+/* https://community.openstreetmap.org/t/verlaging-maximumsnelheid-per-12-16-maart/89357 */
 way[highway=motorway][maxspeed][maxspeed=~/^1[23]0$/][maxspeed:conditional=~/100.+19:00/][inside("NL")] {
   throwWarning: tr("Agreed upon was to use 100 as the maximum speed and {0} as the conditional maximum speed", "{1.value}");
   group: tr("NL speed limits");

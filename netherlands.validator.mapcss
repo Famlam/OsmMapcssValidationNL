@@ -74,26 +74,32 @@ way[highway][traffic_sign~="NL:F21"][hgv=no][highway!=construction] {
 
 
 /* Traffic sign - road types */
+way[highway=steps][traffic_sign=~/(^|;)NL:L301\b/] {
+  set steps;
+}
 way[highway][traffic_sign*="NL:G"][count(split(";NL:G", concat(";", tag("traffic_sign")))) > 2] {
   /* 0 matches: count(split(...))=1; 1 match: count(split(...))=2; etc */
   set multipleGsigns;
 }
 way[highway][traffic_sign~="NL:F13"][highway!=busway][highway!=service][highway!=bus_guideway][highway!=construction],
-way[highway][traffic_sign~="NL:G5"][highway!=living_street][highway!=construction][highway!=path][highway!=cycleway][highway!=pedestrian][highway!=bridleway],
-way[highway][traffic_sign~="NL:G05"][highway!=living_street][highway!=construction][highway!=path][highway!=cycleway][highway!=pedestrian][highway!=bridleway],
+way[highway][traffic_sign~="NL:G5"][highway!=living_street][highway!=construction][highway!=path][highway!=cycleway][highway!=pedestrian][highway!=bridleway][highway!=steps],
+way[highway][traffic_sign~="NL:G05"][highway!=living_street][highway!=construction][highway!=path][highway!=cycleway][highway!=pedestrian][highway!=bridleway][highway!=steps],
 way[highway][traffic_sign~="NL:G7"][highway!=footway][highway!=steps][highway!=pedestrian][highway!=construction]!.multipleGsigns,
 way[highway][traffic_sign~="NL:G07"][highway!=footway][highway!=steps][highway!=pedestrian][highway!=construction]!.multipleGsigns,
-way[highway][traffic_sign~="NL:G9"][highway!=bridleway][highway!=construction]!.multipleGsigns,
-way[highway][traffic_sign~="NL:G09"][highway!=bridleway][highway!=construction]!.multipleGsigns,
-way[highway][traffic_sign~="NL:G11"][highway!=cycleway][highway!=construction]!.multipleGsigns,
-way[highway][traffic_sign~="NL:G12a"][highway!=cycleway][highway!=construction]!.multipleGsigns,
-way[highway][traffic_sign~="NL:G13"][highway!=cycleway][highway!=construction]!.multipleGsigns {
+way[highway][traffic_sign~="NL:G9"][highway!=bridleway][highway!=construction]!.multipleGsigns!.steps,
+way[highway][traffic_sign~="NL:G09"][highway!=bridleway][highway!=construction]!.multipleGsigns!.steps,
+way[highway][traffic_sign~="NL:G11"][highway!=cycleway][highway!=construction]!.multipleGsigns!.steps,
+way[highway][traffic_sign~="NL:G12a"][highway!=cycleway][highway!=construction]!.multipleGsigns!.steps,
+way[highway][traffic_sign~="NL:G13"][highway!=cycleway][highway!=construction]!.multipleGsigns!.steps,
+way[highway][traffic_sign*="NL:L301"][highway!=steps][highway!=construction][traffic_sign=~/(^|;)NL:L301\b/] {
   group: tr("NL traffic signs");
   throwWarning: tr("{0} together with {1}", "{1.tag}", "{0.tag}");
   assertMatch: "way highway=cycleway traffic_sign=NL:G7";
   assertMatch: "way highway=cycleway traffic_sign=NL:G7;OB109";
   assertMatch: "way highway=cycleway traffic_sign=NL:J1;NL:G7;OB109";
   assertMatch: "way highway=cycleway traffic_sign=NL:J1;NL:G7";
+  assertMatch: "way highway=cycleway traffic_sign=NL:L301";
+  assertMatch: "way highway=cycleway traffic_sign=NL:G13;NL:L301-A";
   assertNoMatch: "way highway=cycleway traffic_sign=NL:G13";
   assertNoMatch: "way highway=cycleway traffic_sign=NL:G11;NL:G07";
   assertNoMatch: "way highway=cycleway traffic_sign=NL:G11;OB109;NL:G07";
@@ -101,6 +107,7 @@ way[highway][traffic_sign~="NL:G13"][highway!=cycleway][highway!=construction]!.
   assertNoMatch: "way highway=cycleway traffic_sign=NL:J1;NL:G11;OB109;NL:G07";
   assertNoMatch: "way highway=cycleway traffic_sign=NL:J1;NL:G11;NL:G07;OB109";
   assertNoMatch: "way highway=residential traffic_sign=NL:G12;NL:G10";
+  assertNoMatch: "way highway=steps traffic_sign=NL:G13;NL:L301-B";
 }
 
 way[highway][traffic_sign~="NL:L51"][!cyclestreet][highway!=construction] {

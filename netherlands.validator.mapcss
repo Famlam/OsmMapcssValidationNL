@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2023.03.22.5";
+    version: "2023.03.26";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -382,6 +382,13 @@ way[parking:left:restriction!=no_stopping][traffic_sign:left~="NL:E2"][highway][
   assertNoMatch: "way highway=residential traffic_sign:left=NL:E02 parking:left=parallel";
   assertNoMatch: "way highway=residential traffic_sign:left=NL:E02 traffic_sign:right=NL:E02 parking:both=no parking:both:restriction=no_stopping";
   assertNoMatch: "way highway=residential traffic_sign=NL:E01 parking:both=no parking:left:restriction=no_parking parking:right:restriction=no_parking";
+}
+
+
+/* Unofficial sign: no dogs allowed */
+way[traffic_sign~="NL:L1030"][!dog][highway] {
+  group: tr("NL traffic signs");
+  throwOther: tr("{0} without {1}", "{0.tag}", "{1.key}=*");
 }
 
 
@@ -820,7 +827,7 @@ way[traffic_sign:backward][!maxspeed:advisory:backward][traffic_sign:backward=~/
   throwWarning: tr("{0} without {1}", "{0.tag}", "{1.key}");
   group: tr("NL speed limits");
   assertMatch: "way highway=residential traffic_sign=NL:A01-30";
-  assertMatch: "way highway=residential traffic_sign:forward=NL:A1-30";
+  assertMatch: "way highway=residential traffic_sign:forward=NL:A1-30-ZB";
   assertMatch: "way highway=residential traffic_sign=NL:A04-30";
   assertMatch: "way highway=residential traffic_sign=NL:A4";
   assertMatch: "way highway=residential traffic_sign=NL:A4[60]";

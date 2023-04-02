@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2023.03.26";
+    version: "2023.04.02";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -37,7 +37,11 @@ way[highway=cycleway][traffic_sign~="NL:G12a"][!moped] {
 }
 
 /* note: mind the Amsterdam-case: snorfietsers op de weg */
-way[highway=cycleway][traffic_sign~="NL:G11"][!mofa],
+way[highway=cycleway][traffic_sign~="NL:G11"][!mofa] {
+  group: tr("NL traffic signs");
+  throwOther: tr("{0} without {1}", "{1.tag}", "{2.key}");
+}
+
 way[highway=cycleway][traffic_sign~="NL:G12a"][!mofa] {
   group: tr("NL traffic signs");
   throwWarning: tr("{0} without {1}", "{1.tag}", "{2.key}");

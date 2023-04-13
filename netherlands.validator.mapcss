@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2023.04.02";
+    version: "2023.04.13";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -763,6 +763,18 @@ node[operator][operator!=PostNL][operator=~/(?i)post\W?nl$/][amenity=post_box] {
   assertMatch: "node amenity=post_box operator=\"post nl\"";
   suggestAlternative: "operator=PostNL";
   fixAdd: "operator=PostNL";
+}
+
+
+/* Over het algemeen hebben namen in het Nederlands een hoofdletter */
+*[name][tag("name") == lower(tag("name"))][name=~/^\p{Ll}/][inside("NL")] { /* \p{Ll}=lowercase letters not limited to a-z */
+  throwOther: tr("Eigennaam zonder hoofdletters");
+  group: tr("NL nomenclature");
+  assertNoMatch: "node name=1945";
+  assertNoMatch: "way name=Happy";
+  assertNoMatch: "node name=4heren";
+  assertNoMatch: "node name=\"'t hoekje\"";
+  assertNoMatch: "node name=Çecic";
 }
 
 

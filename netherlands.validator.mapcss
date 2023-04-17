@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2023.04.13";
+    version: "2023.04.17";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -694,6 +694,7 @@ way[name][highway][name=~/\bbouwweg/],
 node[name][highway][name=~/(?i)^(lift)$/],
 node[name][amenity=drinking_water][name=~/(?i)(drinkwater|\swater|kraan)/],
 node[name][amenity=charging_station][name=~/(?i)(oplaad|laadpunt|laadpaal)/],
+*[name][name=~/\b(([Aa]f)?gesloten|[Gg]eopend)\b/],
 *[name][amenity^=parking][name=~/(?i)(parkeren|parkeerplaats|parkeergarage|^garage)$/],
 *[name][name=~/(?i)^gratis\s|gratis\)/],
 *[name][name=~/(?i)(klanten|bezoek(ers)?|medewerkers)\b/][!route],
@@ -702,7 +703,17 @@ node[name][amenity=charging_station][name=~/(?i)(oplaad|laadpunt|laadpaal)/],
 *[name][leisure=pitch][name=~/(?i)ball?(veld(je)?)?$/][!sport] {
   throwWarning: tr("descriptive name");
   group: tr("NL nomenclature");
+  assertMatch: "node amenity=drinking_water name=kraanwater";
+  assertMatch: "node leisure=pitch name=\"voetbalveld\"";
+  assertMatch: "node amenity=parking_entrance name=\"parkeerplaats voor bezoekers\"";
+  assertMatch: "way highway=service name=\"McDonalds drive through\"";
+  assertMatch: "way highway=service name=\"parkeerplaats voor bezoekers\"";
+  assertMatch: "way highway=service name=rolstoelpad";
+  assertMatch: "way highway=service name=\"onverplicht fietspad\"";
+  assertMatch: "node leisure=playground name=\"Abc (gesloten)\"";
+  assertMatch: "way highway=service name=\"fiets- en bromfietspad\"";
   assertNoMatch: "way highway=unclassified name=Landbouwweg";
+  assertNoMatch: "way highway=unclassified name=\"Gesloten Stad\"";
 }
 
 *[name][name=~/(?i)(voormalige?)/][!historic][tourism!=information][!landuse][!highway][!boundary][!waterway] {

@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2023.04.17";
+    version: "2023.04.17.2";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -465,10 +465,11 @@ node[phone=~/^(0031|\+31|0) ?[1-9]( ?[0-9]){10}/][inside("NL")]!.badPhoneNumber 
 
 
 /* address tags on building */
-relation[type=multipolygon][building][/^addr:/][amenity!=place_of_worship][building!~/houseboat|static_caravan/][inside("NL")],
-way[building][/^addr:/][amenity!=place_of_worship][building!~/houseboat|static_caravan/][inside("NL")]:closed {
+relation[type=multipolygon][building][/^addr:(street|housenumber|postcode|city)$/][amenity!=place_of_worship][building!~/houseboat|static_caravan/][inside("NL")],
+way[building][/^addr:(street|housenumber|postcode|city)$/][amenity!=place_of_worship][building!~/houseboat|static_caravan/][inside("NL")]:closed {
   throwWarning: tr("In Nederland is het gebouw niet gekoppeld aan het adres. Het adres is wel gekoppeld aan het gebruiksdoel.");
   group: tr("NL addresses and contacts");
+  assertNoMatch: "relation type=multipolygon building=yes addr:housename=huis"; /* housename has its own warning */
 }
 
 

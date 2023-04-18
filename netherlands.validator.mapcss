@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2023.04.17.2";
+    version: "2023.04.18";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -829,6 +829,29 @@ relation[route][route=~/^((trolley)?bus|light_rail|subway|train|tram)$/][inside(
 }
 relation[route_master][route_master=~/^(trolley)?bus$/][inside("NL")]!.hasNetworkRelation:new {
   throwWarning: tr("{0} not in network relation", "{0.tag}");
+  group: tr("NL routes");
+}
+
+
+/* Exit-only stops not reflected in role */
+relation[type=route][route=~/^((trolley)?bus|light_rail|subway|train|tram)$/]:new                  >[role!=platform_exit_only] *[public_transport=platform][/^(note|ref|description)$/=~/(?i)uitstaphalte/],
+relation[type=route][route=~/^((trolley)?bus|light_rail|subway|train|tram)$/][roundtrip?]:modified >[role!=platform_exit_only] *[public_transport=platform][/^(note|ref|description)$/=~/(?i)uitstaphalte/] {
+  throwWarning: tr("{0} uitstaphalte met route-relatie zonder ''platform_exit_only'' role", "{0.tag}");
+  group: tr("NL routes");
+  set hasExitStopWarning;
+}
+relation[type=route][route=~/^((trolley)?bus|light_rail|subway|train|tram)$/]:new                  >[role!=stop_exit_only] node[public_transport=stop_position][/^(note|ref|description)$/=~/(?i)uitstaphalte/],
+relation[type=route][route=~/^((trolley)?bus|light_rail|subway|train|tram)$/][roundtrip?]:modified >[role!=stop_exit_only] node[public_transport=stop_position][/^(note|ref|description)$/=~/(?i)uitstaphalte/] {
+  throwWarning: tr("{0} uitstaphalte met route-relatie zonder ''stop_exit_only'' role", "{0.tag}");
+  group: tr("NL routes");
+  set hasExitStopWarning;
+}
+relation[type=route][route=~/^((trolley)?bus|light_rail|subway|train|tram)$/]                      >[role!=platform_exit_only] *[public_transport=platform][/^(note|ref|description)$/=~/(?i)uitstaphalte/]!.hasExitStopWarning {
+  throwOther: tr("{0} uitstaphalte met route-relatie zonder ''platform_exit_only'' role", "{0.tag}");
+  group: tr("NL routes");
+}
+relation[type=route][route=~/^((trolley)?bus|light_rail|subway|train|tram)$/]                      >[role!=stop_exit_only] node[public_transport=stop_position][/^(note|ref|description)$/=~/(?i)uitstaphalte/]!.hasExitStopWarning {
+  throwOther: tr("{0} uitstaphalte met route-relatie zonder ''stop_exit_only'' role", "{0.tag}");
   group: tr("NL routes");
 }
 

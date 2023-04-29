@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2023.04.28";
+    version: "2023.04.29";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -930,13 +930,14 @@ way[maxspeed:hgv][maxspeed:hgv>80][inside("NL")] {
 
 
 /* Uncommon maxspeeds (except on private-owned roads) */
-way[maxspeed][maxspeed$=5][maxspeed!=5][maxspeed!=15][highway=~/^(residential|unclassified|tertiary|secondary|primary|trunk|motorway|busway)(_link)?$/][!access][!vehicle][!motor_vehicle][inside("NL")],
+way[maxspeed][maxspeed=~/[1-9]$/][maxspeed!=5][maxspeed!=15][highway=~/^(residential|unclassified|tertiary|secondary|primary|trunk|motorway|busway)(_link)?$/][!access][!vehicle][!motor_vehicle][inside("NL")],
 way[maxspeed=20][highway=~/^(residential|unclassified|tertiary|secondary|primary|trunk|motorway|busway)(_link)?$/][!access][!vehicle][!motor_vehicle][inside("NL")],
 way[maxspeed=40][highway=~/^(residential|unclassified|tertiary|secondary|primary|trunk|motorway|busway)(_link)?$/][!access][!vehicle][!motor_vehicle][inside("NL")] {
   throwWarning: tr("{0} is a non-standard speed limit. Possibly this is an advisory speed limit instead?", "{0.tag}");
   group: tr("NL speed limits");
   assertNoMatch: "way highway=unclassified access=permissive note=eigen_weg maxspeed=25";
   assertNoMatch: "way highway=cycleway maxspeed=40";
+  assertNoMatch: "way highway=residential maxspeed=30";
 }
 
 

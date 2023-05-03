@@ -568,7 +568,7 @@ relation[type=associatedStreet][inside("NL")]  {
 /* postal_code */
 /* https://community.openstreetmap.org/t/alle-is-in-en-postal-code-tags-verwijderen/93998 */
 way[postal_code][inside("NL")] {
-  throwWarning: tr("{0} is deprecated", "{0.tag}");
+  throwWarning: tr("{0} is deprecated", "{0.key}");
   group: tr("NL deprecated features");
   suggestAlternative: "addr:postcode via BAG imports on addresses";
 }
@@ -612,7 +612,7 @@ node[building][building!~/^(bridge|bunker|carport|construction|entrance|grandsta
 *[is_in:province][inside("NL")],
 *[is_in:continent][inside("NL")],
 *[is_in:country_code=NL] {
-  throwWarning: tr("{0} is deprecated", "{0.tag}");
+  throwWarning: tr("{0} is deprecated", "{0.key}");
   group: tr("NL deprecated features");
   fixRemove: "{0.key}";
 }
@@ -621,7 +621,7 @@ node[building][building!~/^(bridge|bunker|carport|construction|entrance|grandsta
 /* ov-chipkaart spelling */
 /* https://community.openstreetmap.org/t/tolpoortjes-ns-hoe-te-taggen/71223 */
 node[/payment:O[vV][-_]?[cC]hipkaart/] {
-  throwWarning: tr("{0} is deprecated", "{0.tag}");
+  throwWarning: tr("{0} is deprecated", "{0.key}");
   group: tr("NL deprecated features");
   suggestAlternative: "payment:ov-chipkaart";
   fixChangeKey: "{0.key}=>payment:ov-chipkaart";

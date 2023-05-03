@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2023.04.30";
+    version: "2023.05.03";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -577,9 +577,10 @@ way[postal_code][inside("NL")] {
 /* building=terrace instead of multiple building=house (or leisure=outdoor_seating) */
 /* https://community.openstreetmap.org/t/streetcomplete-en-building-terrace/95242 */
 way[building=terrace][inside("NL")] {
-  throwWarning: tr("Rijtjeshuizen ({0}) worden in Nederland individueel geïmporteerd uit de BAG", "{0.tag}");
+  throwWarning: tr("Een rij met rijtjeshuizen ({0}) wordt in Nederland per huis geïmporteerd uit de BAG", "{0.tag}");
   group: tr("NL deprecated features");
   suggestAlternative: "building=house via een BAG importverzoek voor huizen";
+  suggestAlternative: "building=house + house=terraced voor een individueel rijtjeshuis";
   suggestAlternative: "leisure=outdoor_seating voor 'terrasjes'";
 }
 

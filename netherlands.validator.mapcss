@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2023.05.03";
+    version: "2023.05.14";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -690,6 +690,16 @@ node[opening_hours="24/7"][amenity=atm][/^(brand|name|operator)$/=~/(?i)^(Geldma
 node[opening_hours="24/7"][amenity=atm][!/^(brand|name|operator)$/][inside("NL")] {
   throwOther: tr("{0} op {1} is onwaarschijnlijk, Geldmaten zijn niet de hele nacht geopend", "{0.tag}", "{1.tag}");
   group: tr("NL deprecated features");
+}
+
+
+/* Seems an issue with iD users to add translated values */
+way[surface][surface=~/stenen$|^hout$|\bbestraa?t(ing)?$|grond$|^puin$|^grind$|zand$/] {
+  throwWarning: tr("unusual value of {0}", "{0.key}");
+  group: tr("NL deprecated features");
+  assertMatch: "way highway=service surface=\"niet bestraat\"";
+  assertMatch: "way highway=service surface=straatstenen";
+  assertNoMatch: "way highway=service surface=paving_stones";
 }
 
 

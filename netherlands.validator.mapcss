@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2023.05.14";
+    version: "2023.05.21";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -571,6 +571,9 @@ way[postal_code][inside("NL")] {
   throwWarning: tr("{0} is deprecated", "{0.key}");
   group: tr("NL deprecated features");
   suggestAlternative: "addr:postcode via BAG imports on addresses";
+  assertMatch: "way highway=residential postal_code=1234";
+  assertMatch: "way building=yes postal_code=1234";
+  fixRemove: "{0.key}";
 }
 
 

@@ -412,17 +412,6 @@ way[traffic_sign~="NL:L1030"][!dog][highway] {
 }
 
 
-/* Non-G7 footway with segregated cannot be correct */
-way[highway=footway][segregated=yes][traffic_sign!~/\bNL:G0?7\b/][inside("NL")] {
-  throwWarning: tr("{0} together with {1}", "{0.tag}", "{1.tag}");
-  group: tr("NL traffic signs");
-  assertNoMatch: "way highway=footway segregated=yes traffic_sign=NL:G7";
-  assertNoMatch: "way highway=footway segregated=yes traffic_sign=NL:G07-ZB";
-  suggestAlternative: "highway=path";
-  suggestAlternative: "highway=cycleway";
-}
-
-
 /* ---------------------------- */
 /* -- Addresses and contacts -- */
 /* ---------------------------- */
@@ -528,6 +517,20 @@ way[/^footway(:left|:right|:both)?:/][sidewalk][sidewalk=~/^(left|right|both|yes
   throwWarning: tr("{0} together with {1}", "{0.key}", "{1.key}");
   group: tr("NL German style tagging");
   suggestAlternative: "sidewalk:*";
+}
+
+
+/* Non-G7 footway with segregated or cycleway cannot be correct */
+way[highway=footway][cycleway][cycleway!=no][cycleway!=lane][traffic_sign!~/\bNL:G0?7\b/][inside("NL")], /* JOSM already warns about cycleway=lane */
+way[highway=footway][segregated=yes][traffic_sign!~/\bNL:G0?7\b/][inside("NL")] {
+  throwWarning: tr("{0} together with {1}", "{0.tag}", "{1.tag}");
+  group: tr("NL German style tagging");
+  assertNoMatch: "way highway=footway segregated=yes traffic_sign=NL:G7";
+  assertNoMatch: "way highway=footway segregated=yes traffic_sign=NL:G07-ZB";
+  assertNoMatch: "way highway=footway cycleway=lane traffic_sign=NL:G07-ZB";
+  assertNoMatch: "way highway=footway cycleway=no";
+  suggestAlternative: "highway=path";
+  suggestAlternative: "highway=cycleway";
 }
 
 

@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2023.05.25";
+    version: "2023.06.07";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -465,8 +465,7 @@ node[phone=~/^(0031|\+31|0) ?[1-9]( ?[0-9]){10}/][inside("NL")]!.badPhoneNumber 
 
 
 /* address tags on building */
-relation[type=multipolygon][building][/^addr:(street|housenumber|postcode|city)$/][amenity!=place_of_worship][building!~/houseboat|static_caravan/][inside("NL")],
-way[building][/^addr:(street|housenumber|postcode|city)$/][amenity!=place_of_worship][building!~/houseboat|static_caravan/][inside("NL")]:closed {
+area[building][/^addr:(street|housenumber|postcode|city)$/][amenity!=place_of_worship][building!~/houseboat|static_caravan/][inside("NL")]:closed {
   throwWarning: tr("In Nederland is het gebouw niet gekoppeld aan het adres. Het adres is wel gekoppeld aan het gebruiksdoel.");
   group: tr("NL addresses and contacts");
   assertNoMatch: "relation type=multipolygon building=yes addr:housename=huis"; /* housename has its own warning */
@@ -591,7 +590,7 @@ way[postal_code][inside("NL")] {
 
 /* building=terrace instead of multiple building=house (or leisure=outdoor_seating) */
 /* https://community.openstreetmap.org/t/streetcomplete-en-building-terrace/95242 */
-way[building=terrace][inside("NL")] {
+area[building=terrace][inside("NL")] {
   throwWarning: tr("Een rij met rijtjeshuizen ({0}) wordt in Nederland per huis geïmporteerd uit de BAG", "{0.tag}");
   group: tr("NL deprecated features");
   suggestAlternative: "building=house via een BAG importverzoek voor huizen";
@@ -655,8 +654,8 @@ way[railway][tracks][tracks!=1][inside("NL")] {
 
 /* Gebouwnaam op los ingetekende gebouwen (of building:part) is gewoon de naam */
 /* https://community.openstreetmap.org/t/huizen-met-een-naam-wat-moeten-we-ermee/92162 */
-way[addr:housename][/^building(:part)?$/][inside("NL")],
-way[building:name][/^building(:part)?$/][inside("NL")] {
+area[addr:housename][/^building(:part)?$/][inside("NL")],
+area[building:name][/^building(:part)?$/][inside("NL")] {
   throwWarning: tr("{0} is deprecated", "{0.key}");
   group: tr("NL deprecated features");
   suggestAlternative: "name=*";
@@ -666,10 +665,10 @@ way[building:name][/^building(:part)?$/][inside("NL")] {
 /* landuse=education op het grondgebruik rondom scholen e.d. */
 /* Voorbereiding voor deprecated amenity=* verwijderen */
 /* https://community.openstreetmap.org/t/taggen-van-scholen-in-nl-naar-aanleiding-van-nieuwe-tag/93211 */
-way[amenity=college][landuse!=education][!building][inside("NL")]:closed,
-way[amenity=university][landuse!=education][!building][inside("NL")]:closed,
-way[amenity=kindergarten][landuse!=education][!building][inside("NL")]:closed,
-way[amenity=school][landuse!=education][!building][inside("NL")]:closed {
+area[amenity=college][landuse!=education][!building][inside("NL")]:closed,
+area[amenity=university][landuse!=education][!building][inside("NL")]:closed,
+area[amenity=kindergarten][landuse!=education][!building][inside("NL")]:closed,
+area[amenity=school][landuse!=education][!building][inside("NL")]:closed {
   throwOther: tr("{0} without {1}", "{0.tag}", "{1.tag}");
   group: tr("NL deprecated features");
   fixAdd: "landuse=education";

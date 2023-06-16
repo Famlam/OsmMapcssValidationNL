@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2023.06.07";
+    version: "2023.06.17";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -764,17 +764,18 @@ node[name][amenity=charging_station][name=~/(?i)(oplaad|laadpunt|laadpaal)/],
 
 
 /* Street-, area or railway names with abbreviations */
-way[name][highway][name=~/\b(Adm|Burg|Dr|Drs|Ds|Gen|Ing|Ir|Mgr|Mr|Past|Prof|St|Weth)\.? [A-Za-z]/][inside("NL")]!.abbrname,
+way[name][highway][name=~/\b(Adm|Br|Burg|Cmdt|Dr|Drs|Ds|Gebr|Gen|Ing|Ir|Jhr|Kard|Kon|Luit|Mej|Mevr|Mgr|Min|Mr|Past|Pr|Pres|Prof|St|Vr|Weth|Zr)\.? [A-Za-z]/][inside("NL")]!.abbrname,
 way[name][highway][name=~/^[A-Z][a-z]{1,4}\. /][inside("NL")]!.abbrname {
   throwWarning: tr("Straatnaam met afkorting");
   group: tr("NL nomenclature");
   assertNoMatch: "way highway=residential name=\"De Visserstraat\"";
   assertNoMatch: "way highway=residential name=\"J.T. de Visserstraat\"";
   assertNoMatch: "node highway=residential name=\"Pieter Cornelisz. Hooftstraat\"";
+  assertNoMatch: "way highway=residential name=\"Wim Kan Dreef\""; /* Afkorting Kan. niet toevoegen */
   set .abbrname;
 }
 
-*[name][place][name=~/\b(Adm|Burg|Dr|Drs|Ds|Gen|Ing|Ir|Mgr|Mr|Past|Prof|St|Weth)\.? [A-Za-z]/][inside("NL")]!.abbrname,
+*[name][place][name=~/\b(Adm|Br|Burg|Cmdt|Dr|Drs|Ds|Gebr|Gen|Ing|Ir|Jhr|Kard|Kon|Luit|Mej|Mevr|Mgr|Min|Mr|Past|Pr|Pres|Prof|St|Vr|Weth|Zr)\.? [A-Za-z]/][inside("NL")]!.abbrname,
 *[name][place][name=~/^[A-Z][a-z]{1,4}\. /][inside("NL")]!.abbrname {
   throwWarning: tr("Gebiedsnaam met afkorting");
   group: tr("NL nomenclature");

@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2023.06.17";
+    version: "2023.06.26";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -464,11 +464,31 @@ node[phone=~/^(0031|\+31|0) ?[1-9]( ?[0-9]){10}/][inside("NL")]!.badPhoneNumber 
 }
 
 
-/* address tags on building */
+/* Address tags on building */
 area[building][/^addr:(street|housenumber|postcode|city)$/][amenity!=place_of_worship][building!~/houseboat|static_caravan/][inside("NL")]:closed {
   throwWarning: tr("In Nederland is het gebouw niet gekoppeld aan het adres. Het adres is wel gekoppeld aan het gebruiksdoel.");
   group: tr("NL addresses and contacts");
   assertNoMatch: "relation type=multipolygon building=yes addr:housename=huis"; /* housename has its own warning */
+  set .addrOnBuilding;
+}
+
+
+/* Addresses should consist of (at least) a street and a housenumber */
+/* Postcode isn't always present; city can be derived from boundaries */
+/* JOSM already complains about missing streets with housenumbers */
+/* Rules for node and area separate to avoid Osmose issue 1766 */
+node[/^addr:(city|postcode)$/][!/(^|.+:)addr:housenumber($|:.+)/][!/(^|.+:)addr:street($|:.+)/][inside("NL")], 
+area[/^addr:(city|postcode)$/][!/(^|.+:)addr:housenumber($|:.+)/][!/(^|.+:)addr:street($|:.+)/][inside("NL")]!.addrOnBuilding,
+node[addr:street][!/(^|.+:)addr:housenumber($|:.+)/][!addr:interpolation][!addr:flats][inside("NL")],
+area[addr:street][!/(^|.+:)addr:housenumber($|:.+)/][!addr:interpolation][!addr:flats][inside("NL")]!.addrOnBuilding {
+  throwWarning: tr("Incomplete address: {0} {1} {2} {3}", any(tag("addr:street"), "[street?]"), any(tag("addr:housenumber"), "[housenumber?]"), any(tag("addr:postcode"), ""), any(tag("addr:city"), ""));
+  group: tr("NL addresses and contacts");
+  assertNoMatch: "node addr:street=XXX addr:housenumber=123 addr:postcode=1234AB addr:city=XXX";
+  assertNoMatch: "node addr:street=XXX addr:flats=1-3 addr:postcode=1234AB addr:city=XXX";
+  assertNoMatch: "node addr:street=XXX proposed:addr:housenumber=123 addr:postcode=1234AB addr:city=XXX";
+  assertNoMatch: "node addr:street=XXX addr:housenumber:construction=123 addr:postcode=1234AB addr:city=XXX";
+  assertNoMatch: "node addr:street=\"Pastoor Simonisplein\" addr:housenumber=2a addr:city=Milheeze amenity=atm"; /* No postcode */
+  assertNoMatch: "node addr:street=Ozingaloane addr:housenumber=1W-5 addr:city=Marrum power=generator"; /* No postcode */
 }
 
 

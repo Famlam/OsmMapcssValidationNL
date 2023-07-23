@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2023.07.20";
+    version: "2023.07.23";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -898,7 +898,7 @@ relation[type=route][route=~/^((trolley)?bus|light_rail|subway|train|tram)$/]   
 
 /* Maximum speeds per road defaults and signage */
 way[highway=living_street][maxspeed!=15][!/^maxspeed(:forward|:backward|:both_ways)?$/][inside("NL")],
-way[living_street=yes][maxspeed!=15][!/^maxspeed(:forward|:backward|:both_ways)?$/][inside("NL")],
+way[living_street=yes][maxspeed!=15][!/^maxspeed(:forward|:backward|:both_ways)?$/][highway!=living_street][inside("NL")],
 way[maxspeed:type="NL:zone30"][maxspeed!=30][maxspeed:both_ways!=30][highway],
 way[maxspeed:type="NL:zone60"][maxspeed!=60][maxspeed:both_ways!=60][highway],
 way[maxspeed:type="NL:urban"][maxspeed!=50][maxspeed:both_ways!=50][highway],

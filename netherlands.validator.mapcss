@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2023.07.23";
+    version: "2023.09.22";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -364,6 +364,40 @@ way[parking:left:restriction!=no_stopping][traffic_sign:left~="NL:E2"][highway][
   assertNoMatch: "way highway=residential traffic_sign:left=NL:E02 parking:left=parallel";
   assertNoMatch: "way highway=residential traffic_sign:left=NL:E02 traffic_sign:right=NL:E02 parking:both=no parking:both:restriction=no_stopping";
   assertNoMatch: "way highway=residential traffic_sign=NL:E01 parking:both=no parking:left:restriction=no_parking parking:right:restriction=no_parking";
+}
+
+
+/* Voorrang bij een versmalling */
+way[highway][traffic_sign~="NL:F5"][!priority][!/^priority:./][highway!=construction],
+way[highway][traffic_sign~="NL:F05"][!priority][!/^priority:./][highway!=construction],
+way[highway][traffic_sign~="NL:F6"][!priority][!/^priority:./][highway!=construction],
+way[highway][traffic_sign~="NL:F06"][!priority][!/^priority:./][highway!=construction] {
+  group: tr("NL traffic signs");
+  throwWarning: tr("{0} without {1} or {2}", "{1.tag}", "{2.key}=forward", "{2.key}=backward");
+  assertMatch: "way highway=residential traffic_sign=\"NL:F6;OB05\"";
+  assertNoMatch: "way highway=residential traffic_sign=\"NL:F6;OB05\" priority:agricultural=forward";
+  assertNoMatch: "way highway=residential traffic_sign=\"NL:F6;NL:F5\" priority=forward";
+}
+way[highway][traffic_sign:forward~="NL:F5"][priority!=backward][/^priority:./!~/backward/][highway!=construction],
+way[highway][traffic_sign:forward~="NL:F05"][priority!=backward][/^priority:./!~/backward/][highway!=construction],
+way[highway][traffic_sign:backward~="NL:F6"][priority!=backward][/^priority:./!~/backward/][highway!=construction],
+way[highway][traffic_sign:backward~="NL:F06"][priority!=backward][/^priority:./!~/backward/][highway!=construction],
+way[highway][traffic_sign:backward~="NL:F5"][priority!=forward][/^priority:./!~/forward/][highway!=construction],
+way[highway][traffic_sign:backward~="NL:F05"][priority!=forward][/^priority:./!~/forward/][highway!=construction],
+way[highway][traffic_sign:forward~="NL:F6"][priority!=forward][/^priority:./!~/forward/][highway!=construction],
+way[highway][traffic_sign:forward~="NL:F06"][priority!=forward][/^priority:./!~/forward/][highway!=construction] {
+  group: tr("NL traffic signs");
+  throwWarning: tr("{0} without {1}", "{1.tag}", "{2.tag}");
+  assertMatch: "way highway=residential traffic_sign:forward=\"NL:F6\"";
+  assertMatch: "way highway=residential traffic_sign:forward=\"NL:F6\" priority=backward";
+  assertMatch: "way highway=residential traffic_sign:forward=\"NL:F5\" priority=forward";
+  assertMatch: "way highway=residential traffic_sign:backward=\"NL:F05\" priority=backward";
+  assertMatch: "way highway=residential traffic_sign:forward=\"NL:F6;OB05\" priority:agricultural=backward";
+  assertNoMatch: "way highway=residential traffic_sign:forward=\"NL:F6\" priority=forward";
+  assertNoMatch: "way highway=residential traffic_sign:backward=\"NL:F6\" priority=backward";
+  assertNoMatch: "way highway=residential traffic_sign:forward=\"NL:F5\" priority=backward";
+  assertNoMatch: "way highway=residential traffic_sign:forward=\"NL:F6\" priority:conditional=\"forward @ (10:00-12:00)\"";
+  assertNoMatch: "way highway=residential traffic_sign:forward=\"NL:F6;OB05\" priority:agricultural=forward";
 }
 
 

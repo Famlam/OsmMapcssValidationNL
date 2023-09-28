@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2023.09.22";
+    version: "2023.09.28";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -429,6 +429,7 @@ way[traffic_sign~="NL:L1030"][!dog][highway] {
 /* Phone numbers - preceding zeros */
 node[contact:phone=~/^(00|\+)31 ?0[0-9]{8,}/],
 node[contact:mobile=~/^(00|\+)31 ?0[0-9]{8,}/],
+node[contact:whatsapp=~/^(00|\+)31 ?0[0-9]{8,}/],
 node[phone=~/^(00|\+)31 ?0[0-9]{8,}/] {
   throwWarning: tr("Invalid tag {0}: country code should not be followed by a 0", "{0.key}");
   group: tr("NL addresses and contacts");
@@ -464,6 +465,7 @@ node[phone=~/^(\+|00)31 ?0?[0-9]{3,7}$/] {
 /* Phone numbers - too many digits */
 node[contact:phone=~/^(0031|\+31|0) ?[1-9]( ?[0-9]){10}/][inside("NL")]!.badPhoneNumber,
 node[contact:mobile=~/^(0031|\+31|0) ?[1-9]( ?[0-9]){10}/][inside("NL")]!.badPhoneNumber,
+node[contact:whatsapp=~/^(0031|\+31|0) ?[1-9]( ?[0-9]){11}/][inside("NL")]!.badPhoneNumber, /* Note: 097 nrs have 12 digits (097123456789 / +3197123456789) but aren't suitable for phone calls */
 node[phone=~/^(0031|\+31|0) ?[1-9]( ?[0-9]){10}/][inside("NL")]!.badPhoneNumber {
   throwWarning: tr("Invalid tag {0}: too many digits (or foreign number, if so: ignore)", "{0.key}");
   group: tr("NL addresses and contacts");
@@ -471,6 +473,8 @@ node[phone=~/^(0031|\+31|0) ?[1-9]( ?[0-9]){10}/][inside("NL")]!.badPhoneNumber 
   assertNoMatch: "node phone=\"+31 6 12345678\"";
   assertNoMatch: "node phone=\"06 12345678\"";
   assertNoMatch: "node phone=\"0800 1234567\""; /* Lang infonr, 11 cijfers */
+  assertNoMatch: "node contact:whatsapp=\"097 123456789\""; /* 097 alleen-data nummer, 12 cijfers */
+  assertNoMatch: "node contact:whatsapp=\"+3197 123456789\""; /* 097 alleen-data nummer, 12 cijfers */
 }
 
 

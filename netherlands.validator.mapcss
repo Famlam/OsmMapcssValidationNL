@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2023.10.05";
+    version: "2023.10.08";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -449,10 +449,10 @@ way[traffic_sign~="NL:L1030"][!dog][highway] {
 /* ---------------------------- */
 
 /* Phone numbers - preceding zeros */
-*[contact:phone=~/^(00|\+)31 ?0[0-9]{8,}/],
-*[contact:mobile=~/^(00|\+)31 ?0[0-9]{8,}/],
-*[contact:whatsapp=~/^(00|\+)31 ?0[0-9]{8,}/],
-*[phone=~/^(00|\+)31 ?0[0-9]{8,}/] {
+*[contact:phone=~/^(00|\+)31 ?0[0-9]{7,}/],
+*[contact:mobile=~/^(00|\+)31 ?0[0-9]{7,}/],
+*[contact:whatsapp=~/^(00|\+)31 ?0[0-9]{7,}/],
+*[phone=~/^(00|\+)31 ?0[0-9]{7,}/] {
   throwWarning: tr("Invalid tag {0}: country code should not be followed by a 0", "{0.key}");
   group: tr("NL addresses and contacts");
   assertMatch: "node phone=\"+31 06123456789\"";
@@ -460,7 +460,7 @@ way[traffic_sign~="NL:L1030"][!dog][highway] {
   assertNoMatch: "node phone=\"00316123456789\"";
   assertNoMatch: "node phone=\"+31 6123456789\"";
   assertNoMatch: "node phone=\"06123456789\"";
-  assertNoMatch: "node phone=\"+31 08008844\""; /* different test */
+  assertMatch: "node phone=\"+31 08008844\"";
   set .badPhoneNumber;
 }
 

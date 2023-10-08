@@ -449,36 +449,42 @@ way[traffic_sign~="NL:L1030"][!dog][highway] {
 /* ---------------------------- */
 
 /* Phone numbers - preceding zeros */
-*[contact:phone=~/^(00|\+)31 ?0[0-9]{7,}/],
-*[contact:mobile=~/^(00|\+)31 ?0[0-9]{7,}/],
-*[contact:whatsapp=~/^(00|\+)31 ?0[0-9]{7,}/],
-*[phone=~/^(00|\+)31 ?0[0-9]{7,}/] {
+*[contact:phone=~/^(00|\+)31 ?0( ?[0-9]){7,}/],
+*[contact:mobile=~/^(00|\+)31 ?0( ?[0-9]){7,}/],
+*[contact:whatsapp=~/^(00|\+)31 ?0( ?[0-9]){7,}/],
+*[phone=~/^(00|\+)31 ?0( ?[0-9]){7,}/] {
   throwWarning: tr("Invalid tag {0}: country code should not be followed by a 0", "{0.key}");
   group: tr("NL addresses and contacts");
-  assertMatch: "node phone=\"+31 06123456789\"";
-  assertMatch: "node phone=\"003106123456789\"";
-  assertNoMatch: "node phone=\"00316123456789\"";
-  assertNoMatch: "node phone=\"+31 6123456789\"";
-  assertNoMatch: "node phone=\"06123456789\"";
+  assertMatch: "node phone=\"+31 0612345678\"";
+  assertMatch: "node phone=\"+31 06 1234 5678\"";
+  assertMatch: "node phone=\"00310612345678\"";
+  assertNoMatch: "node phone=\"0031612345678\"";
+  assertNoMatch: "node phone=\"+31 612345678\"";
+  assertNoMatch: "node phone=\"+31 6 1234 5678\"";
+  assertNoMatch: "node phone=\"0612345678\"";
+  assertNoMatch: "node phone=\"06 12 34 56 78\"";
   assertMatch: "node phone=\"+31 08008844\"";
   set .badPhoneNumber;
 }
 
 
 /* Phone numbers - internationalized national/local numbers */
-*[contact:phone=~/^(\+|00)31 ?0?[0-9]{3,6}$/],
-*[contact:mobile=~/^(\+|00)31 ?0?[0-9]{3,6}$/],
-*[phone=~/^(\+|00)31 ?0?[0-9]{3,6}$/] {
+*[contact:phone=~/^(\+|00)31 ?0?( ?[0-9]){3,6}$/],
+*[contact:mobile=~/^(\+|00)31 ?0?( ?[0-9]){3,6}$/],
+*[phone=~/^(\+|00)31 ?0?( ?[0-9]){3,6}$/] {
   throwWarning: tr("Invalid tag {0}: short phone numbers cannot be used with international prefix (or: wrong phone number length)", "{0.key}");
   group: tr("NL addresses and contacts");
   assertMatch: "node phone=\"+3114024\"";
+  assertMatch: "node phone=\"+31 14 0245\"";
   assertMatch: "node phone=\"+31 140245\"";
   assertMatch: "node phone=\"0031140245\"";
   assertNoMatch: "node phone=\"+318008844\"";
+  assertNoMatch: "node phone=\"+31 800 8844\"";
   assertNoMatch: "node phone=\"00318008844\"";
   assertNoMatch: "node phone=\"0031612345678\"";
   assertNoMatch: "node phone=\"0612345678\"";
   assertNoMatch: "node phone=\"08008844\"";
+  assertNoMatch: "node phone=\"0800 8844\"";
   assertNoMatch: "node phone=\"14024\"";
   assertNoMatch: "node phone=\"140245\"";
   set .badPhoneNumber;
@@ -494,10 +500,12 @@ way[traffic_sign~="NL:L1030"][!dog][highway] {
   group: tr("NL addresses and contacts");
   assertNoMatch: "node phone=\"0031612345678\"";
   assertNoMatch: "node phone=\"+31 6 12345678\"";
+  assertNoMatch: "node phone=\"+31 6 1234 5678\"";
   assertNoMatch: "node phone=\"06 12345678\"";
   assertNoMatch: "node phone=\"0800 1234567\""; /* Lang infonr, 11 cijfers */
   assertNoMatch: "node contact:mobile=\"097 123456789\""; /* 097 nummer, 12 cijfers */
   assertNoMatch: "node contact:whatsapp=\"+3197 123456789\""; /* 097 nummer, 12 cijfers */
+  assertNoMatch: "node contact:whatsapp=\"+31 97 1234 567 89\""; /* 097 nummer, 12 cijfers */
 }
 
 

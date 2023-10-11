@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2023.10.08";
+    version: "2023.10.11";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -78,10 +78,10 @@ way[highway][traffic_sign~="NL:F21"][hgv=no][highway!=construction] {
 
 
 /* Traffic sign - road types */
-way[highway=steps][traffic_sign=~/(^|;)NL:L301\b/] {
+way[highway=steps][traffic_sign=~/(^|; ?)NL:L301\b/] {
   set steps;
 }
-way[highway][traffic_sign*="NL:G"][count(split(";NL:G", concat(";", tag("traffic_sign")))) > 2] {
+way[highway][traffic_sign*="NL:G"][count(split(";NL:G", concat(";", replace(tag("traffic_sign"), " ", "")))) > 2] {
   /* 0 matches: count(split(...))=1; 1 match: count(split(...))=2; etc */
   set multipleGsigns;
 }
@@ -100,7 +100,7 @@ way[highway][traffic_sign~="NL:G09"][highway!=bridleway][highway!=construction]!
 way[highway][traffic_sign~="NL:G11"][highway!=cycleway][highway!=construction]!.multipleGsigns!.steps,
 way[highway][traffic_sign~="NL:G12a"][highway!=cycleway][highway!=construction]!.multipleGsigns!.steps,
 way[highway][traffic_sign~="NL:G13"][highway!=cycleway][highway!=construction]!.multipleGsigns!.steps,
-way[highway][traffic_sign*="NL:L301"][highway!=steps][highway!=construction][traffic_sign=~/(^|;)NL:L301\b/] {
+way[highway][traffic_sign*="NL:L301"][highway!=steps][highway!=construction][traffic_sign=~/(^|; ?)NL:L301\b/] {
   group: tr("NL traffic signs");
   throwWarning: tr("{0} together with {1}", "{1.tag}", "{0.tag}");
   assertMatch: "way highway=cycleway traffic_sign=NL:G7";
@@ -109,6 +109,7 @@ way[highway][traffic_sign*="NL:L301"][highway!=steps][highway!=construction][tra
   assertMatch: "way highway=cycleway traffic_sign=NL:J1;NL:G7";
   assertMatch: "way highway=cycleway traffic_sign=NL:L301";
   assertMatch: "way highway=cycleway traffic_sign=NL:G13;NL:L301-A";
+  assertMatch: "way highway=cycleway traffic_sign=\"NL:G13; NL:L301-A\"";
   assertMatch: "way highway=residential traffic_sign=NL:G5 living_street=yes";
   assertMatch: "way highway=service traffic_sign=NL:G5";
   assertNoMatch: "way highway=cycleway traffic_sign=NL:G13";
@@ -116,9 +117,10 @@ way[highway][traffic_sign*="NL:L301"][highway!=steps][highway!=construction][tra
   assertNoMatch: "way highway=cycleway traffic_sign=NL:G11;OB109;NL:G07";
   assertNoMatch: "way highway=cycleway traffic_sign=NL:G11;NL:G07;OB109";
   assertNoMatch: "way highway=cycleway traffic_sign=NL:J1;NL:G11;OB109;NL:G07";
-  assertNoMatch: "way highway=cycleway traffic_sign=NL:J1;NL:G11;NL:G07;OB109";
+  assertNoMatch: "way highway=cycleway traffic_sign=\"NL:J1; NL:G11; NL:G07; OB109\"";
   assertNoMatch: "way highway=residential traffic_sign=NL:G12;NL:G10";
   assertNoMatch: "way highway=steps traffic_sign=NL:G13;NL:L301-B";
+  assertNoMatch: "way highway=steps traffic_sign=\"NL:G13; NL:L301-B\"";
   assertNoMatch: "way highway=service traffic_sign=NL:G5 living_street=yes";
 }
 
@@ -200,12 +202,13 @@ way[highway][traffic_sign:backward~="NL:C16"][!foot:backward][!/^foot(:backward|
 }
 
 
-way[traffic_sign][traffic_sign=~/(^|;)NL:C22(\[[A-E]\])?(;|$)/][!/^hazmat(:[A-E])?(:forward|:backward|:both_ways)?(:conditional)?$/][!/^(motor_)?vehicle(:forward|:backward|:both_ways)?(:conditional)?$/][!/^access(:forward|:backward|:both_ways)?(:conditional)?$/][highway!=construction][highway],
-way[traffic_sign:forward][traffic_sign:forward=~/(^|;)NL:C22(\[[A-E]\])?(;|$)/][!/^hazmat(:[A-E])?(:forward|:both_ways)?(:conditional)?$/][!/^(motor_)?vehicle(:forward|:both_ways)?(:conditional)?$/][!/^access(:forward|:both_ways)?(:conditional)?$/][highway!=construction][highway],
-way[traffic_sign:backward][traffic_sign:backward=~/(^|;)NL:C22(\[[A-E]\])?(;|$)/][!/^hazmat(:[A-E])?(:backward|:both_ways)?(:conditional)?$/][!/^(motor_)?vehicle(:backward|:both_ways)?(:conditional)?$/][!/^access(:backward|:both_ways)?(:conditional)?$/][highway!=construction][highway][/^oneway:hazmat/!~/^yes$/] {
+way[traffic_sign][traffic_sign=~/(^|; ?)NL:C22(\[[A-E]\])?(;|$)/][!/^hazmat(:[A-E])?(:forward|:backward|:both_ways)?(:conditional)?$/][!/^(motor_)?vehicle(:forward|:backward|:both_ways)?(:conditional)?$/][!/^access(:forward|:backward|:both_ways)?(:conditional)?$/][highway!=construction][highway],
+way[traffic_sign:forward][traffic_sign:forward=~/(^|; ?)NL:C22(\[[A-E]\])?(;|$)/][!/^hazmat(:[A-E])?(:forward|:both_ways)?(:conditional)?$/][!/^(motor_)?vehicle(:forward|:both_ways)?(:conditional)?$/][!/^access(:forward|:both_ways)?(:conditional)?$/][highway!=construction][highway],
+way[traffic_sign:backward][traffic_sign:backward=~/(^|; ?)NL:C22(\[[A-E]\])?(;|$)/][!/^hazmat(:[A-E])?(:backward|:both_ways)?(:conditional)?$/][!/^(motor_)?vehicle(:backward|:both_ways)?(:conditional)?$/][!/^access(:backward|:both_ways)?(:conditional)?$/][highway!=construction][highway][/^oneway:hazmat/!~/^yes$/] {
   group: tr("NL traffic signs");
   throwWarning: tr("{0} without {1} or {2}", "{0.tag}", "hazmat=no/private/destination/...", "hazmat:A-E=no/private/destination/...");
   assertMatch: "way highway=service traffic_sign=\"NL:C22\"";
+  assertMatch: "way highway=service traffic_sign:forward=\"NL:C16; NL:C22[A]; NL:OB58\"";
   assertMatch: "way highway=service traffic_sign:forward=\"NL:C22[A];NL:OB58\"";
   assertMatch: "way highway=service traffic_sign:backward=\"NL:C22[A]\" oneway=yes oneway:hazmat=no";
   assertNoMatch: "way highway=service traffic_sign=\"NL:C22\" access=no";
@@ -218,30 +221,31 @@ way[traffic_sign:backward][traffic_sign:backward=~/(^|;)NL:C22(\[[A-E]\])?(;|$)/
 
 
 /* Voertuiglimieten */
-way[traffic_sign][traffic_sign=~/(^|;)NL:C17\b/][!maxlength][!/^maxlength(:forward|:backward|:both_ways)?(:conditional)?$/][highway],
-way[traffic_sign:forward][traffic_sign:forward=~/(^|;)NL:C17\b/][!maxlength:forward][!/^maxlength(:forward|:both_ways)?(:conditional)?$/][highway],
-way[traffic_sign:backward][traffic_sign:backward=~/(^|;)NL:C17\b/][!maxlength:backward][!/^maxlength(:backward|:both_ways)?(:conditional)?$/][highway],
-way[traffic_sign][traffic_sign=~/(^|;)NL:C18\b/][!maxwidth][!/^maxwidth(:forward|:backward|:both_ways)?(:conditional)?$/][highway],
-way[traffic_sign:forward][traffic_sign:forward=~/(^|;)NL:C18\b/][!maxwidth:forward][!/^maxwidth(:forward|:both_ways)?(:conditional)?$/][highway],
-way[traffic_sign:backward][traffic_sign:backward=~/(^|;)NL:C18\b/][!maxwidth:backward][!/^maxwidth(:backward|:both_ways)?(:conditional)?$/][highway],
-way[traffic_sign][traffic_sign=~/(^|;)NL:(C19|L0?1)\b/][!maxheight][!/^maxheight(:forward|:backward|:both_ways)?(:conditional)?$/][highway],
-way[traffic_sign:forward][traffic_sign:forward=~/(^|;)NL:(C19|L0?1)\b/][!maxheight:forward][!/^maxheight(:forward|:both_ways)?(:conditional)?$/][highway],
-way[traffic_sign:backward][traffic_sign:backward=~/(^|;)NL:(C19|L0?1)\b/][!maxheight:backward][!/^maxheight(:backward|:both_ways)?(:conditional)?$/][highway],
-way[traffic_sign][traffic_sign=~/(^|;)NL:C20\b/][!maxaxleload][!/^maxaxleload(:forward|:backward|:both_ways)?(:conditional)?$/][highway],
-way[traffic_sign:forward][traffic_sign:forward=~/(^|;)NL:C20\b/][!maxaxleload:forward][!/^maxaxleload(:forward|:both_ways)?(:conditional)?$/][highway],
-way[traffic_sign:backward][traffic_sign:backward=~/(^|;)NL:C20\b/][!maxaxleload:backward][!/^maxaxleload(:backward|:both_ways)?(:conditional)?$/][highway],
-way[traffic_sign][traffic_sign=~/(^|;)NL:C21\b/][!maxweight][!/^maxweight(:forward|:backward|:both_ways)?(:conditional)?$/][highway],
-way[traffic_sign:forward][traffic_sign:forward=~/(^|;)NL:C21\b/][!maxweight:forward][!/^maxweight(:forward|:both_ways)?(:conditional)?$/][highway],
-way[traffic_sign:backward][traffic_sign:backward=~/(^|;)NL:C21\b/][!maxweight:backward][!/^maxweight(:backward|:both_ways)?(:conditional)?$/][highway] {
+way[traffic_sign][traffic_sign=~/(^|; ?)NL:C17\b/][!maxlength][!/^maxlength(:forward|:backward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign:forward][traffic_sign:forward=~/(^|; ?)NL:C17\b/][!maxlength:forward][!/^maxlength(:forward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign:backward][traffic_sign:backward=~/(^|; ?)NL:C17\b/][!maxlength:backward][!/^maxlength(:backward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign][traffic_sign=~/(^|; ?)NL:C18\b/][!maxwidth][!/^maxwidth(:forward|:backward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign:forward][traffic_sign:forward=~/(^|; ?)NL:C18\b/][!maxwidth:forward][!/^maxwidth(:forward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign:backward][traffic_sign:backward=~/(^|; ?)NL:C18\b/][!maxwidth:backward][!/^maxwidth(:backward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign][traffic_sign=~/(^|; ?)NL:(C19|L0?1)\b/][!maxheight][!/^maxheight(:forward|:backward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign:forward][traffic_sign:forward=~/(^|; ?)NL:(C19|L0?1)\b/][!maxheight:forward][!/^maxheight(:forward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign:backward][traffic_sign:backward=~/(^|; ?)NL:(C19|L0?1)\b/][!maxheight:backward][!/^maxheight(:backward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign][traffic_sign=~/(^|; ?)NL:C20\b/][!maxaxleload][!/^maxaxleload(:forward|:backward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign:forward][traffic_sign:forward=~/(^|; ?)NL:C20\b/][!maxaxleload:forward][!/^maxaxleload(:forward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign:backward][traffic_sign:backward=~/(^|; ?)NL:C20\b/][!maxaxleload:backward][!/^maxaxleload(:backward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign][traffic_sign=~/(^|; ?)NL:C21\b/][!maxweight][!/^maxweight(:forward|:backward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign:forward][traffic_sign:forward=~/(^|; ?)NL:C21\b/][!maxweight:forward][!/^maxweight(:forward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign:backward][traffic_sign:backward=~/(^|; ?)NL:C21\b/][!maxweight:backward][!/^maxweight(:backward|:both_ways)?(:conditional)?$/][highway] {
   group: tr("NL traffic signs");
   throwWarning: tr("{0} without {1}", "{0.tag}", "{2.key}");
-  assertMatch: "way highway=residential traffic_sign:forward=NL:C19[2.1]";
-  assertMatch: "way highway=residential traffic_sign:forward=NL:J19;NL:L01[4.1];NL:OB108";
-  assertMatch: "way highway=residential traffic_sign=NL:C21[2.1]";
-  assertMatch: "way highway=residential traffic_sign:forward=NL:C21[2.1]";
-  assertNoMatch: "way highway=residential traffic_sign=NL:J19;NL:C21[2.1];NL:OB108 maxweight:conditional=xxx";
-  assertNoMatch: "way highway=residential traffic_sign=NL:C19[2.1] maxheight=2.1";
-  assertNoMatch: "way highway=residential traffic_sign:backward=NL:C21[2.1] maxweight:backward=2.1";
+  assertMatch: "way highway=residential traffic_sign:forward=\"NL:C19[2.1]\"";
+  assertMatch: "way highway=residential traffic_sign:forward=\"NL:J19;NL:L01[4.1];NL:OB108\"";
+  assertMatch: "way highway=residential traffic_sign:forward=\"NL:J19; NL:L01[4.1]; NL:OB108\"";
+  assertMatch: "way highway=residential traffic_sign=\"NL:C21[2.1]\"";
+  assertMatch: "way highway=residential traffic_sign:forward=\"NL:C21[2.1]\"";
+  assertNoMatch: "way highway=residential traffic_sign=\"NL:J19;NL:C21[2.1];NL:OB108\" maxweight:conditional=xxx";
+  assertNoMatch: "way highway=residential traffic_sign=\"NL:C19[2.1]\" maxheight=2.1";
+  assertNoMatch: "way highway=residential traffic_sign:backward=\"NL:C21[2.1]\" maxweight:backward=2.1";
 }
 
 
@@ -976,22 +980,24 @@ way[maxspeed:type="NL:rural"][maxspeed!=80][maxspeed:both_ways!=80][highway]{
 }
 
 way[maxspeed:type][!maxspeed][maxspeed:type^="NL:zone"][!maxspeed:both_ways][maxspeed:type!~/^NL:zone[36]0$/][highway],
-way[traffic_sign][!maxspeed][traffic_sign=~/(^|;)NL:A0?1-/][!/^maxspeed(:forward|:backward|:both_ways)?(:conditional)?$/][highway],
-way[traffic_sign:forward][!maxspeed:forward][traffic_sign:forward=~/(^|;)NL:A0?1-/][!/^maxspeed(:forward|:both_ways)?(:conditional)?$/][highway],
-way[traffic_sign:backward][!maxspeed:backward][traffic_sign:backward=~/(^|;)NL:A0?1-/][!/^maxspeed(:backward|:both_ways)?(:conditional)?$/][highway],
-way[traffic_sign][!maxspeed:advisory][traffic_sign=~/(^|;)NL:A0?4\b/][!/^maxspeed:advisory(:forward|:backward|:both_ways)?(:conditional)?$/][highway],
-way[traffic_sign:forward][!maxspeed:advisory:forward][traffic_sign:forward=~/(^|;)NL:A0?4\b/][!/^maxspeed:advisory(:forward|:both_ways)?(:conditional)?$/][highway],
-way[traffic_sign:backward][!maxspeed:advisory:backward][traffic_sign:backward=~/(^|;)NL:A0?4\b/][!/^maxspeed:advisory(:backward|:both_ways)?(:conditional)?$/][highway] {
+way[traffic_sign][!maxspeed][traffic_sign=~/(^|; ?)NL:A0?1-/][!/^maxspeed(:forward|:backward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign:forward][!maxspeed:forward][traffic_sign:forward=~/(^|; ?)NL:A0?1-/][!/^maxspeed(:forward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign:backward][!maxspeed:backward][traffic_sign:backward=~/(^|; ?)NL:A0?1-/][!/^maxspeed(:backward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign][!maxspeed:advisory][traffic_sign=~/(^|; ?)NL:A0?4\b/][!/^maxspeed:advisory(:forward|:backward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign:forward][!maxspeed:advisory:forward][traffic_sign:forward=~/(^|; ?)NL:A0?4\b/][!/^maxspeed:advisory(:forward|:both_ways)?(:conditional)?$/][highway],
+way[traffic_sign:backward][!maxspeed:advisory:backward][traffic_sign:backward=~/(^|; ?)NL:A0?4\b/][!/^maxspeed:advisory(:backward|:both_ways)?(:conditional)?$/][highway] {
   throwWarning: tr("{0} without {1}", "{0.tag}", "{1.key}");
   group: tr("NL speed limits");
   assertMatch: "way highway=residential traffic_sign=NL:A01-30";
+  assertMatch: "way highway=residential traffic_sign=\"NL:C16;NL:A01-30\"";
+  assertMatch: "way highway=residential traffic_sign=\"NL:C16; NL:A01-30\"";
   assertMatch: "way highway=residential traffic_sign:forward=NL:A1-30-ZB";
   assertMatch: "way highway=residential traffic_sign=NL:A04-30";
   assertMatch: "way highway=residential traffic_sign=NL:A4";
-  assertMatch: "way highway=residential traffic_sign=NL:A4[60]";
+  assertMatch: "way highway=residential traffic_sign=\"NL:A4[60]\"";
   assertNoMatch: "way highway=residential traffic_sign:forward=NL:A1-30 maxspeed:forward=30";
   assertNoMatch: "way highway=residential traffic_sign=NL:A01-30 maxspeed=30";
-  assertNoMatch: "way highway=residential traffic_sign=NL:A4[50] maxspeed:advisory:both_ways=50";
+  assertNoMatch: "way highway=residential traffic_sign=\"NL:A4[50]\" maxspeed:advisory:both_ways=50";
 }
 
 

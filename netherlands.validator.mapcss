@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2023.10.11";
+    version: "2023.10.15";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -781,6 +781,37 @@ way[surface][surface=~/stenen$|^hout$|\bbestraa?t(ing)?$|grond$|^puin$|^grind$|z
   assertMatch: "way highway=service surface=\"niet bestraat\"";
   assertMatch: "way highway=service surface=straatstenen";
   assertNoMatch: "way highway=service surface=paving_stones";
+}
+
+
+/* Based on a majority vote, paving_stones:30 should no longer be used */
+/* https://community.openstreetmap.org/t/paving-stones-30-en-gebruik/104143 */
+*[surface][surface=~/^paving_stones:([1-9])0$/][inside("NL")] {
+  /* Difference with JOSM rule in deprecated.mapcss is the agreed upon tagging conversion */
+  throwWarning: tr("{0} is deprecated", "{0.tag}");
+  group: tr("NL deprecated features");
+  suggestAlternative: "surface=paving_stones + paving_stones:shape=square + paving_stones:length=[length in meter, e.g. 0.3]"; /* No specific suggestAlternative, see JOSM#23206 */
+  fixAdd: "surface=paving_stones";
+  fixAdd: "paving_stones:shape=square";
+  fixAdd: concat("paving_stones:length=0.", get(regexp_match("^paving_stones:([1-9])0$", tag("surface")), 1));
+  assertNoMatch: "way highway=footway surface=paving_stones";
+}
+*[/^(.+):surface$/][/^(.+):surface$/=~/^paving_stones:([1-9])0$/][count(tag_regex("^(.+):surface$")) == 1][inside("NL")] {
+  throwWarning: tr("{0} is deprecated", "{0.tag}");
+  group: tr("NL deprecated features");
+  suggestAlternative: "*:surface=paving_stones + *:paving_stones:shape=square + *:paving_stones:length=[length in meter, e.g. 0.3]"; /* No specific suggestAlternative, see JOSM#23206 */
+  assertNoMatch: "way highway=residential sidewalk:surface=paving_stones cycleway:surface=paving_stones:20"; /* We can't be sure we get the same element in {0.*} as in {1.*} as in tag_regex(...) */
+  assertNoMatch: "way highway=residential sidewalk:surface=paving_stones:30 cycleway:surface=paving_stones:20"; /* We can't be sure we get the same element in {0.*} as in {1.*} as in tag_regex(...) */
+  set .completedSurfacePavingStonesNumber;
+  /* Enable fixes 1 year after https://josm.openstreetmap.de/ticket/23238 is solved. Remember to update min-josm-version (and to check if they actually work :) ) */
+  /* fixAdd: concat(get(regexp_match("^(.+):surface$", "{0.key}"), 1), ":paving_stones:shape=square"); */
+  /* fixAdd: concat(get(regexp_match("^(.+):surface$", "{0.key}"), 1), ":paving_stones:length=0.", get(regexp_match("^paving_stones:([1-9])0$", get(tag_regex("^(.+):surface$"), 0)), 1)); */
+  /* fixAdd: "{0.key}=paving_stones"; */
+}
+*[/^(.+):surface$/=~/^paving_stones:([1-9])0$/][inside("NL")]!.completedSurfacePavingStonesNumber {
+  throwWarning: tr("{0} is deprecated", "*:surface=paving_stones:NN");
+  group: tr("NL deprecated features");
+  suggestAlternative: "*:surface=paving_stones + *:paving_stones:shape=square + *:paving_stones:length=[length in meter, e.g. 0.3]";
 }
 
 

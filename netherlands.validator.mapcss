@@ -804,7 +804,7 @@ way[surface][surface=~/stenen$|^hout$|\bbestraa?t(ing)?$|grond$|^puin$|^grind$|z
   assertNoMatch: "way highway=residential sidewalk:surface=paving_stones cycleway:surface=paving_stones:20"; /* We can't be sure we get the same element in {0.*} as in {1.*} as in tag_regex(...) */
   assertNoMatch: "way highway=residential sidewalk:surface=paving_stones:30 cycleway:surface=paving_stones:20"; /* We can't be sure we get the same element in {0.*} as in {1.*} as in tag_regex(...) */
   set .completedSurfacePavingStonesNumber;
-  /* Enable fixes 1 year after https://josm.openstreetmap.de/ticket/23238 is solved. Remember to update min-josm-version (and to check if they actually work :) ) */
+  /* Enable fixes Dec 5, 2024, 1 year after the fix for josm.openstreetmap.de/ticket/23238 was released. Remember to update min-josm-version to 18875 */
   /* fixAdd: concat(get(regexp_match("^(.+):surface$", "{0.key}"), 1), ":paving_stones:shape=square"); */
   /* fixAdd: concat(get(regexp_match("^(.+):surface$", "{0.key}"), 1), ":paving_stones:length=0.", get(regexp_match("^paving_stones:([1-9])0$", get(tag_regex("^(.+):surface$"), 0)), 1)); */
   /* fixAdd: "{0.key}=paving_stones"; */

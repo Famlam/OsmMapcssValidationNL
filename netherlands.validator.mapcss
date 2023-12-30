@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2023.10.15";
+    version: "2023.12.30";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -724,8 +724,24 @@ way[railway][tracks][tracks!=1][inside("NL")] {
 
 /* Gebouwnaam op los ingetekende gebouwen (of building:part) is gewoon de naam */
 /* https://community.openstreetmap.org/t/huizen-met-een-naam-wat-moeten-we-ermee/92162 */
-area[addr:housename][/^building(:part)?$/][inside("NL")],
-area[building:name][/^building(:part)?$/][inside("NL")] {
+area[addr:housename][/^building(:part)?$/][inside("NL")][!name],
+area[building:name][/^building(:part)?$/][inside("NL")][!name] {
+  throwWarning: tr("{0} is deprecated", "{0.key}");
+  group: tr("NL deprecated features");
+  suggestAlternative: "name=*";
+  fixChangeKey: "{0.key}=>name";
+  set .housenameWithFix;
+}
+area[addr:housename][/^building(:part)?$/][inside("NL")][name=*"addr:housename"]!.housenameWithFix,
+area[building:name][/^building(:part)?$/][inside("NL")][name=*"building:name"]!.housenameWithFix {
+  throwWarning: tr("{0} is deprecated", "{0.key}");
+  group: tr("NL deprecated features");
+  suggestAlternative: "name=*";
+  fixRemove: "{0.key}";
+  set .housenameWithFix;
+}
+area[addr:housename][/^building(:part)?$/][inside("NL")][name]!.housenameWithFix,
+area[building:name][/^building(:part)?$/][inside("NL")][name]!.housenameWithFix {
   throwWarning: tr("{0} is deprecated", "{0.key}");
   group: tr("NL deprecated features");
   suggestAlternative: "name=*";

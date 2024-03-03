@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2023.12.30";
+    version: "2024.03.03";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -80,7 +80,11 @@ way[highway][traffic_sign~="NL:F21"][hgv=no][highway!=construction] {
 
 /* Traffic sign - road types */
 way[highway=steps][traffic_sign=~/(^|; ?)NL:L301\b/] {
-  set steps;
+  set .markedSteps;
+}
+way[highway=steps][ramp=yes],
+way[highway=steps][ramp:bicycle=yes] {
+  set .stepsWithBicycleRamp;
 }
 way[highway][traffic_sign*="NL:G"][count(split(";NL:G", concat(";", replace(tag("traffic_sign"), " ", "")))) > 2] {
   /* 0 matches: count(split(...))=1; 1 match: count(split(...))=2; etc */
@@ -96,11 +100,11 @@ way[highway][traffic_sign~="NL:G7"][highway!=footway][highway!=steps][highway!=p
 way[highway][traffic_sign~="NL:G07"][highway!=footway][highway!=steps][highway!=pedestrian][highway!=construction]!.multipleGsigns,
 way[highway][traffic_sign~="NL:G7-ZB"][highway!=footway][highway!=steps][highway!=pedestrian][highway!=construction]!.multipleGsigns,
 way[highway][traffic_sign~="NL:G07-ZB"][highway!=footway][highway!=steps][highway!=pedestrian][highway!=construction]!.multipleGsigns,
-way[highway][traffic_sign~="NL:G9"][highway!=bridleway][highway!=construction]!.multipleGsigns!.steps,
-way[highway][traffic_sign~="NL:G09"][highway!=bridleway][highway!=construction]!.multipleGsigns!.steps,
-way[highway][traffic_sign~="NL:G11"][highway!=cycleway][highway!=construction]!.multipleGsigns!.steps,
-way[highway][traffic_sign~="NL:G12a"][highway!=cycleway][highway!=construction]!.multipleGsigns!.steps,
-way[highway][traffic_sign~="NL:G13"][highway!=cycleway][highway!=construction]!.multipleGsigns!.steps,
+way[highway][traffic_sign~="NL:G9"][highway!=bridleway][highway!=construction]!.multipleGsigns!.markedSteps,
+way[highway][traffic_sign~="NL:G09"][highway!=bridleway][highway!=construction]!.multipleGsigns!.markedSteps,
+way[highway][traffic_sign~="NL:G11"][highway!=cycleway][highway!=construction]!.multipleGsigns!.markedSteps!.stepsWithBicycleRamp,
+way[highway][traffic_sign~="NL:G12a"][highway!=cycleway][highway!=construction]!.multipleGsigns!.markedSteps,
+way[highway][traffic_sign~="NL:G13"][highway!=cycleway][highway!=construction]!.multipleGsigns!.markedSteps!.stepsWithBicycleRamp,
 way[highway][traffic_sign*="NL:L301"][highway!=steps][highway!=construction][traffic_sign=~/(^|; ?)NL:L301\b/] {
   group: tr("NL traffic signs");
   throwWarning: tr("{0} together with {1}", "{1.tag}", "{0.tag}");
@@ -122,6 +126,7 @@ way[highway][traffic_sign*="NL:L301"][highway!=steps][highway!=construction][tra
   assertNoMatch: "way highway=residential traffic_sign=NL:G12;NL:G10";
   assertNoMatch: "way highway=steps traffic_sign=NL:G13;NL:L301-B";
   assertNoMatch: "way highway=steps traffic_sign=\"NL:G13; NL:L301-B\"";
+  assertNoMatch: "way highway=steps traffic_sign=NL:G13 ramp:bicycle=yes";
   assertNoMatch: "way highway=service traffic_sign=NL:G5 living_street=yes";
 }
 

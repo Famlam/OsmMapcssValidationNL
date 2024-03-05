@@ -958,7 +958,7 @@ node[operator][operator!=PostNL][operator=~/(?i)post\W?nl$/][amenity=post_box] {
   throwWarning: tr("{0} without {1}", "{0.tag}", "{1.tag}");
   group: tr("NL heritage");
   fixAdd: "heritage:operator=rce";
-  assertNoMatch: "node heritage=2 heritage:operator=\"rce; Stiching X\"";
+  assertNoMatch: "node heritage=2 heritage:operator=\"rce; Stichting ABCDE\"";
 }
 *[ref:rce][!heritage][!heritage:operator][inside("NL")],
 *[ref:rce][!heritage:operator][heritage][heritage!=2][inside("NL")] {

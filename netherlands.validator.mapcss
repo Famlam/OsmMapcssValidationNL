@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2024.03.03";
+    version: "2024.03.05";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -954,18 +954,19 @@ node[operator][operator!=PostNL][operator=~/(?i)post\W?nl$/][amenity=post_box] {
 /* --------- Erfgoed --------- */
 /* --------------------------- */
 
-*[heritage=1][heritage:operator!=whc],
-*[heritage=2][heritage:operator!=rce][inside("NL")] {
+*[heritage=2][heritage:operator!=rce][heritage:operator!~/(^|; ?)rce(;|$)/][inside("NL")] {
   throwWarning: tr("{0} without {1}", "{0.tag}", "{1.tag}");
   group: tr("NL heritage");
-  fixAdd: "{1.tag}";
-}
-*[ref:rce][!heritage:operator] {
-  throwWarning: tr("{0} without {1}", "{0.tag}", "{1.key}=*");
-  group: tr("NL heritage");
   fixAdd: "heritage:operator=rce";
+  assertNoMatch: "node heritage=2 heritage:operator=\"rce; Stiching X\"";
 }
-*[heritage:operator=rce][!heritage] {
+*[ref:rce][!heritage][!heritage:operator][inside("NL")],
+*[ref:rce][!heritage:operator][heritage][heritage!=2][inside("NL")] {
+  /* Could be heritage=1, or heritage=2;8, or ... */
+  throwOther: tr("{0} without {1}", "{0.tag}", "{1.key}=*");
+  group: tr("NL heritage");
+}
+*[heritage:operator=rce][!heritage][inside("NL")] {
   throwWarning: tr("{0} without {1}", "{0.tag}", "{1.key}=*");
   group: tr("NL heritage");
   fixAdd: "heritage=2";

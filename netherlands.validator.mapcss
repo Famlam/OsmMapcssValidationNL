@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2024.03.05";
+    version: "2024.04.07";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -834,6 +834,18 @@ way[surface][surface=~/stenen$|^hout$|\bbestraa?t(ing)?$|grond$|^puin$|^grind$|z
   throwWarning: tr("{0} is deprecated", "*:surface=paving_stones:NN");
   group: tr("NL deprecated features");
   suggestAlternative: "*:surface=paving_stones + *:paving_stones:shape=square + *:paving_stones:length=[length in meter, e.g. 0.3]";
+}
+
+
+/* There is no traffic sign for (motor_)vehicle=designated, most cases seem to be *=yes or a typo for *=destination */
+node[vehicle=designated][!amenity][!vehicle:conditional][inside("NL")],
+node[motor_vehicle=designated][!amenity][!motor_vehicle:conditional][inside("NL")] {
+  throwWarning: tr("{0} on a node, such a traffic sign does not exist. Possibly a typo for destination?", "{0.tag}");
+  group: tr("NL deprecated features");
+  suggestAlternative: "{0.key}=yes";
+  suggestAlternative: "{0.key}=destination";
+  assertNoMatch: "node motor_vehicle=designated amenity=parking_entrance";
+  assertNoMatch: "node motor_vehicle=designated amenity=charging_station";
 }
 
 

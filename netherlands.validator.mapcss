@@ -849,6 +849,17 @@ node[motor_vehicle=designated][!amenity][!motor_vehicle:conditional][inside("NL"
 }
 
 
+/* Vehicle=no on a cycleway prevents bicycle access, usually this is a mistake */
+/* https://community.openstreetmap.org/t/verwijderen-vehicle-no-op-fietspaden/97576 */
+way[highway=cycleway][vehicle=no][!bicycle][traffic_sign!~/\bNL:(C0?1|C0?9|C14|C15|D103|D104)\b/][!vehicle:conditional][!bicycle:conditional][inside("NL")] {
+  throwWarning: tr("Suspicious combination: {0} together with {1} equals {2}", "{0.tag}", "{1.tag}", "{2.key}={1.value}");
+  group: tr("NL deprecated features");
+  assertNoMatch: "way highway=cycleway vehicle=no traffic_sign=NL:C01";
+  assertNoMatch: "way highway=cycleway vehicle=no traffic_sign=NL:D104 moped=designated";
+  assertNoMatch: "way highway=cycleway vehicle=no bicycle:conditional=\"yes @ (sunrise-sunset)\"";
+}
+
+
 /* --------------------------- */
 /* ---------- Names ---------- */
 /* --------------------------- */

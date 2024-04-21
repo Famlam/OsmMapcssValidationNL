@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2024.04.07";
+    version: "2024.04.21";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -1047,13 +1047,32 @@ relation[type=route][route=~/^((trolley)?bus|light_rail|subway|train|tram)$/]   
 /* Maximum speeds per road defaults and signage */
 way[highway=living_street][maxspeed!=15][!/^maxspeed(:forward|:backward|:both_ways)?$/][inside("NL")],
 way[living_street=yes][maxspeed!=15][!/^maxspeed(:forward|:backward|:both_ways)?$/][highway!=living_street][inside("NL")],
-way[maxspeed:type="NL:zone30"][maxspeed!=30][maxspeed:both_ways!=30][highway],
-way[maxspeed:type="NL:zone60"][maxspeed!=60][maxspeed:both_ways!=60][highway],
-way[maxspeed:type="NL:urban"][maxspeed!=50][maxspeed:both_ways!=50][highway],
-way[maxspeed:type="NL:rural"][maxspeed!=80][maxspeed:both_ways!=80][highway]{
+way[maxspeed:type="NL:zone30"][maxspeed!=30][!maxspeed][maxspeed:both_ways!=30][highway],
+way[maxspeed:type="NL:zone60"][maxspeed!=60][!maxspeed][maxspeed:both_ways!=60][highway],
+way[maxspeed:type="NL:urban"][maxspeed!=50][!maxspeed][maxspeed:both_ways!=50][highway][highway!=cycleway],
+way[maxspeed:type="NL:rural"][maxspeed!=80][!maxspeed][maxspeed:both_ways!=80][highway][highway!=cycleway] {
   throwWarning: tr("{0} without {1}", "{0.tag}", "{1.tag}");
   group: tr("NL speed limits");
+  assertMatch: "way highway=residential maxspeed:type=NL:rural";
+  assertNoMatch: "way highway=residential source:maxspeed=NL:rural"; /* Handled by JOSM */
+  assertNoMatch: "way highway=cycleway maxspeed:type=NL:rural";
   assertNoMatch: "way highway=living_street maxspeed=10 traffic_sign=\"NL:A01-10\"";
+  assertNoMatch: "way highway=living_street maxspeed=18"; /* Handled by different rule */
+}
+
+way[maxspeed:type="NL:zone30"][maxspeed][maxspeed!=30][highway],
+way[maxspeed:type="NL:zone60"][maxspeed][maxspeed!=60][highway],
+way[maxspeed:type="NL:urban"][maxspeed][maxspeed!=50][highway][highway!=cycleway],
+way[maxspeed:type="NL:rural"][maxspeed][maxspeed!=80][highway][highway!=cycleway],
+way[source:maxspeed="NL:zone30"][maxspeed][maxspeed!=30][highway],
+way[source:maxspeed="NL:zone60"][maxspeed][maxspeed!=60][highway],
+way[source:maxspeed="NL:urban"][maxspeed][maxspeed!=50][highway][highway!=cycleway],
+way[source:maxspeed="NL:rural"][maxspeed][maxspeed!=80][highway][highway!=cycleway] {
+  throwWarning: tr("{0} together with {1}", "{0.tag}", "{1.tag}");
+  group: tr("NL speed limits");
+  assertMatch: "way highway=primary maxspeed:type=NL:rural maxspeed=50";
+  assertMatch: "way highway=primary source:maxspeed=NL:zone60 maxspeed=50";
+  assertNoMatch: "way highway=primary maxspeed:type=NL:zone30"; /* Handled by different rule */
 }
 
 way[maxspeed:type][!maxspeed][maxspeed:type^="NL:zone"][!maxspeed:both_ways][maxspeed:type!~/^NL:zone[36]0$/][highway],
@@ -1072,9 +1091,11 @@ way[traffic_sign:backward][!maxspeed:advisory:backward][traffic_sign:backward=~/
   assertMatch: "way highway=residential traffic_sign=NL:A04-30";
   assertMatch: "way highway=residential traffic_sign=NL:A4";
   assertMatch: "way highway=residential traffic_sign=\"NL:A4[60]\"";
+  assertMatch: "way highway=residential maxspeed:type=\"NL:zone20\"";
   assertNoMatch: "way highway=residential traffic_sign:forward=NL:A1-30 maxspeed:forward=30";
   assertNoMatch: "way highway=residential traffic_sign=NL:A01-30 maxspeed=30";
   assertNoMatch: "way highway=residential traffic_sign=\"NL:A4[50]\" maxspeed:advisory:both_ways=50";
+  assertNoMatch: "way highway=residential maxspeed:type=\"NL:zone20\" maxspeed=20";
 }
 
 
@@ -1117,10 +1138,19 @@ way[maxspeed:hgv][maxspeed:hgv>80][inside("NL")] {
 }
 
 
+/* Speed restrictions imposed by RVV art. 45 */
+way[highway=living_street][maxspeed][maxspeed>15][inside("NL")][maxspeed<=20], /* JOSM warns for larger than 20 */
+way[living_street=yes][maxspeed][maxspeed>15][highway!=living_street][inside("NL")] {
+  throwWarning: tr("{0} together with {1}", "{0.tag}", "{1.tag}");
+  group: tr("NL speed limits");
+  assertNoMatch: "way highway=living_street maxspeed=10 traffic_sign=\"NL:A01-10\"";
+}
+
+
 /* Uncommon maxspeeds (except on private-owned roads) */
 way[maxspeed][maxspeed=~/[1-9]$/][maxspeed!=5][maxspeed!=15][highway=~/^(residential|unclassified|tertiary|secondary|primary|trunk|motorway|busway)(_link)?$/][!access][!vehicle][!motor_vehicle][inside("NL")],
-way[maxspeed=20][highway=~/^(residential|unclassified|tertiary|secondary|primary|trunk|motorway|busway)(_link)?$/][!access][!vehicle][!motor_vehicle][inside("NL")],
-way[maxspeed=40][highway=~/^(residential|unclassified|tertiary|secondary|primary|trunk|motorway|busway)(_link)?$/][!access][!vehicle][!motor_vehicle][inside("NL")] {
+way[maxspeed=20][highway=~/^(residential|unclassified|tertiary|secondary|primary|trunk|motorway|busway)(_link)?$/][!access][!vehicle][!motor_vehicle][source:maxspeed!="NL:zone20"][maxspeed:type!="NL:zone20"][inside("NL")],
+way[maxspeed=40][highway=~/^(residential|unclassified|tertiary|secondary|primary|trunk|motorway|busway)(_link)?$/][!access][!vehicle][!motor_vehicle][source:maxspeed!="NL:zone40"][maxspeed:type!="NL:zone40"][inside("NL")] {
   throwWarning: tr("{0} is a non-standard speed limit. Possibly this is an advisory speed limit instead?", "{0.tag}");
   group: tr("NL speed limits");
   assertNoMatch: "way highway=unclassified access=permissive note=eigen_weg maxspeed=25";

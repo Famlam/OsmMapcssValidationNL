@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2024.04.21";
+    version: "2024.04.22";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -993,6 +993,15 @@ node[operator][operator!=PostNL][operator=~/(?i)post\W?nl$/][amenity=post_box] {
   throwWarning: tr("{0} without {1}", "{0.tag}", "{1.key}=*");
   group: tr("NL heritage");
   fixAdd: "heritage=2";
+}
+
+
+/* Address node with heritage tags, rather than the actual heritage object */
+/* Didn't include containing historic=archaeological_site, leisure=park, ... etc as they usually don't have addresses assigned. (Is it even needed to check whether it's inside a building?) */
+/* https://community.openstreetmap.org/t/mogen-monumenten-rijks-provincie-gemeente-gebouwen-keys-op-adresnode/111885 */
+node[addr:street][addr:housenumber][heritage][!barrier][inside("NL")] ⊆ area[building][inside("NL")] {
+  throwWarning: tr("Heritage tag and related tags on address node, should be on the heritage object instead (building, building:part, park, site, ...)");
+  group: tr("NL heritage");
 }
 
 

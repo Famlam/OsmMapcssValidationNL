@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2024.04.22";
+    version: "2024.05.07";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -784,18 +784,6 @@ way[bicycle_road?][inside("NL")] {
 }
 
 
-/* Geldmaat en andere banken zijn 's nachts gesloten sinds 2019-2020; overige bedrijven vaak niet per se of onbekend */
-/* https://community.openstreetmap.org/t/geld-auto-maat-24-7-geopend/98273 */
-node[opening_hours="24/7"][amenity=atm][/^(brand|name|operator)$/=~/(?i)^(Geldmaat|ABN.?AMRO|ING|Rabobank|SNS)\b/][inside("NL")] {
-  throwWarning: tr("{0} op {1} is onwaarschijnlijk, Geldmaten zijn niet de hele nacht geopend", "{0.tag}", "{1.tag}");
-  group: tr("NL deprecated features");
-}
-node[opening_hours="24/7"][amenity=atm][!/^(brand|name|operator)$/][inside("NL")] {
-  throwOther: tr("{0} op {1} is onwaarschijnlijk, Geldmaten zijn niet de hele nacht geopend", "{0.tag}", "{1.tag}");
-  group: tr("NL deprecated features");
-}
-
-
 /* Seems an issue with iD users to add translated values */
 way[surface][surface=~/stenen$|^hout$|\bbestraa?t(ing)?$|grond$|^puin$|^grind$|zand$/] {
   throwWarning: tr("unusual value of {0}", "{0.key}");
@@ -837,11 +825,28 @@ way[surface][surface=~/stenen$|^hout$|\bbestraa?t(ing)?$|grond$|^puin$|^grind$|z
 }
 
 
+
+/* -------------------------------- */
+/* --- Tags with unusual values --- */
+/* -------------------------------- */
+
+/* Geldmaat en andere banken zijn 's nachts gesloten sinds 2019-2020; overige bedrijven vaak niet per se of onbekend */
+/* https://community.openstreetmap.org/t/geld-auto-maat-24-7-geopend/98273 */
+node[opening_hours="24/7"][amenity=atm][/^(brand|name|operator)$/=~/(?i)^(Geldmaat|ABN.?AMRO|ING|Rabobank|SNS)\b/][inside("NL")] {
+  throwWarning: tr("{0} op {1} is onwaarschijnlijk, Geldmaten zijn niet de hele nacht geopend", "{0.tag}", "{1.tag}");
+  group: tr("NL unusual values");
+}
+node[opening_hours="24/7"][amenity=atm][!/^(brand|name|operator)$/][inside("NL")] {
+  throwOther: tr("{0} op {1} is onwaarschijnlijk, Geldmaten zijn niet de hele nacht geopend", "{0.tag}", "{1.tag}");
+  group: tr("NL unusual values");
+}
+
+
 /* There is no traffic sign for (motor_)vehicle=designated, most cases seem to be *=yes or a typo for *=destination */
 node[vehicle=designated][!amenity][!vehicle:conditional][inside("NL")],
 node[motor_vehicle=designated][!amenity][!motor_vehicle:conditional][inside("NL")] {
   throwWarning: tr("{0} on a node, such a traffic sign does not exist. Possibly a typo for destination?", "{0.tag}");
-  group: tr("NL deprecated features");
+  group: tr("NL unusual values");
   suggestAlternative: "{0.key}=yes";
   suggestAlternative: "{0.key}=destination";
   assertNoMatch: "node motor_vehicle=designated amenity=parking_entrance";
@@ -853,10 +858,23 @@ node[motor_vehicle=designated][!amenity][!motor_vehicle:conditional][inside("NL"
 /* https://community.openstreetmap.org/t/verwijderen-vehicle-no-op-fietspaden/97576 */
 way[highway=cycleway][vehicle=no][!bicycle][traffic_sign!~/\bNL:(C0?1|C0?9|C14|C15|D103|D104)\b/][!vehicle:conditional][!bicycle:conditional][inside("NL")] {
   throwWarning: tr("Suspicious combination: {0} together with {1} equals {2}", "{0.tag}", "{1.tag}", "{2.key}={1.value}");
-  group: tr("NL deprecated features");
+  group: tr("NL unusual values");
   assertNoMatch: "way highway=cycleway vehicle=no traffic_sign=NL:C01";
   assertNoMatch: "way highway=cycleway vehicle=no traffic_sign=NL:D104 moped=designated";
   assertNoMatch: "way highway=cycleway vehicle=no bicycle:conditional=\"yes @ (sunrise-sunset)\"";
+}
+
+
+/* Trees larger than the largest in NL */
+/* https://www.monumentaltrees.com/nl/records/nld/ */
+/* Permission to use for this purpose per email May 6, 2024 19:04 */
+node[natural=tree][circumference][circumference > 10.32][inside("NL")], /* 120% of 8.6m, largest known tree circumference in NL, default in meters */
+node[natural=tree][height][height > 61.32][inside("NL")]{ /* 120% of 51.1m, tallest known tree in NL, default in meters */
+  throwWarning: tr("Unusually large value of {0} ({1} m), did you mean `{1} cm` or `{1} mm`?", "{1.key}", "{1.value}");
+  group: tr("NL unusual values");
+  assertNoMatch: "node natural=tree circumference=8.6";
+  assertNoMatch: "node natural=tree height=51";
+  assertNoMatch: "node natural=tree height=\"288 cm\""
 }
 
 

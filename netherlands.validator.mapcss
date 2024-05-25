@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2024.05.07";
+    version: "2024.05.25";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -890,14 +890,17 @@ way[name][highway][name=~/(?i)(rolstoel|invaliden)/],
 way[name][highway][name=~/(?i)(uit?laa[dt]|honden.*wandel|los.?loop)/],
 way[name][highway][name=~/(?i)bus\s?(baan|strook)/][highway!=busway][highway!=service][highway!=construction],
 way[name][highway][name=~/\bbouwweg/],
+area[name][name=~/(?i)^wadi$/][tag("natural")||tag("landuse")],
+area[name][natural=water][name=visvijver],
 node[name][highway][name=~/(?i)^(lift)$/],
 node[name][amenity=drinking_water][name=~/(?i)(drinkwater|\swater|kraan)/],
 node[name][amenity=charging_station][name=~/(?i)(oplaad|laadpunt|laadpaal)/],
+*[name][name="ijsbaan"],
 *[name][name=~/\b(([Aa]f)?gesloten|[Gg]eopend)\b/],
 *[name][amenity^=parking][name=~/(?i)(parkeren|parkeerplaats|parkeergarage|^garage)$/],
 *[name][name=~/(?i)^gratis\s|gratis\)/],
 *[name][name=~/(?i)(klanten|bezoek(ers)?|medewerkers)\b/][!route],
-*[name][leisure=playground][name=~/(?i)^speeltuin$/],
+*[name][leisure=playground][name=~/(?i)^speeltuin(tje)?$/],
 *[name][leisure^=dog][name=~/(?i)^(honden\s?)?(toilet|uitlaa[dt]|los.?loop)/],
 *[name][leisure=pitch][name=~/(?i)ball?(veld(je)?)?$/][!sport] {
   throwWarning: tr("descriptive name");

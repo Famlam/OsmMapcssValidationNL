@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2024.05.25";
+    version: "2024.06.19";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -520,7 +520,7 @@ way[traffic_sign~="NL:L1030"][!dog][highway] {
 
 
 /* Address tags on building */
-area[building][/^addr:(street|housenumber|postcode|city)$/][amenity!=place_of_worship][building!~/houseboat|static_caravan/][inside("NL")]:closed {
+area[building][/^addr:(street|housenumber|postcode|city)$/][amenity!=place_of_worship][shop!=mall][building!~/houseboat|static_caravan/][inside("NL")]:closed {
   throwWarning: tr("In Nederland is het gebouw niet gekoppeld aan het adres. Het adres is wel gekoppeld aan het gebruiksdoel.");
   group: tr("NL addresses and contacts");
   assertNoMatch: "relation type=multipolygon building=yes addr:housename=huis"; /* housename has its own warning */

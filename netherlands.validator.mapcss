@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2024.06.19";
+    version: "2024.07.14";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -1207,9 +1207,9 @@ way[oneway:bicycle][!oneway:mofa][oneway?][oneway:bicycle=~/^(no|-1|0)$/][mofa!~
 
 
 /* In practically all cases, something that applies to mopeds and bicycles, also applies to mofa's */
-way[bicycle:forward][moped:forward][bicycle:forward=*"moped:forward"][!mofa][!mofa:forward][bicycle:forward!=designated][bicycle:forward!=yes][inside("NL")],
-way[bicycle:backward][moped:backward][bicycle:backward=*"moped:backward"][!mofa][!mofa:backward][bicycle:backward!=designated][bicycle:backward!=yes][inside("NL")],
-way[bicycle:both_ways][moped:both_ways][bicycle:both_ways=*"moped:both_ways"][!mofa][!mofa:both_ways][bicycle:both_ways!=designated][bicycle:both_ways!=yes][inside("NL")],
+way[bicycle:forward][moped:forward][bicycle:forward=*"moped:forward"][!mofa:forward][!mofa][!mofa:both_ways][bicycle:forward!=designated][bicycle:forward!=yes][inside("NL")],
+way[bicycle:backward][moped:backward][bicycle:backward=*"moped:backward"][!mofa:backward][!mofa][!mofa:both_ways][bicycle:backward!=designated][bicycle:backward!=yes][inside("NL")],
+way[bicycle:both_ways][moped:both_ways][bicycle:both_ways=*"moped:both_ways"][!mofa:both_ways][!mofa][bicycle:both_ways!=designated][bicycle:both_ways!=yes][inside("NL")],
 way[bicycle][moped][bicycle=*moped][!mofa][bicycle!=designated][bicycle!=yes][inside("NL")] {
   throwWarning: tr("{0} and {1} without {2}", "{0.tag}", "{1.tag}", "{3.key}={0.value}");
   group: tr("NL mofa tagging");

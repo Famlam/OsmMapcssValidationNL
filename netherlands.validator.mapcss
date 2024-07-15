@@ -137,18 +137,18 @@ way[highway][traffic_sign~="NL:L51"][!cyclestreet][highway!=construction] {
 
 
 /* Traffic signs - access prohibited */
-way[highway][traffic_sign~="NL:C1"][!vehicle][!/^(motor_)?vehicle(:forward|:backward|:both_ways)?(:conditional)?$/][!/^access(:forward|:backward|:both_ways)?(:conditional)?$/][highway!=construction],
-way[highway][traffic_sign:forward~="NL:C1"][!vehicle:forward][!/^(motor_)?vehicle(:forward|:both_ways)?(:conditional)?$/][!/^access(:forward|:both_ways)?(:conditional)?$/][highway!=construction],
-way[highway][traffic_sign:backward~="NL:C1"][!vehicle:backward][!/^(motor_)?vehicle(:backward|:both_ways)?(:conditional)?$/][!/^access(:backward|:both_ways)?(:conditional)?$/][highway!=construction][oneway!=yes],
-way[highway][traffic_sign~="NL:C01"][!vehicle][!/^(motor_)?vehicle(:forward|:backward|:both_ways)?(:conditional)?$/][!/^access(:forward|:backward|:both_ways)?(:conditional)?$/][highway!=construction],
-way[highway][traffic_sign:forward~="NL:C01"][!vehicle:forward][!/^(motor_)?vehicle(:forward|:both_ways)?(:conditional)?$/][!/^access(:forward|:both_ways)?(:conditional)?$/][highway!=construction],
-way[highway][traffic_sign:backward~="NL:C01"][!vehicle:backward][!/^(motor_)?vehicle(:backward|:both_ways)?(:conditional)?$/][!/^access(:backward|:both_ways)?(:conditional)?$/][highway!=construction][oneway!=yes],
-way[highway][traffic_sign~="NL:C6"][!motor_vehicle][!/^(motor_)?vehicle(:forward|:backward|:both_ways)?(:conditional)?$/][!/^access(:forward|:backward|:both_ways)?(:conditional)?$/][highway!=construction],
-way[highway][traffic_sign:forward~="NL:C6"][!motor_vehicle:forward][!/^(motor_)?vehicle(:forward|:both_ways)?(:conditional)?$/][!/^access(:forward|:both_ways)?(:conditional)?$/][highway!=construction],
-way[highway][traffic_sign:backward~="NL:C6"][!motor_vehicle:backward][!/^(motor_)?vehicle(:backward|:both_ways)?(:conditional)?$/][!/^access(:backward|:both_ways)?(:conditional)?$/][highway!=construction][oneway!=yes][oneway:motor_vehicle!=yes],
-way[highway][traffic_sign~="NL:C06"][!motor_vehicle][!/^(motor_)?vehicle(:forward|:backward|:both_ways)?(:conditional)?$/][!/^access(:forward|:backward|:both_ways)?(:conditional)?$/][highway!=construction],
-way[highway][traffic_sign:forward~="NL:C06"][!motor_vehicle:forward][!/^(motor_)?vehicle(:forward|:both_ways)?(:conditional)?$/][!/^access(:forward|:both_ways)?(:conditional)?$/][highway!=construction],
-way[highway][traffic_sign:backward~="NL:C06"][!motor_vehicle:backward][!/^(motor_)?vehicle(:backward|:both_ways)?(:conditional)?$/][!/^access(:backward|:both_ways)?(:conditional)?$/][highway!=construction][oneway!=yes][oneway:motor_vehicle!=yes],
+way[highway][traffic_sign~="NL:C1"][!vehicle][!/^(access|vehicle|motor_vehicle)(:forward|:backward|:both_ways)?(:conditional)?$/][highway!=construction],
+way[highway][traffic_sign:forward~="NL:C1"][!vehicle:forward][!/^(access|vehicle|motor_vehicle)(:forward|:both_ways)?(:conditional)?$/][highway!=construction],
+way[highway][traffic_sign:backward~="NL:C1"][!vehicle:backward][!/^(access|vehicle|motor_vehicle)(:backward|:both_ways)?(:conditional)?$/][highway!=construction][oneway!=yes],
+way[highway][traffic_sign~="NL:C01"][!vehicle][!/^(access|vehicle|motor_vehicle)(:forward|:backward|:both_ways)?(:conditional)?$/][highway!=construction],
+way[highway][traffic_sign:forward~="NL:C01"][!vehicle:forward][!/^(access|vehicle|motor_vehicle)(:forward|:both_ways)?(:conditional)?$/][highway!=construction],
+way[highway][traffic_sign:backward~="NL:C01"][!vehicle:backward][!/^(access|vehicle|motor_vehicle)(:backward|:both_ways)?(:conditional)?$/][highway!=construction][oneway!=yes],
+way[highway][traffic_sign~="NL:C6"][!motor_vehicle][!/^(access|vehicle|motor_vehicle)(:forward|:backward|:both_ways)?(:conditional)?$/][highway!=construction],
+way[highway][traffic_sign:forward~="NL:C6"][!motor_vehicle:forward][!/^(access|vehicle|motor_vehicle)(:forward|:both_ways)?(:conditional)?$/][highway!=construction],
+way[highway][traffic_sign:backward~="NL:C6"][!motor_vehicle:backward][!/^(access|vehicle|motor_vehicle)(:backward|:both_ways)?(:conditional)?$/][highway!=construction][oneway!=yes][oneway:motor_vehicle!=yes],
+way[highway][traffic_sign~="NL:C06"][!motor_vehicle][!/^(access|vehicle|motor_vehicle)(:forward|:backward|:both_ways)?(:conditional)?$/][highway!=construction],
+way[highway][traffic_sign:forward~="NL:C06"][!motor_vehicle:forward][!/^(access|vehicle|motor_vehicle)(:forward|:both_ways)?(:conditional)?$/][highway!=construction],
+way[highway][traffic_sign:backward~="NL:C06"][!motor_vehicle:backward][!/^(access|vehicle|motor_vehicle)(:backward|:both_ways)?(:conditional)?$/][highway!=construction][oneway!=yes][oneway:motor_vehicle!=yes],
 way[highway][traffic_sign~="NL:C7"][!hgv][!/^hgv(:forward|:backward|:both_ways)?(:conditional)?$/][highway!=construction],
 way[highway][traffic_sign:forward~="NL:C7"][!hgv:forward][!/^hgv(:forward|:both_ways)?(:conditional)?$/][highway!=construction],
 way[highway][traffic_sign:backward~="NL:C7"][!hgv:backward][!/^hgv(:backward|:both_ways)?(:conditional)?$/][highway!=construction][oneway:hgv!=yes],
@@ -173,9 +173,9 @@ way[highway][traffic_sign:backward~="NL:C10"][!trailer:backward][!/^trailer(:bac
 way[highway][traffic_sign~="NL:C11"][!motorcycle][!/^motorcycle(:forward|:backward|:both_ways)?(:conditional)?$/][highway!=construction],
 way[highway][traffic_sign:forward~="NL:C11"][!motorcycle:forward][!/^motorcycle(:forward|:both_ways)?(:conditional)?$/][highway!=construction],
 way[highway][traffic_sign:backward~="NL:C11"][!motorcycle:backward][!/^motorcycle(:backward|:both_ways)?(:conditional)?$/][highway!=construction][oneway:motorcycle!=yes],
-way[highway][traffic_sign~="NL:C12"][!motor_vehicle][!/^(motor_)?vehicle(:forward|:backward|:both_ways)?(:conditional)?$/][!/^access(:forward|:backward|:both_ways)?(:conditional)?$/][highway!=construction],
-way[highway][traffic_sign:forward~="NL:C12"][!motor_vehicle:forward][!/^(motor_)?vehicle(:forward|:both_ways)?(:conditional)?$/][!/^access(:forward|:both_ways)?(:conditional)?$/][highway!=construction],
-way[highway][traffic_sign:backward~="NL:C12"][!motor_vehicle:backward][!/^(motor_)?vehicle(:backward|:both_ways)?(:conditional)?$/][!/^access(:backward|:both_ways)?(:conditional)?$/][highway!=construction][oneway!=yes][oneway:motor_vehicle!=yes],
+way[highway][traffic_sign~="NL:C12"][!motor_vehicle][!/^(access|vehicle|motor_vehicle)(:forward|:backward|:both_ways)?(:conditional)?$/][highway!=construction],
+way[highway][traffic_sign:forward~="NL:C12"][!motor_vehicle:forward][!/^(access|vehicle|motor_vehicle)(:forward|:both_ways)?(:conditional)?$/][highway!=construction],
+way[highway][traffic_sign:backward~="NL:C12"][!motor_vehicle:backward][!/^(access|vehicle|motor_vehicle)(:backward|:both_ways)?(:conditional)?$/][highway!=construction][oneway!=yes][oneway:motor_vehicle!=yes],
 way[highway][traffic_sign~="NL:C13"][!moped][!/^moped(:forward|:backward|:both_ways)?(:conditional)?$/][highway!=construction][highway!=footway],
 way[highway][traffic_sign:forward~="NL:C13"][!moped:forward][!/^moped(:forward|:both_ways)?(:conditional)?$/][highway!=construction][highway!=footway],
 way[highway][traffic_sign:backward~="NL:C13"][!moped:backward][!/^moped(:backward|:both_ways)?(:conditional)?$/][highway!=construction][oneway:moped!=yes][highway!=footway],
@@ -208,9 +208,9 @@ way[highway][traffic_sign:backward~="NL:C16"][!foot:backward][!/^foot(:backward|
 }
 
 
-way[traffic_sign][traffic_sign=~/(^|; ?)NL:C22(\[[A-E]\])?(;|$)/][!/^hazmat(:[A-E])?(:forward|:backward|:both_ways)?(:conditional)?$/][!/^(motor_)?vehicle(:forward|:backward|:both_ways)?(:conditional)?$/][!/^access(:forward|:backward|:both_ways)?(:conditional)?$/][highway!=construction][highway],
-way[traffic_sign:forward][traffic_sign:forward=~/(^|; ?)NL:C22(\[[A-E]\])?(;|$)/][!/^hazmat(:[A-E])?(:forward|:both_ways)?(:conditional)?$/][!/^(motor_)?vehicle(:forward|:both_ways)?(:conditional)?$/][!/^access(:forward|:both_ways)?(:conditional)?$/][highway!=construction][highway],
-way[traffic_sign:backward][traffic_sign:backward=~/(^|; ?)NL:C22(\[[A-E]\])?(;|$)/][!/^hazmat(:[A-E])?(:backward|:both_ways)?(:conditional)?$/][!/^(motor_)?vehicle(:backward|:both_ways)?(:conditional)?$/][!/^access(:backward|:both_ways)?(:conditional)?$/][highway!=construction][highway][/^oneway:hazmat/!~/^yes$/] {
+way[traffic_sign][traffic_sign=~/(^|; ?)NL:C22(\[[A-E]\])?(;|$)/][!/^hazmat(:[A-E])?(:forward|:backward|:both_ways)?(:conditional)?$/][!/^(access|vehicle|motor_vehicle)(:forward|:backward|:both_ways)?(:conditional)?$/][highway!=construction][highway],
+way[traffic_sign:forward][traffic_sign:forward=~/(^|; ?)NL:C22(\[[A-E]\])?(;|$)/][!/^hazmat(:[A-E])?(:forward|:both_ways)?(:conditional)?$/][!/^(access|vehicle|motor_vehicle)(:forward|:both_ways)?(:conditional)?$/][highway!=construction][highway],
+way[traffic_sign:backward][traffic_sign:backward=~/(^|; ?)NL:C22(\[[A-E]\])?(;|$)/][!/^hazmat(:[A-E])?(:backward|:both_ways)?(:conditional)?$/][!/^(access|vehicle|motor_vehicle)(:backward|:both_ways)?(:conditional)?$/][highway!=construction][highway][/^oneway:hazmat/!~/^yes$/] {
   group: tr("NL traffic signs");
   throwWarning: tr("{0} without {1} or {2}", "{0.tag}", "hazmat=no/private/destination/...", "hazmat:A-E=no/private/destination/...");
   assertMatch: "way highway=service traffic_sign=\"NL:C22\"";

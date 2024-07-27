@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2024.07.15";
+    version: "2024.07.27";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -868,9 +868,9 @@ way[highway=cycleway][vehicle=no][!bicycle][traffic_sign!~/\bNL:(C0?1|C0?9|C14|C
 /* Trees larger than the largest in NL */
 /* https://www.monumentaltrees.com/nl/records/nld/ */
 /* Permission to use for this purpose per email May 6, 2024 19:04 */
-node[natural=tree][circumference][circumference > 10.32][inside("NL")], /* 120% of 8.6m, largest known tree circumference in NL, default in meters */
-node[natural=tree][height][height > 61.32][inside("NL")]{ /* 120% of 51.1m, tallest known tree in NL, default in meters */
-  throwWarning: tr("Unusually large value of {0} ({1} m), did you mean `{1} cm` or `{1} mm`?", "{1.key}", "{1.value}");
+node[natural=tree][circumference][siunit_length(tag("circumference")) > 10.32][siunit_length(tag("circumference")) <= 45][inside("NL")], /* 120% of 8.6m, largest known tree circumference in NL, default in meters. JOSM warns > 45m */
+node[natural=tree][height][siunit_length(tag("height")) > 61.32][inside("NL")]{ /* 120% of 51.1m, tallest known tree in NL, default in meters */
+  throwWarning: tr("Unusually large value of {0} ({1} m), did you mean `{1} cm` or `{1} mm`?", "{1.key}", siunit_length("{1.value}"));
   group: tr("NL unusual values");
   assertNoMatch: "node natural=tree circumference=8.6";
   assertNoMatch: "node natural=tree height=51";

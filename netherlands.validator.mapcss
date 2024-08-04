@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2024.08.04";
+    version: "2024.08.05";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -1209,6 +1209,7 @@ way[oneway:bicycle][!oneway:mofa][oneway?][oneway:bicycle=~/^(no|-1|0)$/][mofa!~
 
 /* In practically all cases, something that applies to mopeds and bicycles, also applies to mofa's */
 /* Restricted access: warn always (highways, ferry routes, ...) */
+way[bicycle:conditional][moped:conditional][bicycle:conditional=*"moped:conditional"][!mofa:conditional][inside("NL")],
 way[bicycle:forward][moped:forward][bicycle:forward=*"moped:forward"][!mofa:forward][!mofa][!mofa:both_ways][bicycle:forward!=designated][bicycle:forward!=yes][inside("NL")],
 way[bicycle:backward][moped:backward][bicycle:backward=*"moped:backward"][!mofa:backward][!mofa][!mofa:both_ways][bicycle:backward!=designated][bicycle:backward!=yes][inside("NL")],
 way[bicycle:both_ways][moped:both_ways][bicycle:both_ways=*"moped:both_ways"][!mofa:both_ways][!mofa][bicycle:both_ways!=designated][bicycle:both_ways!=yes][inside("NL")],
@@ -1216,6 +1217,15 @@ way[bicycle][moped][bicycle=*moped][!mofa][bicycle!=designated][bicycle!=yes][in
   throwWarning: tr("{0} and {1} without {2}", "{0.tag}", "{1.tag}", "{3.key}={0.value}");
   group: tr("NL mofa tagging");
   fixAdd: "{3.key}={0.value}";
+}
+/* Exclusions of turn restrictions: warn always */
+relation[except][except~=bicycle][except~=moped][except!~/(^|; ?)mofa(;|$)/] {
+  throwWarning: tr("{0} without {1}", "{0.tag}", "mofa");
+  group: tr("NL mofa tagging");
+  suggestAlternative: "{0.tag};mofa";
+  fixAdd: "{0.key}={0.value};mofa";
+  assertNoMatch: "relation type=restriction except=bicycle;mofa;moped";
+  assertNoMatch: "relation type=restriction except=bicycle";
 }
 /* Positive access: warn only in case of an overruling access/vehicle/motor_vehicle tag... */
 way[bicycle:forward][moped:forward][bicycle:forward=*"moped:forward"][!mofa:forward][/^(access|vehicle|motor_vehicle)(:forward|:both_ways)?(:conditional)?$/][!mofa][!mofa:both_ways][bicycle:forward=~/^(yes|designated)$/][join_list(";", uniq_list(tag_regex("^(access|vehicle|motor_vehicle)(:forward|:both_ways)?(:conditional)?$"))) != tag("bicycle:forward")][inside("NL")],

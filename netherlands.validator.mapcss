@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2024.07.27";
+    version: "2024.08.04";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -1195,7 +1195,7 @@ way[maxspeed=40][highway=~/^(residential|unclassified|tertiary|secondary|primary
 
 
 /* In practically all cases, oneway:bicycle=no (uitgezonderd fietsers) implies oneway:mofa=no too */
-way[oneway:bicycle][!oneway:mofa][oneway?][oneway:bicycle=~/^(no|-1|0)$/][mofa!~/^(no|use_sidepath)$/][motor_vehicle!~/^(no|use_sidepath)$/][inside("NL")] {
+way[oneway:bicycle][!oneway:mofa][oneway?][oneway:bicycle=~/^(no|-1|0)$/][mofa!~/^(no|use_sidepath)$/][motor_vehicle!~/^(no|use_sidepath)$/][mofa:backward!~/^(no|use_sidepath)$/][motor_vehicle:backward!~/^(no|use_sidepath)$/][inside("NL")] {
   throwWarning: tr("{0} without {1}", "{0.tag}", "{1.key}");
   group: tr("NL mofa tagging");
   fixAdd: "{1.key}={0.value}";
@@ -1203,6 +1203,7 @@ way[oneway:bicycle][!oneway:mofa][oneway?][oneway:bicycle=~/^(no|-1|0)$/][mofa!~
   assertNoMatch: "way highway=residential oneway:bicycle=no oneway=no";
   assertNoMatch: "way highway=residential oneway:bicycle=no oneway=yes oneway:mofa=yes";
   assertNoMatch: "way highway=residential oneway:bicycle=no oneway=yes mofa=no";
+  assertNoMatch: "way highway=residential oneway:bicycle=no oneway=yes mofa:backward=no";
 }
 
 

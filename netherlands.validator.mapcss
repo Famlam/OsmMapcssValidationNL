@@ -1230,21 +1230,27 @@ relation[except][except~=bicycle][except~=moped][except!~/(^|; ?)mofa(;|$)/] {
 /* Positive access: warn only in case of an overruling access/vehicle/motor_vehicle tag... */
 way[bicycle:forward][moped:forward][bicycle:forward=*"moped:forward"][!mofa:forward][/^(access|vehicle|motor_vehicle)(:forward|:both_ways)?(:conditional)?$/][!mofa][!mofa:both_ways][bicycle:forward=~/^(yes|designated)$/][join_list(";", uniq_list(tag_regex("^(access|vehicle|motor_vehicle)(:forward|:both_ways)?(:conditional)?$"))) != tag("bicycle:forward")][inside("NL")],
 way[bicycle:backward][moped:backward][bicycle:backward=*"moped:backward"][!mofa:backward][/^(access|vehicle|motor_vehicle)(:backward|:both_ways)?(:conditional)?$/][!mofa][!mofa:both_ways][bicycle:backward=~/^(yes|designated)$/][join_list(";", uniq_list(tag_regex("^(access|vehicle|motor_vehicle)(:backward|:both_ways)?(:conditional)?$"))) != tag("bicycle:backward")][inside("NL")],
-way[bicycle][moped][bicycle=*moped][!mofa][/^(access|vehicle|motor_vehicle)(:forward|:backward|:both_ways)?(:conditional)?$/][!mofa][!mofa:both_ways][bicycle=~/^(yes|designated)$/][join_list(";", uniq_list(tag_regex("^(access|vehicle|motor_vehicle)(:forward|:backward|:both_ways)?(:conditional)?$"))) != tag("bicycle")][inside("NL")] {
+way[bicycle][moped][bicycle=*moped][!mofa][/^(access|vehicle|motor_vehicle)(:forward|:backward|:both_ways)?(:conditional)?$/][!mofa:both_ways][bicycle=~/^(yes|designated)$/][join_list(";", uniq_list(tag_regex("^(access|vehicle|motor_vehicle)(:forward|:backward|:both_ways)?(:conditional)?$"))) != tag("bicycle")][inside("NL")] {
   throwWarning: tr("{0}, {1} and {2} without {3}", "{0.tag}", "{1.tag}", "{4.tag}", "{3.key}={0.value}");
   group: tr("NL mofa tagging");
   fixAdd: "{3.key}={0.value}";
   set .hasAddMofaPositive;
+  assertNoMatch: "way bicycle=designated moped=designated highway=residential";
+  assertNoMatch: "way bicycle=designated moped=designated highway=residential access=designated";
+  assertNoMatch: "way bicycle=designated moped=designated mofa=designated highway=residential access=no";
 }
 /* ... or if the default access condition doesn't imply access per the defaults in NL (not a highway or a highway of a frequently no-access type or - due to its wide definition - path) */
 way[bicycle:forward][moped:forward][bicycle:forward=*"moped:forward"][!mofa:forward][!mofa][!mofa:both_ways][bicycle:forward=~/^(yes|designated)$/][highway=~/^(trunk|motorway|busway|path|busway|bridleway|footway|pedestrian)(_link)?$/][inside("NL")]!.hasAddMofaPositive,
 way[bicycle:backward][moped:backward][bicycle:backward=*"moped:backward"][!mofa:backward][!mofa][!mofa:both_ways][bicycle:backward=~/^(yes|designated)$/][highway=~/^(trunk|motorway|busway|path|busway|bridleway|footway|pedestrian)(_link)?$/][inside("NL")]!.hasAddMofaPositive,
-way[bicycle][moped][bicycle=*moped][!mofa][!mofa][!mofa:both_ways][bicycle=~/^(yes|designated)$/][highway=~/^(trunk|motorway|busway|path|busway|bridleway|footway|pedestrian)(_link)?$/][inside("NL")]!.hasAddMofaPositive,
+way[bicycle][moped][bicycle=*moped][!mofa][!mofa:both_ways][bicycle=~/^(yes|designated)$/][highway=~/^(trunk|motorway|busway|path|busway|bridleway|footway|pedestrian)(_link)?$/][inside("NL")]!.hasAddMofaPositive,
 way[bicycle:forward][moped:forward][bicycle:forward=*"moped:forward"][!mofa:forward][!mofa][!mofa:both_ways][bicycle:forward=~/^(yes|designated)$/][!highway][inside("NL")]!.hasAddMofaPositive,
 way[bicycle:backward][moped:backward][bicycle:backward=*"moped:backward"][!mofa:backward][!mofa][!mofa:both_ways][bicycle:backward=~/^(yes|designated)$/][!highway][inside("NL")]!.hasAddMofaPositive,
-way[bicycle][moped][bicycle=*moped][!mofa][!mofa][!mofa:both_ways][bicycle=~/^(yes|designated)$/][!highway][inside("NL")]!.hasAddMofaPositive {
+way[bicycle][moped][bicycle=*moped][!mofa][!mofa:both_ways][bicycle=~/^(yes|designated)$/][!highway][inside("NL")]!.hasAddMofaPositive {
   throwWarning: tr("{0} and {1} without {2}", "{0.tag}", "{1.tag}", "{3.key}={0.value}");
   group: tr("NL mofa tagging");
   fixAdd: "{3.key}={0.value}";
   set .hasAddMofaPositive;
+  assertNoMatch: "way bicycle=designated moped=designated mofa=designated highway=busway";
+  assertNoMatch: "way bicycle=designated moped=destination highway=busway";
+  assertNoMatch: "way bicycle=designated moped=designated highway=residential";
 }

@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2024.08.21";
+    version: "2024.08.23";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -784,13 +784,17 @@ way[bicycle_road?][inside("NL")] {
 }
 
 
-/* Seems an issue with iD users to add translated values */
-way[surface][surface=~/stenen$|^hout$|\bbestraa?t(ing)?$|grond$|^puin$|^grind$|zand$/] {
+/* Seems an issue with (mostly) iD users to add translated values */
+way[surface][surface=~/stenen$|^hout$|\bbestraa?t(ing)?$|grond$|^puin$|^grind$|zand$/],
+*[material][material=~/\bhout|\bmetaal\b|^beton$|^brons$|steen\b|ijzer\b|staal\b/] {
   throwWarning: tr("unusual value of {0}", "{0.key}");
   group: tr("NL deprecated features");
   assertMatch: "way highway=service surface=\"niet bestraat\"";
   assertMatch: "way highway=service surface=straatstenen";
+  assertMatch: "node tourism=artwork material=brons";
+  assertMatch: "node tourism=artwork material=hout,metaal";
   assertNoMatch: "way highway=service surface=paving_stones";
+  assertNoMatch: "way tourism=artwork material=bronze";
 }
 
 

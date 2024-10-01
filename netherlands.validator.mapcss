@@ -612,27 +612,6 @@ way[highway=footway][segregated=yes][traffic_sign!~/\bNL:G0?7\b/][inside("NL")] 
 /* -- Tags considered deprecated -- */
 /* -------------------------------- */
 
-/* cycleway=opposite */
-/* https://community.openstreetmap.org/t/cycleway-opposite/86309 */
-way[cycleway=opposite][inside("NL")],
-way[cycleway:left=opposite][inside("NL")],
-way[cycleway:right=opposite][inside("NL")],
-way[cycleway:both=opposite][inside("NL")] {
-  throwWarning: tr("{0} is deprecated", "{0.value}");
-  group: tr("NL deprecated features");
-  suggestAlternative: "oneway:bicycle/mofa/moped=no";
-}
-
-way[cycleway][cycleway^=opposite_][inside("NL")],
-way[cycleway:left][cycleway:left^=opposite_][inside("NL")],
-way[cycleway:right][cycleway:right^=opposite_][inside("NL")],
-way[cycleway:both][cycleway:both^=opposite_][inside("NL")] {
-  throwWarning: tr("{0} is deprecated", "{0.value}");
-  group: tr("NL deprecated features");
-  suggestAlternative: "oneway:bicycle/mofa/moped=no + {0.key}=*[zonder opposite_]";
-}
-
-
 /* sidewalk=none */
 /* https://community.openstreetmap.org/t/overbodig-foot-yes-en-sidewalk-none-door-potlatch/79696 */
 way[sidewalk=none][inside("NL")] {

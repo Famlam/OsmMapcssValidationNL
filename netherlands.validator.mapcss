@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2024.10.07";
+    version: "2024.10.13";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -865,6 +865,25 @@ node[natural=tree][height][siunit_length(tag("height")) > 61.32][inside("NL")]{ 
   assertNoMatch: "node natural=tree circumference=8.6";
   assertNoMatch: "node natural=tree height=51";
   assertNoMatch: "node natural=tree height=\"288 cm\""
+}
+
+
+/* ref:bag should be 16 numbers, but occasionally the first (max 3) zeros are omitted. Anything else is invalid */
+/* https://community.openstreetmap.org/t/voorloop-nul-len-bag-referentie-nummers/119754 */
+*[ref:bag][ref:bag!~/(; ?|^)[0-9]{0,3}[1-9][0-9]{12}($|;)/][inside("NL")] {
+  throwWarning: tr("Invalid value of {0}", "{0.key}");
+  group: tr("NL unusual values");
+  /*assertMatch: "relation type=multipolygon ref:bag=abcdefghijklmnop";
+  assertMatch: "relation type=multipolygon ref:bag=12";
+  assertMatch: "relation type=multipolygon ref:bag=0000567890123456";
+  assertMatch: "relation type=multipolygon ref:bag=567890123456";
+  assertMatch: "relation type=multipolygon ref:bag=12345678901234567";
+  assertMatch: "relation type=multipolygon ref:bag=02345678901234567";*/
+  assertNoMatch: "relation type=multipolygon ref:bag=1234567890123456";
+  assertNoMatch: "relation type=multipolygon ref:bag=0234567890123456";
+  assertNoMatch: "relation type=multipolygon ref:bag=0004567890123456";
+  assertNoMatch: "relation type=multipolygon ref:bag=\"0004567890123456; 1234567890123456\"";
+  assertNoMatch: "relation type=multipolygon ref:bag=4567890123456";
 }
 
 

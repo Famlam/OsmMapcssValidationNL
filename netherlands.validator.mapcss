@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2024.10.26";
+    version: "2024.10.27";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -129,6 +129,18 @@ way[highway][traffic_sign*="NL:L301"][highway!=steps][highway!=construction][tra
   assertNoMatch: "way highway=steps traffic_sign=NL:G13 ramp:bicycle=yes";
   assertNoMatch: "way highway=service traffic_sign=NL:G5 living_street=yes";
 }
+
+/* Smaller highways with G5 signs without living_street tagging */ 
+/* Restricted to moped-accessible paths, to avoid warning on all paths where you'll only find vehicles/horses without speed indicator */
+way[highway][traffic_sign~="NL:G5"][highway=~/^(path|cycleway|pedestrian|bridleway|steps)$/][moped][moped!~/^(no|use_sidepath)$/]!.altLivingStreet,
+way[highway][traffic_sign~="NL:G05"][highway=~/^(path|cycleway|pedestrian|bridleway|steps)$/][moped][moped!~/^(no|use_sidepath)$/]!.altLivingStreet {
+  group: tr("NL traffic signs");
+  throwWarning: tr("{0} together with {1} but without {2}", "{1.tag}", "{0.tag}", "living_street=yes");
+  assertNoMatch: "way highway=living_street traffic_sign=NL:G05 moped=yes";
+  assertNoMatch: "way highway=cycleway traffic_sign=NL:G05 living_street=yes moped=designated";
+  assertNoMatch: "way highway=cycleway traffic_sign=NL:G05 moped=use_sidepath";
+}
+
 
 way[highway][traffic_sign~="NL:L51"][!cyclestreet][highway!=construction] {
   group: tr("NL traffic signs");

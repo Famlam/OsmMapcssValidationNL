@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2024.10.27";
+    version: "2024.11.02";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -896,6 +896,16 @@ node[natural=tree][height][siunit_length(tag("height")) > 61.32][inside("NL")]{ 
   assertNoMatch: "relation type=multipolygon ref:bag=0004567890123456";
   assertNoMatch: "relation type=multipolygon ref:bag=\"0004567890123456; 1234567890123456\"";
   assertNoMatch: "relation type=multipolygon ref:bag=4567890123456";
+}
+
+
+/* The Dutch gravel is not the same as English gravel (= grind). Commonly used for tennis fields */
+/* https://community.openstreetmap.org/t/surface-tag-op-tennisbanen-in-nederland/120701 */
+*[leisure][surface=gravel][sport~="tennis"][inside("NL")] {
+  throwWarning: tr("unusual value of {0} for {1} (`gravel` in English means `grind` in Dutch)", "{1.key}", "{2.tag}");
+  group: tr("NL unusual values");
+  assertNoMatch: "way leisure=pitch sport=boules surface=gravel"; /* Gravel can be right for some sports */
+  suggestAlternative: "surface=clay";
 }
 
 

@@ -903,6 +903,8 @@ node[natural=tree][height][siunit_length(tag("height")) > 61.32][inside("NL")]{ 
   assertNoMatch: "relation type=multipolygon ref:bag=50123456789012";
   assertNoMatch: "relation type=multipolygon ref:bag=0200123456789012"; /* Apeldoorn: 0200 */
   assertNoMatch: "relation type=multipolygon ref:bag=200123456789012";
+  assertNoMatch: "relation type=multipolygon ref:bag=0310123456789012"; /* De Bilt: 0310 */
+  assertNoMatch: "relation type=multipolygon ref:bag=310123456789012";
 }
 
 

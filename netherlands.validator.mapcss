@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2024.11.02";
+    version: "2024.11.03";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -882,7 +882,7 @@ node[natural=tree][height][siunit_length(tag("height")) > 61.32][inside("NL")]{ 
 
 /* ref:bag should be 16 numbers, but occasionally the first (max 3) zeros are omitted. Anything else is invalid */
 /* https://community.openstreetmap.org/t/voorloop-nul-len-bag-referentie-nummers/119754 */
-*[ref:bag][ref:bag!~/(; ?|^)[0-9]{0,3}[1-9][0-9]{12}($|;)/][inside("NL")] {
+*[ref:bag][ref:bag!~/(; ?|^)([0-9]{0,3}[1-9]|[0-9]{0,2}[1-9][0-9]|[0-9]?[1-9][0-9]{2})[0-9]{12}($|;)/][inside("NL")] {
   throwWarning: tr("Invalid value of {0}", "{0.key}");
   group: tr("NL unusual values");
   /*assertMatch: "relation type=multipolygon ref:bag=abcdefghijklmnop";
@@ -890,12 +890,19 @@ node[natural=tree][height][siunit_length(tag("height")) > 61.32][inside("NL")]{ 
   assertMatch: "relation type=multipolygon ref:bag=0000567890123456";
   assertMatch: "relation type=multipolygon ref:bag=567890123456";
   assertMatch: "relation type=multipolygon ref:bag=12345678901234567";
-  assertMatch: "relation type=multipolygon ref:bag=02345678901234567";*/
+  assertMatch: "relation type=multipolygon ref:bag=02345678901234567";
+  assertMatch: "relation type=multipolygon ref:bag=00501234567890123";
+  assertMatch: "relation type=multipolygon ref:bag=02001234567890123";*/
   assertNoMatch: "relation type=multipolygon ref:bag=1234567890123456";
   assertNoMatch: "relation type=multipolygon ref:bag=0234567890123456";
   assertNoMatch: "relation type=multipolygon ref:bag=0004567890123456";
   assertNoMatch: "relation type=multipolygon ref:bag=\"0004567890123456; 1234567890123456\"";
   assertNoMatch: "relation type=multipolygon ref:bag=4567890123456";
+  assertNoMatch: "relation type=multipolygon ref:bag=0050123456789012"; /* Zeewolde: 0050 */
+  assertNoMatch: "relation type=multipolygon ref:bag=050123456789012";
+  assertNoMatch: "relation type=multipolygon ref:bag=50123456789012";
+  assertNoMatch: "relation type=multipolygon ref:bag=0200123456789012"; /* Apeldoorn: 0200 */
+  assertNoMatch: "relation type=multipolygon ref:bag=200123456789012";
 }
 
 

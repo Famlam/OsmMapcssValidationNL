@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2024.11.03";
+    version: "2024.11.08";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -532,10 +532,12 @@ way[traffic_sign~="NL:L1030"][!dog][highway] {
 
 
 /* Address tags on building */
-area[building][/^addr:(street|housenumber|postcode|city)$/][amenity!=place_of_worship][shop!=mall][building!~/houseboat|static_caravan/][inside("NL")]:closed {
+area[building][/^addr:(street|housenumber|postcode|city)$/][amenity!=place_of_worship][shop!=mall][building!~/^(container|houseboat|static_caravan)$/][inside("NL")]:closed {
   throwWarning: tr("In Nederland is het gebouw niet gekoppeld aan het adres. Het adres is wel gekoppeld aan het gebruiksdoel.");
   group: tr("NL addresses and contacts");
   assertNoMatch: "relation type=multipolygon building=yes addr:housename=huis"; /* housename has its own warning */
+  assertNoMatch: "relation type=multipolygon building=houseboat addr:housenumber=2";
+  assertNoMatch: "relation type=multipolygon building=house";
   set .addrOnBuilding;
 }
 
@@ -677,7 +679,7 @@ area[building=terrace][inside("NL")] {
 area[building][building!=no] ⊇ node[building] {
   set buildingNodeInBuilding; /* JOSM already warns for this */
 }
-node[building][building!~/^(bridge|bunker|carport|chapel|construction|entrance|grandstand|houseboat|hut|no|proposed|roof|ruins|shed|shelter|shrine|static_caravan|storage_tank|tent|wayside_shrine)$/][!seasonal][!ruins][amenity!=shelter][wall!=no][inside("NL")]:unconnected!.buildingNodeInBuilding {
+node[building][building!~/^(bridge|bunker|carport|chapel|construction|container|entrance|grandstand|houseboat|hut|no|proposed|roof|ruins|shed|shelter|shrine|static_caravan|storage_tank|tent|wayside_shrine)$/][!seasonal][!ruins][amenity!=shelter][wall!=no][inside("NL")]:unconnected!.buildingNodeInBuilding {
   throwWarning: tr("{0} on a node", "{0.tag}");
   group: tr("NL deprecated features");
   suggestAlternative: "een BAG importverzoek om de geometrie te verkrijgen";

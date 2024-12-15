@@ -1118,7 +1118,8 @@ relation[type=route][route=~/^((trolley)?bus|light_rail|subway|train|tram)$/]   
 
 /* Maximum speeds per road defaults and signage */
 way[highway=living_street][maxspeed!=15][!/^maxspeed(:forward|:backward|:both_ways)?$/][inside("NL")],
-way[living_street=yes][maxspeed!=15][!/^maxspeed(:forward|:backward|:both_ways)?$/][highway!=living_street][highway!=footway][inside("NL")],
+way[living_street=yes][maxspeed!=15][!/^maxspeed(:forward|:backward|:both_ways)?$/][inside("NL")][highway=~/^(path|cycleway|bridleway)$/][moped][moped!~/^(no|use_sidepath)$/],
+way[living_street=yes][maxspeed!=15][!/^maxspeed(:forward|:backward|:both_ways)?$/][inside("NL")][highway!~/^(path|cycleway|bridleway|footway|living_street)$/],
 way[maxspeed:type="NL:zone30"][maxspeed!=30][!maxspeed][maxspeed:both_ways!=30][highway],
 way[maxspeed:type="NL:zone60"][maxspeed!=60][!maxspeed][maxspeed:both_ways!=60][highway],
 way[maxspeed:type="NL:urban"][maxspeed!=50][!maxspeed][maxspeed:both_ways!=50][highway][highway!=cycleway],
@@ -1131,6 +1132,9 @@ way[maxspeed:type="NL:rural"][maxspeed!=80][!maxspeed][maxspeed:both_ways!=80][h
   assertNoMatch: "way highway=living_street maxspeed=10 traffic_sign=\"NL:A01-10\"";
   assertNoMatch: "way highway=living_street maxspeed=18"; /* Handled by different rule */
   assertNoMatch: "way highway=footway living_street=yes";
+  assertNoMatch: "way highway=cycleway living_street=yes"; /* Avoid excessive warnings; only warn if moped is also present */
+  assertNoMatch: "way highway=cycleway living_street=yes moped=no";
+  assertNoMatch: "way highway=cycleway living_street=yes moped=yes maxspeed=15";
 }
 
 way[maxspeed:type="NL:zone30"][maxspeed][maxspeed!=30][highway],

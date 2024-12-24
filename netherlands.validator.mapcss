@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2024.12.15";
+    version: "2024.12.24";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -1191,7 +1191,7 @@ way[highway=trunk][maxspeed][maxspeed>100][inside("NL")],
 way[highway=trunk_link][maxspeed][maxspeed>100][inside("NL")],
 way[motorroad=yes][maxspeed][maxspeed>100][inside("NL")][highway!~/^(motorway(_link)?|construction|proposed)$/],
 way[highway][maxspeed][maxspeed>80][highway!~/^(motorway(_link)?|trunk(_link)?|cycleway|service|busway|construction|proposed|raceway)$/][motorroad!=yes][inside("NL")],
-way[highway=cycleway][maxspeed][maxspeed>40][!motor_vehicle][!vehicle][!access][inside("NL")] {
+way[highway=cycleway][maxspeed][maxspeed>40][!/^(access|vehicle|motor_vehicle)(:forward|:backward|:both_ways)?(:conditional)?$/][inside("NL")] {
   throwWarning: tr("{0} together with {1}", "{0.tag}", "{1.tag}");
   group: tr("NL speed limits");
   assertNoMatch: "way highway=motorway maxspeed=120";
@@ -1200,6 +1200,7 @@ way[highway=cycleway][maxspeed][maxspeed>40][!motor_vehicle][!vehicle][!access][
   assertNoMatch: "way highway=tertiary motorroad=yes maxspeed=100";
   assertNoMatch: "way highway=trunk maxspeed=90";
   assertNoMatch: "way highway=unclassified maxspeed=80";
+  assertNoMatch: "way highway=cycleway maxspeed=80 motor_vehicle:conditional=\"yes @ Sa-Su\"";
 }
 
 

@@ -1201,6 +1201,7 @@ way[highway=cycleway][maxspeed][maxspeed>40][!/^(access|vehicle|motor_vehicle)(:
   assertNoMatch: "way highway=trunk maxspeed=90";
   assertNoMatch: "way highway=unclassified maxspeed=80";
   assertNoMatch: "way highway=cycleway maxspeed=80 motor_vehicle:conditional=\"yes @ Sa-Su\"";
+  assertNoMatch: "way highway=cycleway maxspeed=80 motor_vehicle=destination";
 }
 
 

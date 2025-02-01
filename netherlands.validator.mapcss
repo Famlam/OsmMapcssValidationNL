@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2024.12.24";
+    version: "2024.02.01";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */
@@ -362,13 +362,14 @@ way[highway] > node[traffic_sign~="NL:L02"][highway!=crossing] {
   suggestAlternative: "{1.tag} + crossing=uncontrolled + crossing_ref=zebra";
 }
 /* Be very forgiving with the crossing/crossing_ref keys; there are a billion ways to tag it */
-node[traffic_sign~="NL:L2"][crossing!=zebra][crossing!=uncontrolled][crossing!=marked][highway=crossing][crossing!=traffic_signals][crossing_ref!=zebra],
-node[traffic_sign~="NL:L02"][crossing!=zebra][crossing!=uncontrolled][crossing!=marked][highway=crossing][crossing!=traffic_signals][crossing_ref!=zebra] {
+node[traffic_sign~="NL:L2"][crossing!=zebra][crossing!=uncontrolled][crossing!=marked][crossing:markings!=zebra][highway=crossing][crossing!=traffic_signals][crossing_ref!=zebra],
+node[traffic_sign~="NL:L02"][crossing!=zebra][crossing!=uncontrolled][crossing!=marked][crossing:markings!=zebra][highway=crossing][crossing!=traffic_signals][crossing_ref!=zebra] {
   group: tr("NL traffic signs");
-  throwWarning: tr("{0} without {1}, {2} or {3}", "{0.tag}", "{1.tag}", "{2.tag} + crossing_ref=zebra", "{3.tag} + crossing_ref=zebra");
+  throwWarning: tr("{0} without {1}, {2}, {3} or {4}", "{0.tag}", "{1.tag}", "{2.tag} + crossing_ref=zebra", "{3.tag} + crossing_ref=zebra", "{4.tag}");
   assertMatch: "node traffic_sign=NL:L2 highway=crossing";
   assertMatch: "node traffic_sign=NL:L02;NL:J23 highway=crossing";
   assertNoMatch: "node traffic_sign=NL:L2 direction=300";
+  assertNoMatch: "node traffic_sign=NL:L2 highway=crossing crossing:markings=zebra";
   assertNoMatch: "node traffic_sign=NL:L2 highway=crossing crossing=uncontrolled crossing_ref=zebra";
   assertNoMatch: "node traffic_sign=NL:L02 highway=crossing crossing=traffic_signals note=traffic_signals_combined_with_zebra";
 }

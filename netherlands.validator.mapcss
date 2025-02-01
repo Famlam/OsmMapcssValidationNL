@@ -360,6 +360,7 @@ way[highway] > node[traffic_sign~="NL:L02"][highway!=crossing] {
   suggestAlternative: "{1.tag} + crossing=zebra";
   suggestAlternative: "{1.tag} + crossing=marked + crossing_ref=zebra";
   suggestAlternative: "{1.tag} + crossing=uncontrolled + crossing_ref=zebra";
+  suggestAlternative: "{1.tag} + crossing:markings=zebra";
 }
 /* Be very forgiving with the crossing/crossing_ref keys; there are a billion ways to tag it */
 node[traffic_sign~="NL:L2"][crossing!=zebra][crossing!=uncontrolled][crossing!=marked][crossing:markings!=zebra][highway=crossing][crossing!=traffic_signals][crossing_ref!=zebra],

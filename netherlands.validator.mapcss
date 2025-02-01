@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2024.02.01";
+    version: "2025.02.01";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "15317"; /* due to tag_regex() usage */

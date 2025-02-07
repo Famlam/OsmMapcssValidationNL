@@ -1,9 +1,9 @@
 meta {
     title: "Dutch specific rules";
-    version: "2025.02.01";
+    version: "2025.02.07";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
-    min-josm-version: "15317"; /* due to tag_regex() usage */
+    min-josm-version: "18875"; /* due to JOSM ticket 23238 */
     link: "https://github.com/Famlam/OsmMapcssValidationNL";
     icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' id='flag-icons-nl' viewBox='0 0 640 480'%3E%3Cpath fill='%2321468b' d='M0 0h640v480H0z'/%3E%3Cpath fill='%23fff' d='M0 0h640v320H0z'/%3E%3Cpath fill='%23ae1c28' d='M0 0h640v160H0z'/%3E%3C/svg%3E%0A";
 }
@@ -812,10 +812,9 @@ way[surface][surface=~/stenen$|^hout$|\bbestraa?t(ing)?$|grond$|^puin$|^grind$|z
   assertNoMatch: "way highway=residential sidewalk:surface=paving_stones cycleway:surface=paving_stones:20"; /* We can't be sure we get the same element in {0.*} as in {1.*} as in tag_regex(...) */
   assertNoMatch: "way highway=residential sidewalk:surface=paving_stones:30 cycleway:surface=paving_stones:20"; /* We can't be sure we get the same element in {0.*} as in {1.*} as in tag_regex(...) */
   set .completedSurfacePavingStonesNumber;
-  /* Enable fixes Dec 5, 2024, 1 year after the fix for josm.openstreetmap.de/ticket/23238 was released. Remember to update min-josm-version to 18875 */
-  /* fixAdd: concat(get(regexp_match("^(.+):surface$", "{0.key}"), 1), ":paving_stones:shape=square"); */
-  /* fixAdd: concat(get(regexp_match("^(.+):surface$", "{0.key}"), 1), ":paving_stones:length=0.", get(regexp_match("^paving_stones:([1-9])0$", get(tag_regex("^(.+):surface$"), 0)), 1)); */
-  /* fixAdd: "{0.key}=paving_stones"; */
+  fixAdd: concat(get(regexp_match("^(.+):surface$", "{0.key}"), 1), ":paving_stones:shape=square");
+  fixAdd: concat(get(regexp_match("^(.+):surface$", "{0.key}"), 1), ":paving_stones:length=0.", get(regexp_match("^paving_stones:([1-9])0$", get(tag_regex("^(.+):surface$"), 0)), 1));
+  fixAdd: "{0.key}=paving_stones";
 }
 *[/^(.+):surface$/=~/^paving_stones:([1-9])0$/][inside("NL")]!.completedSurfacePavingStonesNumber {
   throwWarning: tr("{0} is deprecated", "*:surface=paving_stones:NN");

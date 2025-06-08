@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2025.05.25";
+    version: "2025.06.09";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "18875"; /* due to JOSM ticket 23238 */
@@ -564,9 +564,12 @@ area[addr:street][!/(^|.+:)addr:housenumber($|:.+)/][!addr:interpolation][!addr:
 
 
 /* Postcodes using invalid format */
+area["addr:postcode"]["addr:postcode"!~/[0-9]{4} ?[A-Z]{2}/][inside("NL")]!.addrOnBuilding,
 node["addr:postcode"]["addr:postcode"!~/[0-9]{4} ?[A-Z]{2}/][inside("NL")] {
-  throwWarning: tr("Invalid tag {0}: expected 4 digits followed by 2 letters", "{0.tag}");
+  throwWarning: tr("Invalid tag {0}: expected 4 digits followed by 2 uppercase letters", "{0.tag}");
   group: tr("NL addresses and contacts");
+  assertNoMatch: "node addr:postcode=\"1234 AB\"";
+  assertNoMatch: "node addr:postcode=1234AB";
 }
 
 

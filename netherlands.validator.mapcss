@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2025.06.09";
+    version: "2025.10.18";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "18875"; /* due to JOSM ticket 23238 */
@@ -823,14 +823,6 @@ way[surface][surface=~/stenen$|^hout$|\bbestraa?t(ing)?$|grond$|^puin$|^grind$|z
   throwWarning: tr("{0} is deprecated", "*:surface=paving_stones:NN");
   group: tr("NL deprecated features");
   suggestAlternative: "*:surface=paving_stones + *:paving_stones:shape=square + *:paving_stones:length=[length in meter, e.g. 0.3]";
-}
-
-
-/* https://community.openstreetmap.org/t/winkelnummer-tag-onlogisch/118170 */
-*[winkelnummer] {
-  throwWarning: tr("{0} is deprecated", "{0.key}");
-  group: tr("NL deprecated features");
-  suggestAlternative: "ref=*";
 }
 
 

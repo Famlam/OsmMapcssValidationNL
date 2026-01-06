@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2025.10.18";
+    version: "2026.01.10";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "18875"; /* due to JOSM ticket 23238 */
@@ -1299,4 +1299,203 @@ way[bicycle][moped][bicycle=*moped][!mofa][!mofa:both_ways][bicycle=~/^(yes|desi
   assertNoMatch: "way bicycle=designated moped=designated mofa=designated highway=busway";
   assertNoMatch: "way bicycle=designated moped=destination highway=busway";
   assertNoMatch: "way bicycle=designated moped=designated highway=residential";
+}
+
+
+/* ------------------------ */
+/* ------- Educatie ------- */
+/* ------------------------ */
+
+/* https://community.openstreetmap.org/t/hoe-mappen-we-scholen/78349 */
+
+/* Algemene isced:level validatie is eigenlijk beter voor internationale regels, maar om foute meldingen te voorkomen bij latere checks... */
+*[isced:level][isced:level!~/^[0-8]( ?- ?[1-8])?(; ?[0-8]( ?- ?[1-8])?)*$/][inside("NL")] {
+	throwWarning: tr("unusual value of {0}", "{0.key}");
+    group: tr("NL education");
+	set .iscedInvalid;
+	/* assertMatch fails outside NL
+	assertMatch: "node isced:level=25";
+	assertMatch: "node isced:level=1;25;6";
+	assertMatch: "node isced:level=1;25-6";
+	assertMatch: "node isced:level=1-5-6";
+	assertMatch: "node isced:level=9";
+	assertMatch: "node isced:level=secondary";
+	*/
+	assertNoMatch: "node isced:level=0";
+	assertNoMatch: "node isced:level=0;1;2;3";
+	assertNoMatch: "node isced:level=0;1;2;3;4;5;6;7;8";
+	assertNoMatch: "node isced:level=0;1;2-4;5-7;8";
+	assertNoMatch: "node isced:level=0-3";
+}
+*[isced:level*=0][inside("NL")]!.iscedInvalid {
+	set .iscedKindergarten; /* kleuterschool */
+	set .iscedSchool; /* groep 1-2 basisschool */
+	set .iscedSchoolPrimary;
+}
+*[isced:level*=1][inside("NL")]!.iscedInvalid {
+	set .iscedSchool; /* groep 3-8 basisschool */
+	set .iscedSchoolPrimary;
+}
+*[isced:level*=2][inside("NL")]!.iscedInvalid,
+*[isced:level*=3][inside("NL")]!.iscedInvalid {
+	set .iscedSchool; /* middelbare school */
+	set .iscedSchoolSecondary;
+}
+*[isced:level*=4][inside("NL")]!.iscedInvalid {
+	set .iscedCollege; /* MBO */
+}
+*[isced:level*=5][inside("NL")]!.iscedInvalid,
+*[isced:level*=6][inside("NL")]!.iscedInvalid,
+*[isced:level*=7][inside("NL")]!.iscedInvalid,
+*[isced:level*=8][inside("NL")]!.iscedInvalid {
+	set .iscedUniversity; /* HBO, WO */
+}
+
+/* isced:level versus amenity */
+*[isced:level][amenity][amenity!=school      ][amenity!=construction][amenity!~/(^|; ?)school(;|$)/]!.iscedKindergarten.iscedSchool!.iscedCollege!.iscedUniversity,
+*[isced:level][amenity][amenity!=college     ][amenity!=construction][amenity!~/(^|; ?)college(;|$)/]!.iscedKindergarten!.iscedSchool.iscedCollege!.iscedUniversity,
+*[isced:level][amenity][amenity!=university  ][amenity!=construction][amenity!~/(^|; ?)university(;|$)/]!.iscedKindergarten!.iscedSchool!.iscedCollege.iscedUniversity,
+*[isced:level][education][education!=school      ][!amenity][education!=construction][education!~/(^|; ?)school(;|$)/]!.iscedKindergarten.iscedSchool!.iscedCollege!.iscedUniversity,
+*[isced:level][education][education!=college     ][!amenity][education!=construction][education!~/(^|; ?)college(;|$)/]!.iscedKindergarten!.iscedSchool.iscedCollege!.iscedUniversity,
+*[isced:level][education][education!=university  ][!amenity][education!=construction][education!~/(^|; ?)university(;|$)/]!.iscedKindergarten!.iscedSchool!.iscedCollege.iscedUniversity {
+	throwWarning: tr("{0} together with {1}", "{0.tag}", "{1.tag}");
+	suggestAlternative: tr("{0}", "{2.tag}");
+	suggestAlternative: tr("a different {0}", "{0.key}");
+    group: tr("NL education");
+	/* assertMatch fails outside NL
+	assertMatch: "node isced:level=3 amenity=university";
+	assertMatch: "node isced:level=1;2 amenity=university";
+	assertMatch: "node isced:level=1;2 education=university";
+	assertMatch: "node isced:level=1-3 amenity=university";
+	*/
+	assertNoMatch: "node isced:level=5 amenity=university";
+	assertNoMatch: "node isced:level=5 amenity=university;driving_school";
+	assertNoMatch: "node isced:level=5;6;7;8 amenity=university";
+	assertNoMatch: "node isced:level=5-8 amenity=university";
+	assertNoMatch: "node isced:level=4;5 amenity=university";
+	assertNoMatch: "node isced:level=4;5 education=university";
+	assertNoMatch: "node isced:level=3 building=school"; /* wrongly tagged isced:level */
+	assertNoMatch: "node isced:level=0;1;2;3;4;5;6;7;8 amenity=university";
+	assertNoMatch: "node isced:level=0-8 amenity=university";
+	assertNoMatch: "node isced:level=0"; /* other rule */
+	assertNoMatch: "node isced:level=0;1"; /* other rule */
+}
+*[isced:level][amenity!=school      ][!amenity][!education][!building][!construction]!.iscedKindergarten.iscedSchool!.iscedCollege!.iscedUniversity,
+*[isced:level][amenity!=college     ][!amenity][!education][!building][!construction]!.iscedKindergarten!.iscedSchool.iscedCollege!.iscedUniversity,
+*[isced:level][amenity!=university  ][!amenity][!education][!building][!construction]!.iscedKindergarten!.iscedSchool!.iscedCollege.iscedUniversity {
+	throwWarning: tr("{0} without {1} or {2}", "{0.tag}", "{1.tag}", "education={1.value}");
+    group: tr("NL education");
+	/* assertMatch fails outside NL
+	assertMatch: "node isced:level=1";
+	assertMatch: "node isced:level=1;2";
+	assertMatch: "node isced:level=1-3";
+	*/
+	assertNoMatch: "node isced:level=0"; /* other rule */
+	assertNoMatch: "node isced:level=1-3 education=school";
+	assertNoMatch: "node isced:level=3-5";/* other rule */
+	assertNoMatch: "node isced:level=3;4;5";/* other rule */
+	assertNoMatch: "node isced:level=5;6;7;8 amenity=university"; /* other rule */
+}
+*[isced:level][amenity][amenity!=kindergarten][amenity!=school    ][amenity!=construction][amenity!~/(^|; ?)school(;|$)/][amenity!~/(^|; ?)kindergarten(;|$)/].iscedKindergarten.iscedSchool!.iscedCollege!.iscedUniversity,
+*[isced:level][amenity][amenity!=school      ][amenity!=college   ][amenity!=construction][amenity!~/(^|; ?)college(;|$)/][amenity!~/(^|; ?)school(;|$)/]!.iscedKindergarten.iscedSchool.iscedCollege!.iscedUniversity,
+*[isced:level][amenity][amenity!=college     ][amenity!=university][amenity!=construction][amenity!~/(^|; ?)university(;|$)/][amenity!~/(^|; ?)college(;|$)/]!.iscedKindergarten!.iscedSchool.iscedCollege.iscedUniversity,
+*[isced:level][education][education!=kindergarten][education!=school    ][!amenity][education!=construction][education!~/(^|; ?)school(;|$)/][education!~/(^|; ?)kindergarten(;|$)/].iscedKindergarten.iscedSchool!.iscedCollege!.iscedUniversity,
+*[isced:level][education][education!=school      ][education!=college   ][!amenity][education!=construction][education!~/(^|; ?)college(;|$)/][education!~/(^|; ?)school(;|$)/]!.iscedKindergarten.iscedSchool.iscedCollege!.iscedUniversity,
+*[isced:level][education][education!=college     ][education!=university][!amenity][education!=construction][education!~/(^|; ?)university(;|$)/][education!~/(^|; ?)college(;|$)/]!.iscedKindergarten!.iscedSchool.iscedCollege.iscedUniversity {
+	throwWarning: tr("{0} together with {1}", "{0.tag}", "{1.tag}");
+	suggestAlternative: tr("{0}", "{2.tag}");
+	suggestAlternative: tr("{0}", "{3.tag}");
+	suggestAlternative: tr("a different {0}", "{0.key}");
+    group: tr("NL education");
+	/* assertMatch fails outside NL
+	assertMatch: "node isced:level=0;1 amenity=university";
+	assertMatch: "node isced:level=3-4 education=university";
+	assertMatch: "node isced:level=3-4 amenity=university";
+	*/
+	assertNoMatch: "node isced:level=2 amenity=school";
+	assertNoMatch: "node isced:level=2 amenity=school;driving_school";
+	assertNoMatch: "node isced:level=1;2 amenity=school";
+	assertNoMatch: "node isced:level=4;5 amenity=college";
+	assertNoMatch: "node isced:level=4;5 amenity=university";
+	assertNoMatch: "node isced:level=5;6;7;8 amenity=university";
+	assertNoMatch: "node isced:level=5-8 education=university";
+	assertNoMatch: "node isced:level=5-8 amenity=university";
+	assertNoMatch: "node isced:level=0;1;2;3;4;5;6;7;8 amenity=university";
+	assertNoMatch: "node isced:level=0-8 amenity=university";
+	assertNoMatch: "node isced:level=0"; /* other rule */
+	assertNoMatch: "node isced:level=0;1"; /* other rule */
+}
+*[isced:level][amenity!=school      ][amenity!=kindergarten][!amenity][!education][!building][!construction].iscedKindergarten.iscedSchool!.iscedCollege!.iscedUniversity,
+*[isced:level][amenity!=school      ][amenity!=college     ][!amenity][!education][!building][!construction]!.iscedKindergarten.iscedSchool.iscedCollege!.iscedUniversity,
+*[isced:level][amenity!=college     ][amenity!=university  ][!amenity][!education][!building][!construction]!.iscedKindergarten!.iscedSchool.iscedCollege.iscedUniversity {
+	throwWarning: tr("{0} without {1}, {2}, {3} or {4}", "{0.tag}", "{1.tag}", "{2.tag}", "education={1.value}", "education={2.value}");
+    group: tr("NL education");
+	/* assertMatch fails outside NL
+	assertMatch: "node isced:level=0;1";
+	assertMatch: "node isced:level=3-4";
+	*/
+	assertNoMatch: "node isced:level=3"; /* other rule */
+	assertNoMatch: "node isced:level=0;1 amenity=school";
+	assertNoMatch: "node isced:level=0;1 education=school";
+	assertNoMatch: "node isced:level=0;1 amenity=university"; /* other rule */
+}
+
+/* isced:level versus school tag */
+*[isced:level][school][school!=secondary][school=~/(^|; ?)primary(;|$)/  ]!.iscedSchoolPrimary.iscedSchoolSecondary!.iscedKindergarten!.iscedCollege!.iscedUniversity,
+*[isced:level][school][school!=primary  ][school=~/(^|; ?)secondary(;|$)/].iscedSchoolPrimary!.iscedSchoolSecondary!.iscedKindergarten!.iscedCollege!.iscedUniversity,
+*[isced:level][school][school!=primary  ][school=~/(^|; ?)secondary(;|$)/][amenity=school].iscedSchoolPrimary!.iscedSchoolSecondary.iscedKindergarten!.iscedCollege!.iscedUniversity {
+	throwWarning: tr("{0} together with {1}", "{0.tag}", "{1.tag}");
+	suggestAlternative: tr("{0}", "{2.tag}");
+	suggestAlternative: tr("a different {0}", "{0.key}");
+	group: tr("NL education");
+	set .isWrongSchoolTag;
+	/* assertMatch fails outside NL
+	assertMatch: "node isced:level=1 amenity=school school=secondary";
+	assertMatch: "node isced:level=2;3 amenity=school school=primary";
+	*/
+	assertNoMatch: "node isced:level=1 amenity=school"; /* different rule */
+	assertNoMatch: "node isced:level=1 amenity=school school=primary;special_education_needs";
+	assertNoMatch: "node isced:level=1;2;3 amenity=school school=primary;secondary";
+	assertNoMatch: "node isced:level=1 amenity=school school=primary";
+	assertNoMatch: "node isced:level=3 amenity=school school=secondary";
+	assertNoMatch: "node isced:level=0;1 amenity=school school=primary";
+}
+*[isced:level][school][school!="primary;secondary"][school!~/(^|; ?)secondary(;|$)/][school=~/(^|; ?)primary(;|$)/].iscedSchoolPrimary.iscedSchoolSecondary!.iscedCollege!.iscedUniversity!.isWrongSchoolTag,
+*[isced:level][school][school!=secondary][school!~/(^|; ?)secondary(;|$)/].iscedSchoolSecondary!.iscedSchoolPrimary!.iscedKindergarten!.iscedCollege!.iscedUniversity!.isWrongSchoolTag,
+*[isced:level][school][school!=primary][school!~/(^|; ?)primary(;|$)/].iscedSchoolPrimary!.iscedSchoolSecondary!.iscedKindergarten!.iscedCollege!.iscedUniversity!.isWrongSchoolTag,
+*[isced:level][school][school!=primary][school!~/(^|; ?)primary(;|$)/][amenity=school].iscedSchoolPrimary!.iscedSchoolSecondary.iscedKindergarten!.iscedCollege!.iscedUniversity!.isWrongSchoolTag {
+	throwWarning: tr("{0} without {1}", "{0.tag}", "{2.tag}");
+	suggestAlternative: tr("{0}", "{2.tag}");
+	suggestAlternative: tr("{0};{1}", "{2.tag}", "{1.value}");
+	suggestAlternative: tr("a different {0}", "{0.key}");
+	group: tr("NL education");
+	/* assertMatch fails outside NL
+	assertMatch: "node isced:level=1 amenity=school school=special_education_needs";
+	assertMatch: "node isced:level=2;3 amenity=school school=special_education_needs";
+	*/
+	assertNoMatch: "node isced:level=1 amenity=school"; /* different rule */
+	assertNoMatch: "node isced:level=1 amenity=school school=primary;special_education_needs";
+	assertNoMatch: "node isced:level=1 amenity=school school=primary";
+	assertNoMatch: "node isced:level=1;2;3 amenity=school school=primary;secondary";
+	assertNoMatch: "node isced:level=1;2;3 amenity=school school=primary;secondary;special_education_needs";
+	assertNoMatch: "node isced:level=3 amenity=school school=secondary";
+	assertNoMatch: "node isced:level=0;1 amenity=school school=primary";
+}
+*[isced:level][school!="primary;secondary"][!school][!building].iscedSchoolPrimary.iscedSchoolSecondary!.iscedCollege!.iscedUniversity,
+*[isced:level][school!=secondary][!school][!building].iscedSchoolSecondary!.iscedSchoolPrimary!.iscedKindergarten!.iscedCollege!.iscedUniversity,
+*[isced:level][school!=primary][!school][!building].iscedSchoolPrimary!.iscedSchoolSecondary.iscedKindergarten!.iscedCollege!.iscedUniversity[amenity=school],
+*[isced:level][school!=primary][!school][!building].iscedSchoolPrimary!.iscedSchoolSecondary!.iscedKindergarten!.iscedCollege!.iscedUniversity {
+	throwWarning: tr("{0} without {1}", "{0.tag}", "{1.tag}");
+	group: tr("NL education");
+	/* assertMatch fails outside NL
+	assertMatch: "node isced:level=1 amenity=school";
+	assertMatch: "node isced:level=0;1;2;3 amenity=school";
+	assertMatch: "node isced:level=2;3 amenity=school";
+	assertMatch: "node isced:level=0;1 amenity=school";
+	*/
+	assertNoMatch: "node isced:level=1 amenity=school school=primary";
+	assertNoMatch: "node isced:level=3 amenity=school school=secondary";
+	assertNoMatch: "node isced:level=3 building=school"; /* wrongly tagged isced:level */
+	assertNoMatch: "node isced:level=0;1 amenity=school school=primary";
+	assertNoMatch: "node isced:level=0 amenity=kindergarten";
 }

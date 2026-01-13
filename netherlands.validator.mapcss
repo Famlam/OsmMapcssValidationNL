@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2026.01.10";
+    version: "2026.01.13";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "18875"; /* due to JOSM ticket 23238 */
@@ -357,8 +357,8 @@ way[highway] > node[traffic_sign~="NL:L2"][highway!=crossing],
 way[highway] > node[traffic_sign~="NL:L02"][highway!=crossing] {
   group: tr("NL traffic signs");
   throwWarning: tr("{0} without {1}", "{0.tag}", "{1.tag}");
-  suggestAlternative: "{1.tag} + crossing=marked + crossing_ref=zebra";
-  suggestAlternative: "{1.tag} + crossing=uncontrolled + crossing_ref=zebra";
+  suggestAlternative: "{1.tag} + crossing=marked + crossing:markings=zebra + crossing_ref=zebra";
+  suggestAlternative: "{1.tag} + crossing=uncontrolled + crossing:markings=zebra + crossing_ref=zebra";
   suggestAlternative: "{1.tag} + crossing:markings=zebra";
   suggestAlternative: "{1.tag} + crossing=traffic_signals"; /* Zebra with traffic signals */
 }
@@ -366,13 +366,21 @@ way[highway] > node[traffic_sign~="NL:L02"][highway!=crossing] {
 node[traffic_sign~="NL:L2"][crossing!=uncontrolled][crossing!=marked][crossing:markings!=zebra][highway=crossing][crossing!=traffic_signals][crossing_ref!=zebra],
 node[traffic_sign~="NL:L02"][crossing!=uncontrolled][crossing!=marked][crossing:markings!=zebra][highway=crossing][crossing!=traffic_signals][crossing_ref!=zebra] {
   group: tr("NL traffic signs");
-  throwWarning: tr("{0} without {1}, {2} or {3}", "{0.tag}", "{1.tag} + crossing_ref=zebra", "{2.tag} + crossing_ref=zebra", "{3.tag}");
+  throwWarning: tr("{0} without {1}, {2} or {3}", "{0.tag}", "{1.tag} + crossing_ref=zebra + crossing:markings=zebra", "{2.tag} + crossing_ref=zebra + crossing:markings=zebra", "{3.tag}");
   assertMatch: "node traffic_sign=NL:L2 highway=crossing";
   assertMatch: "node traffic_sign=NL:L02;NL:J23 highway=crossing";
   assertNoMatch: "node traffic_sign=NL:L2 direction=300";
   assertNoMatch: "node traffic_sign=NL:L2 highway=crossing crossing:markings=zebra";
   assertNoMatch: "node traffic_sign=NL:L2 highway=crossing crossing=uncontrolled crossing_ref=zebra";
   assertNoMatch: "node traffic_sign=NL:L02 highway=crossing crossing=traffic_signals note=traffic_signals_combined_with_zebra";
+}
+/* https://community.openstreetmap.org/t/zebra-crossing-in-nederland-ndw/121871 */
+node[crossing_ref=zebra][crossing:markings!=zebra][highway=crossing][inside("NL")] {
+  group: tr("NL traffic signs");
+  throwWarning: tr("{0} without {1}", "{0.tag}", "{1.tag}");
+  fixAdd: "crossing:markings=zebra";
+  assertNoMatch: "node highway=crossing crossing_ref=zebra crossing:markings=zebra crossing=uncontrolled";
+  assertNoMatch: "node traffic_sign=NL:L2 direction=300";
 }
 
 

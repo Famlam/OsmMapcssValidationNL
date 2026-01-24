@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2026.01.13";
+    version: "2026.01.24";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "18875"; /* due to JOSM ticket 23238 */
@@ -357,30 +357,23 @@ way[highway] > node[traffic_sign~="NL:L2"][highway!=crossing],
 way[highway] > node[traffic_sign~="NL:L02"][highway!=crossing] {
   group: tr("NL traffic signs");
   throwWarning: tr("{0} without {1}", "{0.tag}", "{1.tag}");
-  suggestAlternative: "{1.tag} + crossing=marked + crossing:markings=zebra + crossing_ref=zebra";
-  suggestAlternative: "{1.tag} + crossing=uncontrolled + crossing:markings=zebra + crossing_ref=zebra";
+  suggestAlternative: "{1.tag} + crossing=marked + crossing:markings=zebra";
+  suggestAlternative: "{1.tag} + crossing=uncontrolled + crossing:markings=zebra";
   suggestAlternative: "{1.tag} + crossing:markings=zebra";
   suggestAlternative: "{1.tag} + crossing=traffic_signals"; /* Zebra with traffic signals */
 }
-/* Be very forgiving with the crossing/crossing_ref keys; there are a billion ways to tag it */
-node[traffic_sign~="NL:L2"][crossing!=uncontrolled][crossing!=marked][crossing:markings!=zebra][highway=crossing][crossing!=traffic_signals][crossing_ref!=zebra],
-node[traffic_sign~="NL:L02"][crossing!=uncontrolled][crossing!=marked][crossing:markings!=zebra][highway=crossing][crossing!=traffic_signals][crossing_ref!=zebra] {
+/* Be very forgiving with the crossing keys; there are a billion ways to tag it */
+node[traffic_sign~="NL:L2"][crossing!=uncontrolled][crossing!=marked][crossing:markings!=zebra][highway=crossing][crossing!=traffic_signals][!crossing_ref],
+node[traffic_sign~="NL:L02"][crossing!=uncontrolled][crossing!=marked][crossing:markings!=zebra][highway=crossing][crossing!=traffic_signals][!crossing_ref] {
   group: tr("NL traffic signs");
-  throwWarning: tr("{0} without {1}, {2} or {3}", "{0.tag}", "{1.tag} + crossing_ref=zebra + crossing:markings=zebra", "{2.tag} + crossing_ref=zebra + crossing:markings=zebra", "{3.tag}");
+  throwWarning: tr("{0} without {1}, {2} or {3}", "{0.tag}", "{1.tag} + crossing:markings=zebra", "{2.tag} + crossing:markings=zebra", "{3.tag}");
   assertMatch: "node traffic_sign=NL:L2 highway=crossing";
   assertMatch: "node traffic_sign=NL:L02;NL:J23 highway=crossing";
   assertNoMatch: "node traffic_sign=NL:L2 direction=300";
   assertNoMatch: "node traffic_sign=NL:L2 highway=crossing crossing:markings=zebra";
-  assertNoMatch: "node traffic_sign=NL:L2 highway=crossing crossing=uncontrolled crossing_ref=zebra";
+  assertNoMatch: "node traffic_sign=NL:L2 highway=crossing crossing=uncontrolled crossing_ref=zebra"; /* has its own deprecation warning */
+  assertNoMatch: "node traffic_sign=NL:L2 highway=crossing crossing=uncontrolled crossing:markings=zebra";
   assertNoMatch: "node traffic_sign=NL:L02 highway=crossing crossing=traffic_signals note=traffic_signals_combined_with_zebra";
-}
-/* https://community.openstreetmap.org/t/zebra-crossing-in-nederland-ndw/121871 */
-node[crossing_ref=zebra][crossing:markings!=zebra][highway=crossing][inside("NL")] {
-  group: tr("NL traffic signs");
-  throwWarning: tr("{0} without {1}", "{0.tag}", "{1.tag}");
-  fixAdd: "crossing:markings=zebra";
-  assertNoMatch: "node highway=crossing crossing_ref=zebra crossing:markings=zebra crossing=uncontrolled";
-  assertNoMatch: "node traffic_sign=NL:L2 direction=300";
 }
 
 
@@ -832,6 +825,35 @@ way[surface][surface=~/stenen$|^hout$|\bbestraa?t(ing)?$|grond$|^puin$|^grind$|z
   group: tr("NL deprecated features");
   suggestAlternative: "*:surface=paving_stones + *:paving_stones:shape=square + *:paving_stones:length=[length in meter, e.g. 0.3]";
 }
+
+
+/* https://community.openstreetmap.org/t/zebra-crossing-in-nederland-ndw/121871 */
+way[crossing_ref=zebra][!crossing:markings][highway][inside("NL")],
+node[crossing_ref=zebra][!crossing:markings][highway=crossing][inside("NL")] {
+  group: tr("NL deprecated features");
+  throwWarning: tr("{0} is deprecated", "{0.tag}");
+  suggestAlternative: "crossing:markings=zebra";
+  fixAdd: "{1.key}=zebra";
+  fixRemove: "{0.key}";
+  assertNoMatch: "node highway=crossing crossing_ref=zebra crossing:markings=zebra crossing=uncontrolled";
+  set .crossing_ref_has_warning;
+}
+way[crossing_ref=zebra]!.crossing_ref_has_warning[inside("NL")],
+node[crossing_ref=zebra]!.crossing_ref_has_warning[inside("NL")] {
+  group: tr("NL deprecated features");
+  throwWarning: tr("{0} is deprecated", "{0.tag}");
+  suggestAlternative: "crossing:markings=zebra";
+  fixAdd: "crossing:markings=zebra";
+  fixRemove: "{0.key}";
+  set .crossing_ref_has_warning;
+}
+way[crossing_ref]!.crossing_ref_has_warning[inside("NL")],
+node[crossing_ref]!.crossing_ref_has_warning[inside("NL")] {
+  group: tr("NL deprecated features");
+  throwWarning: tr("{0} is deprecated", "{0.key}");
+  set .crossing_ref_has_warning;
+}
+
 
 
 /* -------------------------------- */

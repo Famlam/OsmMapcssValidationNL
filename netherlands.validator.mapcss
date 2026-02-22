@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2026.01.24";
+    version: "2026.02.22";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "18875"; /* due to JOSM ticket 23238 */

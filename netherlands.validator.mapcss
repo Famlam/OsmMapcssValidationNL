@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2026.02.22";
+    version: "2026.02.24";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "18875"; /* due to JOSM ticket 23238 */
@@ -1358,33 +1358,42 @@ way[bicycle][moped][bicycle=*moped][!mofa][!mofa:both_ways][bicycle=~/^(yes|desi
 	assertNoMatch: "node isced:level=0;1;2-4;5-7;8";
 	assertNoMatch: "node isced:level=0-3";
 }
-*[isced:level*=0][inside("NL")]!.iscedInvalid {
+
+*[isced:level*="0"][inside("NL")]!.iscedInvalid {
 	set .iscedKindergarten; /* kleuterschool */
 	set .iscedSchool; /* groep 1-2 basisschool */
 	set .iscedSchoolPrimary;
 }
-*[isced:level*=1][inside("NL")]!.iscedInvalid {
+*[isced:level*="0-"][inside("NL")]!.iscedInvalid,
+*[isced:level*="1"][inside("NL")]!.iscedInvalid {
 	set .iscedSchool; /* groep 3-8 basisschool */
 	set .iscedSchoolPrimary;
 }
-*[isced:level*=2][inside("NL")]!.iscedInvalid {
+*[isced:level*="1-"][inside("NL")]!.iscedInvalid,
+*[isced:level*="-3"][inside("NL")]!.iscedInvalid,
+*[isced:level*="2"][inside("NL")]!.iscedInvalid {
 	set .iscedSchool; /* middelbare school VMBO, onderbouw HAVO en VWO */
 	set .iscedSchoolSecondaryMetOnderbouw;
 	set .iscedSchoolSecondary;
 }
-*[isced:level*=3][inside("NL")]!.iscedInvalid {
+*[isced:level*="2-"][inside("NL")]!.iscedInvalid,
+*[isced:level*="-4"][inside("NL")]!.iscedInvalid,
+*[isced:level*="3"][inside("NL")]!.iscedInvalid {
 	set .iscedSchool; /* middelbare school bovenbouw HAVO en VWO*/
 	set .iscedSchoolSecondary;
 	set .iscedCollege; /* MBO */
 }
-*[isced:level*=4][inside("NL")]!.iscedInvalid {
+*[isced:level*="3-"][inside("NL")]!.iscedInvalid,
+*[isced:level*="-5"][inside("NL")]!.iscedInvalid,
+*[isced:level*="4"][inside("NL")]!.iscedInvalid {
     /* isced:level 4 is not a default type in NL */
     set .iscedUnknown;
 }
-*[isced:level*=5][inside("NL")]!.iscedInvalid,
-*[isced:level*=6][inside("NL")]!.iscedInvalid,
-*[isced:level*=7][inside("NL")]!.iscedInvalid,
-*[isced:level*=8][inside("NL")]!.iscedInvalid {
+*[isced:level*="4-"][inside("NL")]!.iscedInvalid,
+*[isced:level*="5"][inside("NL")]!.iscedInvalid,
+*[isced:level*="6"][inside("NL")]!.iscedInvalid,
+*[isced:level*="7"][inside("NL")]!.iscedInvalid,
+*[isced:level*="8"][inside("NL")]!.iscedInvalid {
 	set .iscedUniversity; /* HBO, WO */
 }
 
@@ -1482,8 +1491,8 @@ way[bicycle][moped][bicycle=*moped][!mofa][!mofa:both_ways][bicycle=~/^(yes|desi
 	assertNoMatch: "node isced:level=3 amenity=school school=secondary";
 	assertNoMatch: "node isced:level=0;1 amenity=school school=primary";
 }
-*[isced:level][school][school!="primary;secondary"][school!~/(^|; ?)secondary(;|$)/][school=~/(^|; ?)primary(;|$)/][amenity=school  ].iscedSchoolPrimary.iscedSchoolSecondary!.iscedUniversity!.isWrongSchoolTag,
-*[isced:level][school][school!="primary;secondary"][school!~/(^|; ?)secondary(;|$)/][school=~/(^|; ?)primary(;|$)/][education=school].iscedSchoolPrimary.iscedSchoolSecondary!.iscedUniversity!.isWrongSchoolTag,
+*[isced:level][school][school!="primary;secondary"][school!~/(^|; ?)secondary(;|$)/][school=~/(^|; ?)primary(;|$)/][amenity=school  ].iscedSchoolPrimary.iscedSchoolSecondary!.iscedUniversity!.iscedUnknown!.isWrongSchoolTag,
+*[isced:level][school][school!="primary;secondary"][school!~/(^|; ?)secondary(;|$)/][school=~/(^|; ?)primary(;|$)/][education=school].iscedSchoolPrimary.iscedSchoolSecondary!.iscedUniversity!.iscedUnknown!.isWrongSchoolTag,
 *[isced:level][school][school!=secondary][school!~/(^|; ?)secondary(;|$)/][amenity=school  ].iscedSchoolSecondaryMetOnderbouw!.iscedSchoolPrimary!.iscedKindergarten!.iscedUniversity!.isWrongSchoolTag,
 *[isced:level][school][school!=secondary][school!~/(^|; ?)secondary(;|$)/][education=school].iscedSchoolSecondaryMetOnderbouw!.iscedSchoolPrimary!.iscedKindergarten!.iscedUniversity!.isWrongSchoolTag,
 *[isced:level][school][school!=primary][school!~/(^|; ?)primary(;|$)/][amenity=school  ].iscedSchoolPrimary!.iscedSchoolSecondary!.iscedCollege!.iscedUniversity!.isWrongSchoolTag!.iscedUnknown,
@@ -1504,11 +1513,12 @@ way[bicycle][moped][bicycle=*moped][!mofa][!mofa:both_ways][bicycle=~/^(yes|desi
 	assertNoMatch: "node isced:level=1;2;3 amenity=school school=primary;secondary;special_education_needs";
 	assertNoMatch: "node isced:level=2 amenity=school school=secondary";
 	assertNoMatch: "node isced:level=3 amenity=school school=special_education_needs"; /* mogelijk met MBO */
+	assertNoMatch: "node isced:level=0-4 amenity=school school=special_education_needs";
 	assertNoMatch: "node isced:level=1-4 amenity=school school=special_education_needs";
 	assertNoMatch: "node isced:level=0;1 amenity=school school=primary";
 }
-*[isced:level][school!="primary;secondary"][!school][!building][amenity=school  ].iscedSchoolPrimary.iscedSchoolSecondary!.iscedUniversity,
-*[isced:level][school!="primary;secondary"][!school][!building][education=school].iscedSchoolPrimary.iscedSchoolSecondary!.iscedUniversity,
+*[isced:level][school!="primary;secondary"][!school][!building][amenity=school  ].iscedSchoolPrimary.iscedSchoolSecondary!.iscedUniversity!.iscedUnknown,
+*[isced:level][school!="primary;secondary"][!school][!building][education=school].iscedSchoolPrimary.iscedSchoolSecondary!.iscedUniversity!.iscedUnknown,
 *[isced:level][school!=secondary][!school][!building][amenity=school  ].iscedSchoolSecondaryMetOnderbouw!.iscedSchoolPrimary!.iscedKindergarten!.iscedUniversity,
 *[isced:level][school!=secondary][!school][!building][education=school].iscedSchoolSecondaryMetOnderbouw!.iscedSchoolPrimary!.iscedKindergarten!.iscedUniversity,
 *[isced:level][school!=primary][!school][!building][amenity=school  ].iscedSchoolPrimary!.iscedSchoolSecondary!.iscedCollege!.iscedUniversity!.iscedUnknown,
@@ -1528,6 +1538,7 @@ way[bicycle][moped][bicycle=*moped][!mofa][!mofa:both_ways][bicycle=~/^(yes|desi
 	assertNoMatch: "node isced:level=0;1 amenity=school school=primary";
 	assertNoMatch: "node isced:level=3 amenity=school"; /* mogelijk met MBO */
 	assertNoMatch: "node isced:level=3;4 amenity=school"; /* mogelijk met MBO */
+	assertNoMatch: "node isced:level=0-4 amenity=school";
 	assertNoMatch: "node isced:level=1-4 amenity=school";
 	assertNoMatch: "node isced:level=1-7 amenity=school";
 	assertNoMatch: "node isced:level=0 amenity=kindergarten";

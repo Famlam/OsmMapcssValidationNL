@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2026.04.01";
+    version: "2026.04.02";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "18875"; /* due to JOSM ticket 23238 */
@@ -986,7 +986,7 @@ node[name][amenity=charging_station][name=~/(?i)(oplaad|laadpunt|laadpaal)/],
   assertNoMatch: "way highway=unclassified name=\"Gesloten Stad\"";
 }
 
-*[name][name=~/(?i)(voormalige?)/][!historic][tourism!=information][!landuse][!highway][!boundary][!waterway] {
+*[name][name=~/(?i)(voormalige?)/][!historic][tourism!=information][!landuse][!highway][!boundary][!waterway][!place] {
   throwWarning: tr("descriptive name");
   group: tr("NL nomenclature");
   suggestAlternative: "old_name=*";

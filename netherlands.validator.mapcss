@@ -1,6 +1,6 @@
 meta {
     title: "Dutch specific rules";
-    version: "2026.05.17";
+    version: "2026.07.05";
     description: "Rules for The Netherlands only (European part).";
     author: "Famlam";
     min-josm-version: "18875"; /* due to JOSM ticket 23238 */
@@ -794,6 +794,21 @@ way[surface][surface=~/stenen$|^hout$|\bbestraa?t(ing)?$|grond$|^puin$|^grind$|z
   assertMatch: "node tourism=artwork material=hout,metaal";
   assertNoMatch: "way highway=service surface=paving_stones";
   assertNoMatch: "way tourism=artwork material=bronze";
+}
+
+
+/* Descriptive value of barrier types */
+node[gate:type][gate:type*=hek],
+node[bollard][bollard*=aal] {
+  throwWarning: tr("unusual value of {0}", "{0.key}");
+  group: tr("NL deprecated features");
+  assertMatch: "node barrier=bollard bollard=pollerinzinkbaar_paaltje";
+  assertMatch: "node barrier=bollard bollard=Paal";
+  assertMatch: "node barrier=gate gate:type=klaphekje";
+  assertNoMatch: "node barrier=bollard";
+  assertNoMatch: "node barrier=gate";
+  assertNoMatch: "node barrier=bollard bollard=rising";
+  assertNoMatch: "node barrier=gate gate:type=turning";
 }
 
 
